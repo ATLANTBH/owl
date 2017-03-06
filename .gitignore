@@ -135,3 +135,18 @@ typings/
 
 # dotenv environment variables file
 .env
+
+# Frontend ignores
+
+node/
+node_modules/
+etc/
+
+# Compiled output
+public/dist
+public/index.html
+public/sitemap.xml
+
+# Node.js and NPM
+node_modules
+npm-debug.log
