@@ -39,6 +39,11 @@ table > thead > tr > th {
 table > tbody > tr > td {
   color: $table-td-color;
 
+  &.focused-cell {
+    font-size: 15px;
+    color: $table-fouces-td-color;
+  }
+
   a {
     font-size: 15px;
     color: $table-fouces-td-color;
@@ -89,5 +94,14 @@ table > tbody > tr > td {
 .btn-default {
   &:hover {
     border-color: $table-border-color;
+  }
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+
+  .glyphicon {
+    top: 2px;
   }
 }
