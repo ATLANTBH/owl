@@ -1,0 +1,11 @@
+// -----------------------------------------------------------------------------
+// Custom Global Styles
+// -----------------------------------------------------------------------------
+
+@import 'bootstrap-customizations';
+
+// TODO(kklisura): Move this to its own file.
+.filter-section {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}

@@ -5,6 +5,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.resource.GzipResourceResolver;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolverChain;
 
@@ -18,6 +19,13 @@ import java.util.List;
 public class TestReporterConfiguration extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		// Serve assets from public dir
+		registry.addResourceHandler("/dist/**")
+				.addResourceLocations("classpath:/public/dist/")
+				.resourceChain(true)
+				.addResolver(new GzipResourceResolver());
+
+		// Serve index for all other routes
 		registry.addResourceHandler("/**")
 				.resourceChain(true)
 				.addResolver(new IndexResourceResolver());

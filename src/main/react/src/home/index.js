@@ -11,10 +11,8 @@
 import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
 import s from './styles.css';
-import { title, html } from './index.md';
 
 class HomePage extends React.Component {
-
   static propTypes = {
     articles: PropTypes.arrayOf(PropTypes.shape({
       url: PropTypes.string.isRequired,
@@ -24,27 +22,145 @@ class HomePage extends React.Component {
   };
 
   componentDidMount() {
-    document.title = title;
+    // document.title = 'title';
   }
 
   render() {
+
+    const data = [{
+      build: '#06436db',
+      suite: 'Smoke Test',
+      exampleCount: 38,
+      failureCount: 34,
+      pendingCount: 10,
+      duration: '654.7s'
+    }, {
+      build: '#06436db',
+      suite: 'Smoke Test',
+      exampleCount: 38,
+      failureCount: 34,
+      pendingCount: 10,
+      duration: '654.7s'
+    }, {
+      build: '#06436db',
+      suite: 'Smoke Test',
+      exampleCount: 38,
+      failureCount: 34,
+      pendingCount: 10,
+      duration: '654.7s'
+    }, {
+      build: '#06436db',
+      suite: 'Smoke Test',
+      exampleCount: 38,
+      failureCount: 34,
+      pendingCount: 10,
+      duration: '654.7s'
+    }, {
+      build: '#06436db',
+      suite: 'Smoke Test',
+      exampleCount: 38,
+      failureCount: 34,
+      pendingCount: 10,
+      duration: '654.7s'
+    }, {
+      build: '#06436db',
+      suite: 'Smoke Test',
+      exampleCount: 38,
+      failureCount: 34,
+      pendingCount: 10,
+      duration: '654.7s'
+    }, {
+      build: '#06436db',
+      suite: 'Smoke Test',
+      exampleCount: 38,
+      failureCount: 34,
+      pendingCount: 10,
+      duration: '654.7s'
+    }];
+
     return (
       <Layout className={s.content}>
-        <div
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
-        <h4>Articles</h4>
-        <ul>
-          {this.props.articles.map(article =>
-            <li key={article.url}>
-              <a href={article.url}>{article.title}</a>
-            by {article.author}</li>,
-          )}
-        </ul>
-        <p>
-          <br /><br />
-        </p>
+        <div className="row">
+          <div className="col-md-6">
+            <div className="page-header">
+              <h1>Latest Builds <small><a href="#">See All</a></small></h1>
+            </div>
+          </div>
+
+          <div className="col-md-6 text-right">
+            <div className="filter-section">
+              <span className="text-muted filter-section-title">Filter by:</span>
+              <div className="btn-group">
+                <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Test Suite <span className="caret"></span>
+                </button>
+                <ul className="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" className="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </div>
+
+
+              <div className="btn-group">
+                <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Execution Time <span className="caret"></span>
+                </button>
+                <ul className="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" className="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </div>
+
+              <div className="btn-group">
+                <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Success Rate <span className="caret"></span>
+                </button>
+                <ul className="dropdown-menu">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" className="divider"></li>
+                  <li><a href="#">Separated link</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <table className="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Build ID</th>
+              <th>Test Suites</th>
+              <th>Execution Finished</th>
+              <th>Example Count</th>
+              <th>Failure Count</th>
+              <th>Pending Count</th>
+              <th>Success Rate</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map(item =>
+              <tr>
+                <td><a href="#">{item.build}</a></td>
+                <td><a href="#">{item.suite}</a></td>
+                <td></td>
+                <td>{item.exampleCount}</td>
+                <td>{item.failureCount}</td>
+                <td>{item.pendingCount}</td>
+                <td></td>
+                <td>{item.duration}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </Layout>
     );
   }

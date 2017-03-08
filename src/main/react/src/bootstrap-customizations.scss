@@ -1,0 +1,93 @@
+// -----------------------------------------------------------------------------
+// Bootstrap Customization
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
+// Constants
+// -----------------------------------------------------------------------------
+
+// Left right padding on navbar
+$navbar-padding-left-right:         40px;
+
+$table-fouces-td-color:             #364962;
+$table-td-color:                    #7E8FA9;
+
+// -----------------------------------------------------------------------------
+// Styles
+// -----------------------------------------------------------------------------
+
+.navbar-fixed-top {
+  padding-left: $navbar-padding-left-right;
+  padding-right: $navbar-padding-left-right;
+
+  @include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.1));
+}
+
+.table {
+  @include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.06));
+}
+
+.table-bordered {
+  border: 0px solid $table-border-color;
+}
+
+table > thead > tr > th {
+  font-weight: normal;
+  color: $text-muted;
+}
+
+table > tbody > tr > td {
+  color: $table-td-color;
+
+  a {
+    font-size: 15px;
+    color: $table-fouces-td-color;
+  }
+}
+
+.page-header {
+  border-bottom: 0px solid #eee;
+  margin: 25px 0 20px;
+  padding-bottom: 0;
+  padding-left: 10px;
+
+  h1 {
+    font-size: 18px;
+    color: $table-td-color;
+    font-weight: 300;
+
+    small {
+      font-size: 14px;
+      margin-left: 15px;
+
+      a {
+        color: #1372FC;
+      }
+    }
+  }
+}
+
+.btn-group {
+  margin-left: 10px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.btn {
+  border-radius: 2px;
+
+  @include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.06));
+  border: 1px solid $table-border-color;
+
+  .caret {
+    margin-left: 15px;
+  }
+}
+
+.btn-default {
+  &:hover {
+    border-color: $table-border-color;
+  }
+}

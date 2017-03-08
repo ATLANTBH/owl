@@ -13,6 +13,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const pkg = require('../package.json');
 
 const isDebug = global.DEBUG === false ? false : !process.argv.includes('--release');
@@ -33,11 +34,9 @@ const config = {
 
   // The entry point for the bundle
   entry: [
-    /* Material Design Lite (https://getmdl.io) */
-    '!!style-loader!css-loader!react-mdl/extra/material.min.css',
-    'react-mdl/extra/material.min.js',
+    'bootstrap-loader',
     /* The main entry point of your JavaScript application */
-    './main.js',
+    './main.js'
   ],
 
   // Options affecting the output of the compilation
@@ -72,6 +71,9 @@ const config = {
       'process.env.NODE_ENV': isDebug ? '"development"' : '"production"',
       __DEV__: isDebug,
     }),
+    new webpack.ProvidePlugin({ 
+      jQuery: 'jquery' 
+    }), 
     // Emit a JSON file with assets paths
     // https://github.com/sporto/assets-webpack-plugin#options
     new AssetsPlugin({
@@ -83,6 +85,13 @@ const config = {
       debug: isDebug,
       minimize: !isDebug,
     }),
+    new CompressionPlugin({
+      asset: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8
+    })
   ],
 
   // Options affecting the normal modules
@@ -144,10 +153,6 @@ const config = {
             loader: path.resolve(__dirname, './routes-loader.js'),
           },
         ],
-      },
-      {
-        test: /\.md$/,
-        loader: path.resolve(__dirname, './markdown-loader.js'),
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)$/,

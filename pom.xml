@@ -73,6 +73,9 @@
   <build>
     <resources>
       <resource>
+        <directory>./src/main/resources</directory>
+      </resource>
+      <resource>
         <directory>./src/main/react/public</directory>
         <targetPath>./public</targetPath>
       </resource>
@@ -105,17 +108,18 @@
             <goals>
               <goal>yarn</goal>
             </goals>
+            <phase>generate-resources</phase>
           </execution>
           <execution>
             <id>yarn build</id>
             <goals>
               <goal>yarn</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <arguments>build</arguments>
             </configuration>
           </execution>
-
         </executions>
       </plugin>
 
