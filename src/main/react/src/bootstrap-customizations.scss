@@ -81,8 +81,6 @@ table > tbody > tr > td {
 }
 
 .btn {
-  border-radius: 2px;
-
   @include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.06));
   border: 1px solid $table-border-color;
 
@@ -104,4 +102,8 @@ table > tbody > tr > td {
   .glyphicon {
     top: 2px;
   }
+}
+
+.pagination {
+  margin: 10px 0;
 }

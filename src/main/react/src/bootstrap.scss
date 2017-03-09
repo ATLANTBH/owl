@@ -5,6 +5,8 @@ $font-family-base:                   'Roboto', sans-serif;
 
 $body-bg:                             #F4F4F6;
 
+$border-radius-base:                  2px;
+
 $navbar-default-bg:                   #FFF;
 $navbar-default-link-color:           #90A1B8;
 $navbar-default-link-hover-color:     #0F8AFD;
@@ -20,5 +22,5 @@ $table-cell-padding:                  $table-cell-padding-top-bottom;
 
 $btn-default-color:                   #7E8FA9;
 
-$label-success-bg:                    #3BD311;
-$label-danger-bg:                     #FF3F52;
+$brand-success:                       #3BD311;
+$brand-danger:                        #FF3F52;
