@@ -20,10 +20,10 @@ import { Router, Route, browserHistory } from 'react-router';
 
 import HomePage from './home/index.js';
 import ErrorPage from './error/index.js';
+import AboutPage from './about/index.js';
 
 import store from './store';
-import router from './router';
-import history from './history';
+
 
 const container = document.getElementById('container');
 
@@ -31,5 +31,7 @@ render(
   <Router history={browserHistory}>
     <Route path="/" component={HomePage}/>
     <Route path="/test" component={ErrorPage}/>
+    <Route path="/test2" component={AboutPage}/>
+    <Route path="*" component={ErrorPage}/>
   </Router>, container
 );
