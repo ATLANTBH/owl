@@ -11,87 +11,23 @@
 import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
 import s from './styles.css';
+import { Link } from 'react-router'
+import Pagination from '../../components/Pagination';
 
 class HomePage extends React.Component {
   constructor(){
     super();
     this.state = {
-      data: {}
+      data: {content: []}
     }
-
-    
   }
-  // static propTypes = {
-  //   articles: PropTypes.arrayOf(PropTypes.shape({
-  //     url: PropTypes.string.isRequired,
-  //     title: PropTypes.string.isRequired,
-  //     author: PropTypes.string.isRequired,
-  //   }).isRequired).isRequired,
-  // };
 
- componentDidMount() {
+componentDidMount() {
   fetch('/api/v1/test-runs').then((json) => json.json())
-  .then((function(response){
-    console.log(response.content);
-  }))
+  .then(((response) => {this.setState({ data: response }) ;console.log(response.content)}));
 }
 
-
-
-
   render() {
-
-    // const data = [{
-    //   build: '#06436db',
-    //   suite: 'Smoke Test',
-    //   exampleCount: 38,
-    //   failureCount: 34,
-    //   pendingCount: 10,
-    //   duration: '654.7s'
-    // }, {
-    //   build: '#06436db',
-    //   suite: 'Smoke Test',
-    //   exampleCount: 38,
-    //   failureCount: 34,
-    //   pendingCount: 10,
-    //   duration: '654.7s'
-    // }, {
-    //   build: '#06436db',
-    //   suite: 'Smoke Test',
-    //   exampleCount: 38,
-    //   failureCount: 34,
-    //   pendingCount: 10,
-    //   duration: '654.7s'
-    // }, {
-    //   build: '#06436db',
-    //   suite: 'Smoke Test',
-    //   exampleCount: 38,
-    //   failureCount: 34,
-    //   pendingCount: 10,
-    //   duration: '654.7s'
-    // }, {
-    //   build: '#06436db',
-    //   suite: 'Smoke Test',
-    //   exampleCount: 38,
-    //   failureCount: 34,
-    //   pendingCount: 10,
-    //   duration: '654.7s'
-    // }, {
-    //   build: '#06436db',
-    //   suite: 'Smoke Test',
-    //   exampleCount: 38,
-    //   failureCount: 34,
-    //   pendingCount: 10,
-    //   duration: '654.7s'
-    // }, {
-    //   build: '#06436db',
-    //   suite: 'Smoke Test',
-    //   exampleCount: 38,
-    //   failureCount: 34,
-    //   pendingCount: 10,
-    //   duration: '654.7s'
-    // }];
-
     return (
       <Layout className={s.content}>
         <div className="row">
@@ -161,10 +97,10 @@ class HomePage extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {/*{this.state.data.map(item =>
-              <tr>
-                <td><a href="#">{item.build}</a></td>
-                <td><a href="#">{item.suite}</a></td>
+            {this.state.data.content.map(item =>
+              <tr key={item.id}>
+                <td><Link to={'/test' + item.build}>{item.build}</Link></td>
+                <td><Link to="/test2">{item.testSuite.suite}</Link></td>
                 <td></td>
                 <td>{item.exampleCount}</td>
                 <td>{item.failureCount}</td>
@@ -172,9 +108,10 @@ class HomePage extends React.Component {
                 <td></td>
                 <td>{item.duration}</td>
               </tr>
-            )}*/}
+            )}
           </tbody>
         </table>
+        <Pagination paginatedResponse={this.state.data}/>
       </Layout>
     );
   }
