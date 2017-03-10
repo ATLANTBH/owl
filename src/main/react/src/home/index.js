@@ -13,70 +13,84 @@ import Layout from '../../components/Layout';
 import s from './styles.css';
 
 class HomePage extends React.Component {
-  static propTypes = {
-    articles: PropTypes.arrayOf(PropTypes.shape({
-      url: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      author: PropTypes.string.isRequired,
-    }).isRequired).isRequired,
-  };
+  constructor(){
+    super();
+    this.state = {
+      data: {}
+    }
 
-  componentDidMount() {
-    // document.title = 'title';
+    
   }
+  // static propTypes = {
+  //   articles: PropTypes.arrayOf(PropTypes.shape({
+  //     url: PropTypes.string.isRequired,
+  //     title: PropTypes.string.isRequired,
+  //     author: PropTypes.string.isRequired,
+  //   }).isRequired).isRequired,
+  // };
+
+ componentDidMount() {
+  fetch('http://localhost:8080/api/v1/test-runs').then((json) => json.json())
+  .then((function(response){
+    console.log(response.content);
+  }))
+}
+
+
+
 
   render() {
 
-    const data = [{
-      build: '#06436db',
-      suite: 'Smoke Test',
-      exampleCount: 38,
-      failureCount: 34,
-      pendingCount: 10,
-      duration: '654.7s'
-    }, {
-      build: '#06436db',
-      suite: 'Smoke Test',
-      exampleCount: 38,
-      failureCount: 34,
-      pendingCount: 10,
-      duration: '654.7s'
-    }, {
-      build: '#06436db',
-      suite: 'Smoke Test',
-      exampleCount: 38,
-      failureCount: 34,
-      pendingCount: 10,
-      duration: '654.7s'
-    }, {
-      build: '#06436db',
-      suite: 'Smoke Test',
-      exampleCount: 38,
-      failureCount: 34,
-      pendingCount: 10,
-      duration: '654.7s'
-    }, {
-      build: '#06436db',
-      suite: 'Smoke Test',
-      exampleCount: 38,
-      failureCount: 34,
-      pendingCount: 10,
-      duration: '654.7s'
-    }, {
-      build: '#06436db',
-      suite: 'Smoke Test',
-      exampleCount: 38,
-      failureCount: 34,
-      pendingCount: 10,
-      duration: '654.7s'
-    }, {
-      build: '#06436db',
-      suite: 'Smoke Test',
-      exampleCount: 38,
-      failureCount: 34,
-      pendingCount: 10,
-      duration: '654.7s'
-    }];
+    // const data = [{
+    //   build: '#06436db',
+    //   suite: 'Smoke Test',
+    //   exampleCount: 38,
+    //   failureCount: 34,
+    //   pendingCount: 10,
+    //   duration: '654.7s'
+    // }, {
+    //   build: '#06436db',
+    //   suite: 'Smoke Test',
+    //   exampleCount: 38,
+    //   failureCount: 34,
+    //   pendingCount: 10,
+    //   duration: '654.7s'
+    // }, {
+    //   build: '#06436db',
+    //   suite: 'Smoke Test',
+    //   exampleCount: 38,
+    //   failureCount: 34,
+    //   pendingCount: 10,
+    //   duration: '654.7s'
+    // }, {
+    //   build: '#06436db',
+    //   suite: 'Smoke Test',
+    //   exampleCount: 38,
+    //   failureCount: 34,
+    //   pendingCount: 10,
+    //   duration: '654.7s'
+    // }, {
+    //   build: '#06436db',
+    //   suite: 'Smoke Test',
+    //   exampleCount: 38,
+    //   failureCount: 34,
+    //   pendingCount: 10,
+    //   duration: '654.7s'
+    // }, {
+    //   build: '#06436db',
+    //   suite: 'Smoke Test',
+    //   exampleCount: 38,
+    //   failureCount: 34,
+    //   pendingCount: 10,
+    //   duration: '654.7s'
+    // }, {
+    //   build: '#06436db',
+    //   suite: 'Smoke Test',
+    //   exampleCount: 38,
+    //   failureCount: 34,
+    //   pendingCount: 10,
+    //   duration: '654.7s'
+    // }];
 
     return (
       <Layout className={s.content}>
@@ -147,7 +161,7 @@ class HomePage extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {data.map(item =>
+            {/*{this.state.data.map(item =>
               <tr>
                 <td><a href="#">{item.build}</a></td>
                 <td><a href="#">{item.suite}</a></td>
@@ -158,7 +172,7 @@ class HomePage extends React.Component {
                 <td></td>
                 <td>{item.duration}</td>
               </tr>
-            )}
+            )}*/}
           </tbody>
         </table>
       </Layout>
