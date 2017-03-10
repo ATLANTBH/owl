@@ -6,6 +6,7 @@ import com.atlantbh.test.reporter.services.TestRunService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,7 @@ public class TestRunsController {
 	 * @param filter Filter object passed by query params.
 	 * @return Paginated result of all test runs.
 	 */
+	@CrossOrigin(origins = "*")
 	@RequestMapping(method = RequestMethod.GET)
 	public Page<TestRun> getAllTestRuns(Pageable page, TestRunFilter filter) {
 		return testRunService.getAllTestRuns(filter, page);
