@@ -15,6 +15,7 @@ const webpack = require('webpack');
 const Browsersync = require('browser-sync');
 const task = require('./task');
 const config = require('./config');
+const proxyMiddleware = require('http-proxy-middleware');
 
 global.HMR = !process.argv.includes('--no-hmr'); // Hot Module Replacement (HMR)
 
@@ -51,6 +52,7 @@ module.exports = task('run', () => new Promise((resolve) => {
           baseDir: 'public',
           middleware: [
             webpackDevMiddleware,
+            proxyMiddleware('/api', { target: 'http://localhost:8080' }),
             require('webpack-hot-middleware')(compiler),
             require('connect-history-api-fallback')(),
           ],

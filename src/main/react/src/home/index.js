@@ -30,7 +30,7 @@ class HomePage extends React.Component {
   // };
 
  componentDidMount() {
-  fetch('http://localhost:8080/api/v1/test-runs').then((json) => json.json())
+  fetch('/api/v1/test-runs').then((json) => json.json())
   .then((function(response){
     console.log(response.content);
   }))
