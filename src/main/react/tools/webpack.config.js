@@ -35,6 +35,7 @@ const config = {
   // The entry point for the bundle
   entry: [
     'bootstrap-loader',
+    'whatwg-fetch',
     /* The main entry point of your JavaScript application */
     './main.js'
   ],
