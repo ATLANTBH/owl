@@ -13,10 +13,8 @@ class Layout extends React.Component {
     return (
       <div className={s.content}>
         <Header />
-          <div className="row">
-            <div className="col-md-offset-1 col-md-10">
-              <div  {...this.props} />
-            </div>
+          <div className="col-md-offset-1 col-md-10">
+            <div  {...this.props} />
           </div>
         <Footer />
       </div>
