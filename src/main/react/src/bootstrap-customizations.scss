@@ -12,6 +12,8 @@ $navbar-padding-left-right:         40px;
 $table-fouces-td-color:             #364962;
 $table-td-color:                    #7E8FA9;
 
+$active-link-color:                 #1372FC;
+
 // -----------------------------------------------------------------------------
 // Styles
 // -----------------------------------------------------------------------------
@@ -66,7 +68,7 @@ table > tbody > tr > td {
       margin-left: 15px;
 
       a {
-        color: #1372FC;
+        color: $active-link-color;
       }
     }
   }
@@ -106,10 +108,32 @@ table > tbody > tr > td {
 
 .pagination {
   margin: 10px 0;
+
+  li.active {
+    pointer-events: none;
+  }
 }
 
 .modal-content {
   border-radius: 2px;
 
   @include box-shadow(0px 2px 4px 0px rgba(0,0,0,0.06));
+}
+
+.breadcrumb {
+  margin-bottom: 14px;
+  margin-top: 15px;
+
+  & > li + li:before {
+    content: '>';
+    color: #AAAAAB;
+  }
+
+  a {
+    color: $text-muted;
+  }
+
+  li.active {
+    color: $active-link-color;
+  }
 }

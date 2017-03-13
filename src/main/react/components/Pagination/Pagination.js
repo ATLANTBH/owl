@@ -20,7 +20,7 @@ function createLink(to, size) {
 
 class Pagination extends React.Component {
   static propTypes = {
-    to: PropTypes.string,
+    to: PropTypes.string.isRequired,
     paginatedResponse: PropTypes.shape({
       totalElements: PropTypes.number,
       totalPages: PropTypes.number,
@@ -40,12 +40,10 @@ class Pagination extends React.Component {
 
     const link = createLink(this.props.to, paginatedResponse.size);
 
-    // TODO(kklisura): Use react router link instead of a tag.
     const previous = paginatedResponse.first ?
       null:
       <li>{link(activePageNumber - 1, <span aria-hidden="true">&laquo;</span>)}</li>;
 
-    // TODO(kklisura): Use react router link instead of a tag.
     const next = paginatedResponse.last ?
       null:
       <li>{link(activePageNumber + 1, <span aria-hidden="true">&raquo;</span>)}</li>;
@@ -85,7 +83,7 @@ class Pagination extends React.Component {
     }
 
     if (!hasFirstElement) {
-      pages.unshift(createPageItem(1, activePageNumber, false, -4, link));
+      pages.unshift(createPageItem(0, activePageNumber, false, -4, link));
     }
 
     return (
