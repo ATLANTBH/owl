@@ -3,9 +3,11 @@ package com.atlantbh.test.reporter.controllers;
 import com.atlantbh.test.reporter.filters.TestRunFilter;
 import com.atlantbh.test.reporter.models.TestRun;
 import com.atlantbh.test.reporter.services.TestRunService;
+import com.atlantbh.test.reporter.services.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +44,19 @@ public class TestRunsController {
 	@RequestMapping(method = RequestMethod.GET)
 	public Page<TestRun> getAllTestRuns(Pageable page, TestRunFilter filter) {
 		return testRunService.getAllTestRuns(filter, page);
+	}
+
+	/**
+	 * API: GET /api/v1/test-runs/:testRunId
+	 *
+	 * Returns a test run for specified testRunId.
+	 *
+	 * @param id Id of test run to get.
+	 * @return Test run.
+	 * @throws ServiceException If test run not found.
+	 */
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public TestRun getTestRun(@PathVariable("id") Long id) throws ServiceException {
+		return testRunService.get(id);
 	}
 }
