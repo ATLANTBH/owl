@@ -1,15 +1,26 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router'
 
-function createPageItem(number, activeNumber, isDisabled = false) {
-  const isActive = number === (activeNumber + 1);
+function createPageItem(number, activeNumber, isDisabled = false, index = 0, linkFunction) {
+  const isActive = number === activeNumber;
   const className = (isDisabled ? 'disabled' : '') || (isActive ? 'active' : '');
-  // TODO(kklisura): Use react router link instead of a tag.
-  return <li className={className}><a >{number}</a></li>
+  return <li key={index} className={className}>{linkFunction(number)}</li>
+}
+
+function createLink(to, size) {
+  return function (page, customTitle) {
+    const title = customTitle ? customTitle : (page + 1);
+    return <Link to={{
+      pathname: to,
+      query: { page, size }
+    }}>{title}</Link>;
+  }
 }
 
 class Pagination extends React.Component {
   static propTypes = {
+    to: PropTypes.string,
     paginatedResponse: PropTypes.shape({
       totalElements: PropTypes.number,
       totalPages: PropTypes.number,
@@ -27,60 +38,54 @@ class Pagination extends React.Component {
     const paginatedResponse = this.props.paginatedResponse;
     const activePageNumber = paginatedResponse.number;
 
+    const link = createLink(this.props.to, paginatedResponse.size);
+
     // TODO(kklisura): Use react router link instead of a tag.
     const previous = paginatedResponse.first ?
       null:
-      <li>
-        <a aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>;
+      <li>{link(activePageNumber - 1, <span aria-hidden="true">&laquo;</span>)}</li>;
 
     // TODO(kklisura): Use react router link instead of a tag.
     const next = paginatedResponse.last ?
       null:
-      <li>
-        <a aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>;
+      <li>{link(activePageNumber + 1, <span aria-hidden="true">&raquo;</span>)}</li>;
 
     const pages = [];
-
-    let hasLastElement = false;
-    let hasSecondToLastElement = false;
-
-    let hasFirstElement = false;
-    let hasSecondToFirstElement = false;
 
     const lowerPage = Math.max(0, activePageNumber - numberOfViewPages);
     const higherPage = Math.min(paginatedResponse.totalPages, activePageNumber + numberOfViewPages);
 
+    let hasLastElement = lowerPage === higherPage;
+    let hasSecondToLastElement = lowerPage === higherPage;
+
+    let hasFirstElement = false;
+    let hasSecondToFirstElement = lowerPage === higherPage;
+
     for (let i = lowerPage; i < higherPage; i++) {
-      const pageNumber = i + 1;
-      pages.push(createPageItem(pageNumber, activePageNumber));
+      const pageNumber = i;
+      pages.push(createPageItem(pageNumber, activePageNumber, false, i, link));
 
-      hasFirstElement = hasFirstElement || pageNumber === 1;
-      hasSecondToFirstElement = hasSecondToFirstElement || pageNumber <= 2;
+      hasFirstElement = hasFirstElement || pageNumber === 0;
+      hasSecondToFirstElement = hasSecondToFirstElement || pageNumber <= 1;
 
-      hasSecondToLastElement = pageNumber >= paginatedResponse.totalPages - 1;
-      hasLastElement = pageNumber === paginatedResponse.totalPages;
+      hasSecondToLastElement = pageNumber >= paginatedResponse.totalPages - 2;
+      hasLastElement = pageNumber === paginatedResponse.totalPages - 1;
     }
 
     if (!hasSecondToLastElement) {
-      pages.push(createPageItem('...', activePageNumber, true));
+      pages.push(createPageItem('...', activePageNumber, true, -1, link));
     }
 
     if (!hasLastElement) {
-      pages.push(createPageItem(paginatedResponse.totalPages, activePageNumber));
+      pages.push(createPageItem(paginatedResponse.totalPages, activePageNumber, false, -2, link));
     }
 
     if (!hasSecondToFirstElement) {
-      pages.unshift(createPageItem('...', activePageNumber, true));
+      pages.unshift(createPageItem('...', activePageNumber, true, -3, link));
     }
 
     if (!hasFirstElement) {
-      pages.unshift(createPageItem(1, activePageNumber));
+      pages.unshift(createPageItem(1, activePageNumber, false, -4, link));
     }
 
     return (
