@@ -17,16 +17,20 @@ import java.util.List;
  */
 @Configuration
 public class TestReporterConfiguration extends WebMvcConfigurerAdapter {
+	private static Integer CACHE_TIME = 21600;
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// Serve assets from public dir
 		registry.addResourceHandler("/dist/**")
 				.addResourceLocations("classpath:/public/dist/")
+				.setCachePeriod(CACHE_TIME)
 				.resourceChain(true)
 				.addResolver(new GzipResourceResolver());
 
 		// Serve index for all other routes
 		registry.addResourceHandler("/**")
+				.setCachePeriod(CACHE_TIME)
 				.resourceChain(true)
 				.addResolver(new IndexResourceResolver());
 	}

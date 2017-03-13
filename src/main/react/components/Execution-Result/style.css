@@ -1,0 +1,8 @@
+
+.executionResultFailed {
+  cursor: pointer;
+}
+
+.executionResultSuccess {
+  pointer-events: none;
+}
