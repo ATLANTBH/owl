@@ -6,7 +6,6 @@ import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 
-
 const EMPTY_TEST_RUN = {
   build: null,
   testSuite: {
@@ -18,7 +17,7 @@ const EMPTY_TEST_STEPS = {
   content: []
 }
 
-class TestStepsPage extends React.Component {
+class TestCasesPage extends React.Component {
   constructor(){
     super();
 
@@ -89,6 +88,8 @@ class TestStepsPage extends React.Component {
   render() {
     const group = (this.state.testSteps.content[0] || {}).group;
 
+    const testRunLink = `/test-runs/${this.state.testRun.id}/test-cases`;
+
     return (
       <Layout>
         <Spinner isShown={this.state.isDataLoading}>
@@ -96,8 +97,8 @@ class TestStepsPage extends React.Component {
             <div className="col-md-12">
               <ol className="breadcrumb">
                 <li><a href="#">Dashboard</a></li>
-                <li><a href="#">{this.state.testRun.build}</a></li>
-                <li><Link to='/test-cases'>{this.state.testRun.testSuite.suite}</Link></li>
+                <li><Link to={testRunLink}>{this.state.testRun.build}</Link></li>
+                <li><Link to={testRunLink}>{this.state.testRun.testSuite.suite}</Link></li>
                 {valueOrNull(group, <li className="active">{group}</li>)}
               </ol>
             </div>
@@ -157,4 +158,4 @@ function notEmpty(input, value, valueIfEmpty) {
   return input.length ? value : valueIfEmpty;
 }
 
-export default TestStepsPage;
+export default TestCasesPage;
