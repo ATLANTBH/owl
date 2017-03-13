@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
+import style from './style.css';
 
 class ExecutionResult extends React.Component {
   static propTypes = {
@@ -17,8 +18,10 @@ class ExecutionResult extends React.Component {
 
     const labelClassName = isExecutionSucceeded ? "label-success" : "label-danger";
 
+    const executionResultClassName = isExecutionSucceeded ? style.executionResultSuccess : style.executionResultFailed;
+
     return (
-      <span className={classnames("label", labelClassName)}>{iconResult} {textResult}</span>
+      <span onClick={this.props.onClick} className={classnames("label", labelClassName, executionResultClassName)}>{iconResult} {textResult}</span>
     );
   }
 }
