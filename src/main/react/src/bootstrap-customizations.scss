@@ -109,7 +109,7 @@ table > tbody > tr > td {
 .pagination {
   margin: 10px 0;
 
-  li.active {
+  li.active, li.disabled {
     pointer-events: none;
   }
 }

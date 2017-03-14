@@ -90,14 +90,18 @@ class TestCasesPage extends React.Component {
 
     const testRunLink = `/test-runs/${this.state.testRun.id}/test-cases`;
 
+    function linkToBuild(build) {
+      return `/test-runs?build=${build}`;
+    }
+
     return (
       <Layout>
         <Spinner isShown={this.state.isDataLoading}>
           <div className="row">
             <div className="col-md-12">
               <ol className="breadcrumb">
-                <li><a href="#">Dashboard</a></li>
-                <li><Link to={testRunLink}>{this.state.testRun.build}</Link></li>
+                <li><Link to="/">Dashboard</Link></li>
+                <li><Link to={linkToBuild(this.state.testRun.build)}>{this.state.testRun.build}</Link></li>
                 <li><Link to={testRunLink}>{this.state.testRun.testSuite.suite}</Link></li>
                 {valueOrNull(group, <li className="active">{group}</li>)}
               </ol>

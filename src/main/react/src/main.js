@@ -18,22 +18,19 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 
-import HomePage from './home/index.js';
 import ErrorPage from './error/index.js';
-import AboutPage from './about/index.js';
+import TestRuns from './test-runs';
 import TestCases from './test-cases';
 import TestSteps from './test-steps';
 
 import store from './store';
 
-
 const container = document.getElementById('container');
 
 render(
   <Router history={browserHistory}>
-    <Route path="/" component={HomePage}/>
-    <Route path="/test" component={ErrorPage}/>
-    <Route path="/test2" component={AboutPage}/>
+    <Route path="/" component={TestRuns}/>
+    <Route path="/test-runs" component={TestRuns}/>
     <Route path="/test-runs/:testRunId/test-cases" component={TestCases}/>
     <Route path="/test-runs/:testRunId/test-steps/:testGroupName" component={TestSteps}/>
     <Route path="*" component={ErrorPage}/>

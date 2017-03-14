@@ -71,14 +71,18 @@ class TestStepsPage extends React.Component {
       return `/test-runs/${testRunId}/test-steps/${testGroupName}`;
     }
 
+    function linkToTestRunsByBuild(build) {
+      return `/test-runs?build=${build}`;
+    }
+
     return (
       <Layout>
         <Spinner isShown={this.state.isDataLoading}>
           <div className="row">
             <div className="col-md-12">
               <ol className="breadcrumb">
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">{this.state.testRun.build}</a></li>
+                <li><Link to="/">Dashboard</Link></li>
+                <li><Link to={linkToTestRunsByBuild(this.state.testRun.build)}>{this.state.testRun.build}</Link></li>
                 <li className="active">{this.state.testRun.testSuite.suite}</li>
               </ol>
             </div>
@@ -108,7 +112,7 @@ class TestStepsPage extends React.Component {
                 </tr>
               ),
               <tr>
-                <td colSpan="4" className="text-center text-muted">No test cases available for this test run.</td>
+                <td colSpan="6" className="text-center text-muted">No test cases available for this test run.</td>
               </tr>
             )}
             </tbody>

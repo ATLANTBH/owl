@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './Header.css';
+import { Link } from 'react-router';
 
 class Header extends React.Component {
   render() {
@@ -12,7 +12,7 @@ class Header extends React.Component {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <a className="navbar-brand" href="#">Test Report</a>
+          <Link to="/" className="navbar-brand">Test Report</Link>
         </div>
         <div id="navbar" className="navbar-collapse collapse">
           <ul className="nav navbar-nav navbar-right">
