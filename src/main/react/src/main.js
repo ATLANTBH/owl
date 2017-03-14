@@ -32,7 +32,7 @@ render(
     <Route path="/" component={TestRuns}/>
     <Route path="/test-runs" component={TestRuns}/>
     <Route path="/test-runs/:testRunId/test-cases" component={TestCases}/>
-    <Route path="/test-runs/:testRunId/test-steps/:testGroupName" component={TestSteps}/>
+    <Route path="/test-runs/:testRunId/test-steps/*" component={TestSteps}/>
     <Route path="*" component={ErrorPage}/>
   </Router>, container
 );
