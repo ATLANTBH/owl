@@ -19,6 +19,7 @@ import { render } from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 
 import ErrorPage from './error/index.js';
+import TestSuites from './test-suites';
 import TestRuns from './test-runs';
 import TestCases from './test-cases';
 import TestSteps from './test-steps';
@@ -31,6 +32,7 @@ render(
   <Router history={browserHistory}>
     <Route path="/" component={TestRuns}/>
     <Route path="/test-runs" component={TestRuns}/>
+    <Route path="/test-suites" component={TestSuites}/>
     <Route path="/test-runs/:testRunId/test-cases" component={TestCases}/>
     <Route path="/test-runs/:testRunId/test-steps/*" component={TestSteps}/>
     <Route path="*" component={ErrorPage}/>

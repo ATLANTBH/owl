@@ -8,17 +8,32 @@ class ExecutionResult extends React.Component {
   };
 
   render() {
-    const iconExecutionFailed = <i className="glyphicon glyphicon-remove-sign" />;
-    const iconExecutionSucceeded = <i className="glyphicon glyphicon-ok-sign" />;
+    let textResult = null;
+    let iconResult = null;
+    let executionResultClassName = null;
+    let labelClassName = null;
 
-    const isExecutionSucceeded = this.props.executionResult === 'passed';
-
-    const iconResult = isExecutionSucceeded ? iconExecutionSucceeded : iconExecutionFailed;
-    const textResult = isExecutionSucceeded ? 'Passed' : 'Failed';
-
-    const labelClassName = isExecutionSucceeded ? "label-success" : "label-danger";
-
-    const executionResultClassName = isExecutionSucceeded ? style.executionResultSuccess : style.executionResultFailed;
+    const executionResult = this.props.executionResult;
+    switch (executionResult) {
+      case 'passed':
+        textResult = 'Passed';
+        iconResult = <i className="glyphicon glyphicon-ok-sign" />;
+        labelClassName = 'label-success';
+        executionResultClassName = style.executionResultNoEvents;
+        break;
+      case 'failure':
+        textResult = 'Failed';
+        iconResult = <i className="glyphicon glyphicon-remove-sign" />;
+        labelClassName = 'label-danger';
+        executionResultClassName = style.executionResultFailed;
+        break;
+      case 'pending':
+        textResult = 'Pending';
+        iconResult = <i className="glyphicon glyphicon-time" />;
+        labelClassName = 'label-warning';
+        executionResultClassName = style.executionResultNoEvents;
+        break;
+    }
 
     return (
       <span onClick={this.props.onClick} className={classnames("label", labelClassName, executionResultClassName)}>{iconResult} {textResult}</span>
