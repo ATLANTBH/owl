@@ -6,6 +6,7 @@ import ExecutionResult from '../../components/Execution-Result';
 import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
+import DurationFormat from '../../components/DurationFormat';
 
 const EMPTY_TEST_RUN = {
   build: null,
@@ -136,7 +137,7 @@ class TestCasesPage extends React.Component {
                 <td className="focused-cell">{testStep.context}</td>
                 <td>{testStep.description}</td>
                 <td><ExecutionResult executionResult={testStep.executionResult} onClick={() => this.onShowExecutionResult(testStep)} /></td>
-                <td>{testStep.duration}s</td>
+                <td><DurationFormat duration={testStep.duration} /></td>
               </tr>
             ),
             <tr>

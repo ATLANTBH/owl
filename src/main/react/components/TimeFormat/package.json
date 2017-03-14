@@ -1,0 +1,6 @@
+{
+  "name": "TimeFormat",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./TimeFormat.js"
+}

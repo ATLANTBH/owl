@@ -3,6 +3,6 @@
   cursor: pointer;
 }
 
-.executionResultSuccess {
+.executionResultNoEvents {
   pointer-events: none;
 }

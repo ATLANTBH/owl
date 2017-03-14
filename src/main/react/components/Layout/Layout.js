@@ -18,7 +18,7 @@ class Layout extends React.Component {
             <div  {...this.props} />
           </div>
         </div>
-        <div className="row">
+        <div className="clearfix">
           <Footer />
         </div>
       </div>

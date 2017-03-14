@@ -6,6 +6,7 @@ import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
+import DurationFormat from '../../components/DurationFormat';
 
 const EMPTY_TEST_RUN = {
   build: null,
@@ -111,7 +112,7 @@ class TestStepsPage extends React.Component {
                   <td>{testCase.stepsFailed}</td>
                   <td>{testCase.stepsPending}</td>
                   <td><SuccessRate total={testCase.stepCount} current={testCase.stepsFailed + testCase.stepsPending} /></td>
-                  <td>{testCase.duration}s</td>
+                  <td><DurationFormat duration={testCase.duration} /></td>
                 </tr>
               ),
               <tr>

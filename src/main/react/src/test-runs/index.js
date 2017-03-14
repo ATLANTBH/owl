@@ -6,6 +6,8 @@ import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
+import TimeFormat from '../../components/TimeFormat';
+import DurationFormat from '../../components/DurationFormat';
 
 const EMPTY_TEST_RUNS = {
   content: []
@@ -58,14 +60,20 @@ class TestRunsPage extends React.Component {
       return `/test-runs/${testRunId}/test-steps/${testGroupName}`;
     }
 
+    let activeBuildQuery = null;
+    if (this.props.location.query.build) {
+      activeBuildQuery = <li className="active">{this.props.location.query.build}</li>;
+    }
+
     return (
       <Layout>
         <Spinner isShown={this.state.isDataLoading}>
           <div className="row">
             <div className="col-md-12">
-              <div className="page-header">
-                <h1>Dashboard</h1>
-              </div>
+              <ol className="breadcrumb">
+                <li><Link to="/">Dashboard</Link></li>
+                {activeBuildQuery}
+              </ol>
             </div>
           </div>
 
@@ -74,6 +82,7 @@ class TestRunsPage extends React.Component {
               <tr>
                 <th>Build</th>
                 <th>Test Suite</th>
+                <th>Execution Finished</th>
                 <th>Total Cases</th>
                 <th>Failed Cases</th>
                 <th>Pending Cases</th>
@@ -87,11 +96,12 @@ class TestRunsPage extends React.Component {
                 <tr key={testRun.id}>
                   <td><Link to={linkToTestRunsByBuild(testRun.build)}>{testRun.build}</Link></td>
                   <td><Link to={linkToTestCase(testRun.id)}>{testRun.testSuite.suite}</Link></td>
+                  <td><TimeFormat time={testRun.updatedAt} format='dd/mm/yyyy HH:MM' /></td>
                   <td>{testRun.exampleCount}</td>
                   <td>{testRun.failureCount}</td>
                   <td>{testRun.pendingCount}</td>
                   <td><SuccessRate total={testRun.exampleCount} current={testRun.failureCount + testRun.pendingCount} /></td>
-                  <td>{testRun.duration}s</td>
+                  <td><DurationFormat duration={testRun.duration} /></td>
                 </tr>
               ),
               <tr>
