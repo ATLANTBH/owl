@@ -13,10 +13,14 @@ class Layout extends React.Component {
     return (
       <div className={s.content}>
         <Header />
+        <div className="clearfix">
           <div className="col-md-offset-1 col-md-10">
             <div  {...this.props} />
           </div>
-        <Footer />
+        </div>
+        <div className="row">
+          <Footer />
+        </div>
       </div>
     );
   }
