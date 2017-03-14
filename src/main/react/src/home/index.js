@@ -28,6 +28,14 @@ componentDidMount() {
 }
 
   render() {
+    function linkToBuilds(build) {
+      return `/test-runs/builds/${build}`;
+    }
+
+    function linkToBuilds(build) {
+      return `/test-runs/builds/${build}`;
+    }
+
     return (
       <Layout className={s.content}>
         <div className="row">

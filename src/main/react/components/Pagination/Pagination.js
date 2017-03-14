@@ -5,7 +5,9 @@ import { Link } from 'react-router'
 function createPageItem(number, activeNumber, isDisabled = false, index = 0, linkFunction) {
   const isActive = number === activeNumber;
   const className = (isDisabled ? 'disabled' : '') || (isActive ? 'active' : '');
-  return <li key={index} className={className}>{linkFunction(number)}</li>
+  return <li key={index} className={className}>
+    {linkFunction(number, number === '...' ? number : null)}
+  </li>;
 }
 
 function createLink(to, size) {
@@ -33,7 +35,7 @@ class Pagination extends React.Component {
   };
 
   render() {
-    const numberOfViewPages = 5;
+    const numberOfViewPages = 4;
 
     const paginatedResponse = this.props.paginatedResponse;
     const activePageNumber = paginatedResponse.number;
@@ -75,7 +77,7 @@ class Pagination extends React.Component {
     }
 
     if (!hasLastElement) {
-      pages.push(createPageItem(paginatedResponse.totalPages, activePageNumber, false, -2, link));
+      pages.push(createPageItem(paginatedResponse.totalPages - 1, activePageNumber, false, -2, link));
     }
 
     if (!hasSecondToFirstElement) {
