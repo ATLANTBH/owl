@@ -5,6 +5,7 @@ import ExecutionResult from '../../components/Execution-Result';
 import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
+import SuccessRate from '../../components/SuccessRate';
 
 const EMPTY_TEST_RUNS = {
   content: []
@@ -76,6 +77,7 @@ class TestRunsPage extends React.Component {
                 <th>Total Cases</th>
                 <th>Failed Cases</th>
                 <th>Pending Cases</th>
+                <th>Success Rate</th>
                 <th>Duration</th>
               </tr>
             </thead>
@@ -88,6 +90,7 @@ class TestRunsPage extends React.Component {
                   <td>{testRun.exampleCount}</td>
                   <td>{testRun.failureCount}</td>
                   <td>{testRun.pendingCount}</td>
+                  <td><SuccessRate total={testRun.exampleCount} current={testRun.failureCount + testRun.pendingCount} /></td>
                   <td>{testRun.duration}s</td>
                 </tr>
               ),

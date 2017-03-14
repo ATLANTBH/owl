@@ -27,7 +27,7 @@ public interface TestCaseRepository extends PagingAndSortingRepository<TestCase,
 		"FROM test_cases\n" +
 		"WHERE test_runs_id = :testRunId\n" +
 		"GROUP BY test_group\n" +
-		"OFFSET ?#{ #pageable.offset * #pageable.pageSize }\n";
+		"--#pageable.offset\n";
 
 	/**
 	 * Count query for grouping test_cases entries.
