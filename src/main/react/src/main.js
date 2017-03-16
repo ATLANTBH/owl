@@ -28,13 +28,25 @@ import store from './store';
 
 const container = document.getElementById('container');
 
-render(
-  <Router history={browserHistory}>
-    <Route path="/" component={TestRuns}/>
-    <Route path="/test-runs" component={TestRuns}/>
-    <Route path="/test-suites" component={TestSuites}/>
-    <Route path="/test-runs/:testRunId/test-cases" component={TestCases}/>
-    <Route path="/test-runs/:testRunId/test-steps/*" component={TestSteps}/>
-    <Route path="*" component={ErrorPage}/>
-  </Router>, container
-);
+function getBootstrap() {
+  return fetch('/api/v1/bootstrap')
+    .then(response => response.json());
+}
+
+function renderApplication(bootstrap) {
+  window.bootstrap = bootstrap;
+
+  render(
+    <Router history={browserHistory}>
+      <Route path="/" component={TestRuns}/>
+      <Route path="/test-runs" component={TestRuns}/>
+      <Route path="/test-suites" component={TestSuites}/>
+      <Route path="/test-runs/:testRunId/test-cases" component={TestCases}/>
+      <Route path="/test-runs/:testRunId/test-steps/*" component={TestSteps}/>
+      <Route path="*" component={ErrorPage}/>
+    </Router>, container
+  );
+}
+
+getBootstrap()
+  .then(renderApplication);

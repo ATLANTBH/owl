@@ -8,6 +8,7 @@ import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
 import TimeFormat from '../../components/TimeFormat';
 import DurationFormat from '../../components/DurationFormat';
+import TrendingSection from './trending-section';
 
 const EMPTY_TEST_RUNS = {
   content: []
@@ -37,9 +38,7 @@ class TestRunsPage extends React.Component {
     this.getTestRuns(props.location.query.build,
       props.location.query.page,
       props.location.query.size)
-    .then(testRuns => {
-      this.setState({ isDataLoading: false, testRuns: testRuns });
-    });
+    .then(testRuns => this.setState({ isDataLoading: false, testRuns: testRuns }));
   }
 
   getTestRuns(build = '', page = 0, size = 10) {
@@ -113,6 +112,8 @@ class TestRunsPage extends React.Component {
 
           <Pagination to={this.props.location.pathname} paginatedResponse={this.state.testRuns} />
         </Spinner>
+
+        <TrendingSection />
       </Layout>
     );
   }

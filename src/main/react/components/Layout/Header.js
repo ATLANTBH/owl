@@ -12,7 +12,7 @@ class Header extends React.Component {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <Link to="/" className="navbar-brand">Test Report</Link>
+          <Link to="/" className="navbar-brand">{bootstrap.projectName}</Link>
         </div>
         <div id="navbar" className="navbar-collapse collapse">
           <ul className="nav navbar-nav navbar-right">

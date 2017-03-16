@@ -37,4 +37,11 @@ public interface TestSuiteRepository extends PagingAndSortingRepository<TestSuit
 
 	List<TestSuiteStatistics> getStatistics(@Param("testSuiteId") Long testSuiteId,
 											@Param("statisticsTopCount") int statisticsTopCount);
+
+	/**
+	 * Returns a suite given suite name.
+	 * @param suiteName Suite name.
+	 * @return Test suite.
+	 */
+	TestSuite findBySuite(String suiteName);
 }
