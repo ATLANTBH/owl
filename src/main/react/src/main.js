@@ -1,15 +1,3 @@
-
-
-/**
- * React Static Boilerplate
- * https://github.com/kriasoft/react-static-boilerplate
- *
- * Copyright © 2015-present Kriasoft, LLC. All rights reserved.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.txt file in the root directory of this source tree.
- */
-
 import 'babel-polyfill';
 import 'whatwg-fetch';
 
@@ -18,6 +6,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 
+import DashboardPage from './dashboard';
 import ErrorPage from './error/index.js';
 import TestSuites from './test-suites';
 import TestRuns from './test-runs';
@@ -38,7 +27,7 @@ function renderApplication(bootstrap) {
 
   render(
     <Router history={browserHistory}>
-      <Route path="/" component={TestRuns}/>
+      <Route path="/" component={DashboardPage}/>
       <Route path="/test-runs" component={TestRuns}/>
       <Route path="/test-suites" component={TestSuites}/>
       <Route path="/test-runs/:testRunId/test-cases" component={TestCases}/>
