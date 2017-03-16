@@ -156,7 +156,7 @@ class TestCasesPage extends React.Component {
 
         <Waypoint onEnter={this.onRequestPageData} />
 
-        <Spinner isShown={this.state.isDataLoading} />
+        <Spinner isShown={this.state.isDataLoading} text="Fetching test steps"/>
 
         <Modal isShown={this.state.isExecutionResultShown} onClose={this.onExecutionResultModalClose}>
           <div className="modal-header">

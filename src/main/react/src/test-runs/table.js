@@ -63,7 +63,7 @@ class TestRunsPageTable extends React.Component {
     }
 
     return (
-      <Spinner isShown={this.state.isDataLoading}>
+      <Spinner isShown={this.state.isDataLoading} text="Fetching test runs">
         <div className="row">
           <div className="col-md-12">
             <ol className="breadcrumb">
