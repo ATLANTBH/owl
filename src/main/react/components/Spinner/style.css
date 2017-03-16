@@ -52,3 +52,11 @@
     -webkit-transform: scaleY(1.0);
   }
 }
+
+.loadingText {
+  margin-top: 10px;
+  width: 90px;
+  margin-left: -25px;
+  font-size: 11px;
+  color: #9098a3;
+}

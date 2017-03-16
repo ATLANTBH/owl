@@ -79,7 +79,7 @@ class TestStepsPage extends React.Component {
 
     return (
       <Layout>
-        <Spinner isShown={this.state.isDataLoading}>
+        <Spinner isShown={this.state.isDataLoading} text="Fetching test cases">
           <div className="row">
             <div className="col-md-12">
               <ol className="breadcrumb">

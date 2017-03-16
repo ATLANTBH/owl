@@ -70,7 +70,7 @@ class TrendingSectionChart extends React.Component {
 
   render() {
     return (
-      <Spinner isShown={this.state.isStatisticsLoading}>
+      <Spinner isShown={this.state.isStatisticsLoading} text="Fetching test suite statistics">
         <div className="row">
           <div className="col-md-12">
             <div className="page-header">
