@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Line } from 'react-chartjs-2';
 import Spinner from '../../components/Spinner';
+import { durationFormat } from '../../components/DurationFormat';
 
 class TrendingSectionChart extends React.Component {
   static propTypes = {
@@ -37,9 +38,6 @@ class TrendingSectionChart extends React.Component {
       animation: {
         duration: 0
       },
-      legend: {
-          display: false
-      },
       scales: {
           yAxes: [{
               ticks: {
@@ -48,6 +46,24 @@ class TrendingSectionChart extends React.Component {
                   stepSize: 10
               }
           }]
+      },
+      tooltips: {
+        callbacks: {
+          title: function ([tooltipItem]) {
+            return 'Build: ' + tooltipItem.xLabel;
+          },
+          label: function (tooltipItem, data) {
+            const datasetLabel = data.datasets[tooltipItem.datasetIndex].label;
+
+            if (datasetLabel === 'Duration') {
+              const datasetData = data.datasets[tooltipItem.datasetIndex].data;
+              const dataValue = datasetData[tooltipItem.index];
+
+              return datasetLabel + ': ' + durationFormat(dataValue);
+            }
+            return datasetLabel + ': ' + tooltipItem.yLabel + '%';
+          }
+        }
       }
     };
   }
@@ -72,17 +88,30 @@ class TrendingSectionChart extends React.Component {
 }
 
 function getStatistics(statistics) {
+  const maxDuration = Math.max(...statistics.map(stats => stats.duration));
+
   return {
       labels: statistics.map(stats => stats.build),
       datasets: [{
         lineTension: 0,
         type: 'line',
         label: 'Success Percentage',
-        data: statistics.map(stats =>  (1 - ((stats.failedCasesCount + stats.pendingCasesCount) / stats.passedCasesCount)) * 100),
+        data: statistics.map(stats =>  (1 - ((stats.failedCasesCount + stats.pendingCasesCount) / stats.totalCasesCount)) * 100).map(round),
         backgroundColor: 'rgba(0, 0, 0, 0)',
         borderColor: '#7E8FA9'
+      }, {
+        lineTension: 0,
+        type: 'line',
+        label: 'Duration',
+        data: statistics.map(stats => ((stats.duration / maxDuration)) * 100).map(round),
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        borderColor: '#D9A17D'
       }]
   };
+}
+
+function round(value) {
+  return Math.floor(value * 100) / 100;
 }
 
 export default TrendingSectionChart;

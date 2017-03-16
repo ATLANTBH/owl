@@ -19,9 +19,10 @@ public interface TestSuiteRepository extends PagingAndSortingRepository<TestSuit
 			"      WHERE test_suites_id = :testSuiteId)\n" +
 			"SELECT\n" +
 			"  ub.build AS \"build\",\n" +
-			"  tr.example_count AS \"passed_cases_count\",\n" +
+			"  tr.example_count AS \"total_cases_count\",\n" +
 			"  tr.failure_count AS \"failed_cases_count\",\n" +
 			"  tr.pending_count AS \"pending_cases_count\",\n" +
+			"  tr.duration AS \"duration\",\n" +
 			"  tr.created_at\n" +
 			"FROM unique_builds ub, test_runs tr\n" +
 			"WHERE\n" +

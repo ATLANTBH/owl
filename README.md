@@ -62,7 +62,7 @@ This API returns all test suits in Test-reporter.
 
 `GET /api/v1/test-suites/{testSuiteId}/statistics`
 
-This API returns statistics for given test suite id. Statistics is composed of `build` identifier with appropriate counts such as `passedCasesCount`, `failedCasesCount` etc.
+This API returns statistics for given test suite id. Statistics is composed of `build` identifier with appropriate counts such as `totalCasesCount`, `failedCasesCount` etc.
 
 ## Development
 
