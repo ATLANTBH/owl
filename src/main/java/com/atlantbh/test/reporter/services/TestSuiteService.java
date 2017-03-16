@@ -28,6 +28,15 @@ public class TestSuiteService {
 	private TestSuiteRepository testSuiteRepository;
 
 	/**
+	 * Returns a suite given name.
+	 * @param suiteName Suite name.
+	 * @return Test suite.
+	 */
+	public TestSuite getByName(String suiteName) {
+		return testSuiteRepository.findBySuite(suiteName);
+	}
+
+	/**
 	 * Sets test suite repository.
 	 *
 	 * @param testSuiteRepository the test suite repository
