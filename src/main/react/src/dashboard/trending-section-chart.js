@@ -50,7 +50,7 @@ class TrendingSectionChart extends React.Component {
       tooltips: {
         callbacks: {
           title: function ([tooltipItem]) {
-            return 'Build: ' + tooltipItem.xLabel;
+            return 'Jenkins Build: ' + tooltipItem.xLabel;
           },
           label: function (tooltipItem, data) {
             const datasetLabel = data.datasets[tooltipItem.datasetIndex].label;
