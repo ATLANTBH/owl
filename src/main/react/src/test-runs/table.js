@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import ExecutionResult from '../../components/Execution-Result';
 import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
@@ -18,8 +18,11 @@ class TestRunsPageTable extends React.Component {
 
     this.state = {
       isDataLoading: true,
-      testRuns: EMPTY_TEST_RUNS
+      testRuns: EMPTY_TEST_RUNS,
+      toggle: 'asc'
     }
+    
+    this.getSortedData = this.getSortedData.bind(this);
   }
 
   componentDidMount() {
@@ -39,10 +42,33 @@ class TestRunsPageTable extends React.Component {
     .then(testRuns => this.setState({ isDataLoading: false, testRuns: testRuns }));
   }
 
-  getTestRuns(build = '', page = 0, size = 10) {
-    return fetch(`/api/v1/test-runs?build=${build}&page=${page}&size=${size}`)
+ getTestRuns(build = '', page = 0, size = 10, param = '') {
+    return fetch(`/api/v1/test-runs?build=${build}&page=${page}&size=${size}&sort=${param}`)
       .then(response => response.json());
   }
+
+  formatParam(e){
+    let str = e.target.textContent;
+    str = str.replace(/\s+/g, '');
+    
+    if (str == 'ExecutionFinished') str = 'updatedAt'; // Add formating for other fields
+    return str;
+  }
+
+  getSortedData(e) {
+    let param = this.formatParam(e);  
+    this.setState({ toggle: ( this.state.toggle === 'asc' ) ? 'desc' : 'asc' })
+    browserHistory.push('?sort='+ param +','+ this.state.toggle);
+
+    this.getTestRuns(this.props.location.query.build,
+      this.props.location.query.page,
+      this.props.location.query.size, 
+      this.props.location.query.sort)
+    .then(testRuns => {
+      this.setState({ testRuns: testRuns})
+    });
+  }
+
 
   render() {
     function linkToTestRunsByBuild(build) {
@@ -76,14 +102,14 @@ class TestRunsPageTable extends React.Component {
         <table className="table table-bordered table-hover">
           <thead>
             <tr>
-              <th>Jenkins Build</th>
-              <th>Test Suite</th>
-              <th>Execution Finished</th>
-              <th>Total Cases</th>
+              <th onClick={ this.getSortedData }>Jenkins Build</th>
+              <th onClick={ this.getSortedData }>Test Suite</th>
+              <th onClick={ this.getSortedData }>Execution Finished</th>
+              <th onClick={ this.getSortedData }>Total Cases</th>
               <th>Failed Cases</th>
               <th>Pending Cases</th>
-              <th>Success Rate</th>
-              <th>Duration</th>
+              <th onClick={ this.getSortedData }>Success Rate</th>
+              <th onClick={ this.getSortedData }>Duration</th>
             </tr>
           </thead>
           <tbody>
