@@ -21,7 +21,7 @@ class ExecutionResult extends React.Component {
         labelClassName = 'label-success';
         executionResultClassName = style.executionResultNoEvents;
         break;
-      case 'failure':
+      case 'failed':
         textResult = 'Failed';
         iconResult = <i className="glyphicon glyphicon-remove-sign" />;
         labelClassName = 'label-danger';
