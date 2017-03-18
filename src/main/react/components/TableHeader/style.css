@@ -1,0 +1,17 @@
+
+.sortableTableHeader {
+  cursor: pointer;;
+}
+
+.sortIndicator {
+  display: inline-block;
+  width: 14px;
+  float: left;
+  font-size: 11px;
+  padding-top: 3px;
+}
+
+.tableHeaderName {
+  display: block;
+  padding-left: 14px;
+}
