@@ -6,7 +6,9 @@ import com.atlantbh.test.reporter.repositories.TestStepRepository;
 import com.atlantbh.test.reporter.services.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TestStepService {
+	private final Sort ID_DEFAULT_SORT = new Sort(new Sort.Order(Sort.Direction.ASC, "id"));
+
 	private TestRunService testRunService;
 	private TestStepRepository testStepRepository;
 
@@ -50,6 +54,11 @@ public class TestStepService {
 	 */
 	public Page<TestStep> getTestSteps(Long testRunId, String testGroup, Pageable page) throws ServiceException {
 		final TestRun testRun = testRunService.get(testRunId);
-		return testStepRepository.findByTestRunAndGroup(testRun, testGroup, page);
+
+		Sort sort = page.getSort();
+		sort = sort == null ? ID_DEFAULT_SORT : sort.and(ID_DEFAULT_SORT);
+
+		final PageRequest pageRequest = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
+		return testStepRepository.findByTestRunAndGroup(testRun, testGroup, pageRequest);
 	}
 }

@@ -7,6 +7,7 @@ import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
 import DurationFormat from '../../components/DurationFormat';
+import TableHeader from '../../components/TableHeader';
 
 const EMPTY_TEST_RUN = {
   build: null,
@@ -31,6 +32,7 @@ class TestStepsPage extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ isDataLoading: true });
     this.getPageData(this.props);
   }
 
@@ -39,13 +41,12 @@ class TestStepsPage extends React.Component {
   }
 
   getPageData(props) {
-    this.setState({ isDataLoading: true });
-
     const promises = [
       this.getTestRun(props.params.testRunId),
       this.getTestCases(props.params.testRunId,
                       props.location.query.page,
-                      props.location.query.size)
+                      props.location.query.size,
+                      props.location.query.sort)
     ];
 
     Promise.all(promises)
@@ -54,8 +55,8 @@ class TestStepsPage extends React.Component {
       })
   }
 
-  getTestCases(testRunId, page = 0, size = 10) {
-    return fetch(`/api/v1/test-runs/${testRunId}/test-cases?page=${page}&size=${size}`)
+  getTestCases(testRunId, page = 0, size = 10, sort = '') {
+    return fetch(`/api/v1/test-runs/${testRunId}/test-cases?page=${page}&size=${size}&sort=${sort}`)
       .then(response => response.json());
   }
 
@@ -93,13 +94,13 @@ class TestStepsPage extends React.Component {
           <table className="table table-bordered table-hover">
             <thead>
               <tr>
-                <th>Description</th>
-                <th>Test Steps</th>
-                <th>Steps Passed</th>
-                <th>Steps Failed</th>
-                <th>Steps Pending</th>
-                <th>Success Rate</th>
-                <th>Duration</th>
+                <TableHeader sortKey="test_group">Description</TableHeader>
+                <TableHeader sortKey="test_step_count">Test Steps</TableHeader>
+                <TableHeader sortKey="steps_passed">Steps Passed</TableHeader>
+                <TableHeader sortKey="steps_failed">Steps Failed</TableHeader>
+                <TableHeader sortKey="steps_pending">Steps Pending</TableHeader>
+                <TableHeader>Success Rate</TableHeader>
+                <TableHeader sortKey="duration">Duration</TableHeader>
               </tr>
             </thead>
             <tbody>

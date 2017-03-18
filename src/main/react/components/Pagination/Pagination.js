@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router';
 
 function createPageItem(number, activeNumber, isDisabled = false, index = 0, linkFunction) {
   const isActive = number === activeNumber;
@@ -11,11 +11,12 @@ function createPageItem(number, activeNumber, isDisabled = false, index = 0, lin
 }
 
 function createLink(to, size) {
+  const currentLocation = browserHistory.getCurrentLocation();
   return function (page, customTitle) {
     const title = customTitle ? customTitle : (page + 1);
     return <Link to={{
       pathname: to,
-      query: { page, size }
+      query: { ...currentLocation.query, page, size }
     }}>{title}</Link>;
   }
 }

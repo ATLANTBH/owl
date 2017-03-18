@@ -7,6 +7,7 @@ import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import DurationFormat from '../../components/DurationFormat';
+import TableHeader from '../../components/TableHeader';
 
 const EMPTY_TEST_RUN = {
   build: null,
@@ -39,21 +40,26 @@ class TestCasesPage extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.getPageData(nextProps, true);
+  }
+
   onRequestPageData() {
     if (!this.state.testSteps.last) {
-      this.getPageDate(this.props);
+      this.getPageData(this.props);
     }
   }
 
-  getPageDate(props) {
+  getPageData(props, resetPagination = false) {
     this.setState({ isDataLoading: true });
 
     const promises = [
       this.getTestRun(props.params.testRunId),
       this.getTestSteps(props.params.testRunId,
                       props.params.splat,
-                      this.state.testSteps.number + 1,
-                      this.state.testSteps.size)
+                      resetPagination ? 0 : (this.state.testSteps.number + 1),
+                      this.state.testSteps.size,
+                      props.location.query.sort)
     ];
 
     Promise.all(promises)
@@ -63,14 +69,14 @@ class TestCasesPage extends React.Component {
             isInitialDataLoaded: true,
             isDataLoading: false,
             testRun,
-            testSteps: mergeTestSteps(prev.testSteps, testSteps)
+            testSteps: resetPagination ? testSteps : mergeTestSteps(prev.testSteps, testSteps)
           };
         });
       })
   }
 
-  getTestSteps(testRunId, testGroupName, page = 0, size = 10) {
-    return fetch(`/api/v1/test-runs/${testRunId}/test-steps?group=${testGroupName}&page=${page}&size=${size}`)
+  getTestSteps(testRunId, testGroupName, page = 0, size = 10, sort = '') {
+    return fetch(`/api/v1/test-runs/${testRunId}/test-steps?group=${testGroupName}&page=${page}&size=${size}&sort=${sort}`)
       .then(response => response.json());
   }
 
@@ -124,17 +130,17 @@ class TestCasesPage extends React.Component {
       testStepsTable = <table className="table table-bordered table-hover">
           <thead>
             <tr>
-              <th>Description</th>
-              <th>Expeced Result</th>
-              <th>Execution Result</th>
-              <th>Duration</th>
+              <TableHeader sortKey="context">Description</TableHeader>
+              <TableHeader sortKey="description">Expeced Result</TableHeader>
+              <TableHeader sortKey="executionResult">Execution Result</TableHeader>
+              <TableHeader sortKey="duration">Duration</TableHeader>
             </tr>
           </thead>
           <tbody>
           {notEmpty(this.state.testSteps.content,
             this.state.testSteps.content.map(testStep =>
               <tr key={testStep.id}>
-                <td className="focused-cell">{testStep.context}</td>
+                <td className="focused-cell">{testStep.context} - {testStep.id}</td>
                 <td>{testStep.description}</td>
                 <td><ExecutionResult executionResult={testStep.executionResult} onClick={() => this.onShowExecutionResult(testStep)} /></td>
                 <td><DurationFormat duration={testStep.duration} /></td>

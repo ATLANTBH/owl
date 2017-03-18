@@ -7,6 +7,7 @@ import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
 import TimeFormat from '../../components/TimeFormat';
+import TableHeader from '../../components/TableHeader';
 
 const EMPTY_TEST_SUITES = {
   content: []
@@ -23,6 +24,8 @@ class TestSuitesPage extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ isDataLoading: true });
+
     this.getPageData(this.props);
   }
 
@@ -31,17 +34,16 @@ class TestSuitesPage extends React.Component {
   }
 
   getPageData(props) {
-    this.setState({ isDataLoading: true });
-
     this.getTestSuites(props.location.query.page,
-      props.location.query.size)
+      props.location.query.size,
+      props.location.query.sort)
     .then(testSuites => {
       this.setState({ isDataLoading: false, testSuites });
     });
   }
 
-  getTestSuites(page = 0, size = 10) {
-    return fetch(`/api/v1/test-suites?page=${page}&size=${size}`)
+  getTestSuites(page = 0, size = 10, sort = '') {
+    return fetch(`/api/v1/test-suites?page=${page}&size=${size}&sort=${sort}`)
       .then(response => response.json());
   }
 
@@ -60,8 +62,8 @@ class TestSuitesPage extends React.Component {
           <table className="table table-bordered table-hover">
             <thead>
               <tr>
-                <th>Name</th>
-                <th>Created</th>
+                <TableHeader sortKey="suite">Name</TableHeader>
+                <TableHeader sortKey="createdAt">Created</TableHeader>
               </tr>
             </thead>
             <tbody>

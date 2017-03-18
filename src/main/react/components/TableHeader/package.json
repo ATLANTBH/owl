@@ -1,0 +1,6 @@
+{
+  "name": "TableHeader",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./TableHeader.js"
+}

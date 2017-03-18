@@ -7,6 +7,7 @@ import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
 import TimeFormat from '../../components/TimeFormat';
 import DurationFormat from '../../components/DurationFormat';
+import TableHeader from '../../components/TableHeader';
 
 const EMPTY_TEST_RUNS = {
   content: []
@@ -18,14 +19,13 @@ class TestRunsPageTable extends React.Component {
 
     this.state = {
       isDataLoading: true,
-      testRuns: EMPTY_TEST_RUNS,
-      toggle: 'asc'
+      testRuns: EMPTY_TEST_RUNS
     }
-    
-    this.getSortedData = this.getSortedData.bind(this);
   }
 
   componentDidMount() {
+    this.setState({ isDataLoading: true });
+
     this.getPageData(this.props);
   }
 
@@ -34,41 +34,17 @@ class TestRunsPageTable extends React.Component {
   }
 
   getPageData(props) {
-    this.setState({ isDataLoading: true });
-
     this.getTestRuns(props.location.query.build,
       props.location.query.page,
-      props.location.query.size)
+      props.location.query.size,
+      props.location.query.sort)
     .then(testRuns => this.setState({ isDataLoading: false, testRuns: testRuns }));
   }
 
- getTestRuns(build = '', page = 0, size = 10, param = '') {
-    return fetch(`/api/v1/test-runs?build=${build}&page=${page}&size=${size}&sort=${param}`)
+  getTestRuns(build = '', page = 0, size = 10, sort = '') {
+    return fetch(`/api/v1/test-runs?build=${build}&page=${page}&size=${size}&sort=${sort}`)
       .then(response => response.json());
   }
-
-  formatParam(e){
-    let str = e.target.textContent;
-    str = str.replace(/\s+/g, '');
-    
-    if (str == 'ExecutionFinished') str = 'updatedAt'; // Add formating for other fields
-    return str;
-  }
-
-  getSortedData(e) {
-    let param = this.formatParam(e);  
-    this.setState({ toggle: ( this.state.toggle === 'asc' ) ? 'desc' : 'asc' })
-    browserHistory.push('?sort='+ param +','+ this.state.toggle);
-
-    this.getTestRuns(this.props.location.query.build,
-      this.props.location.query.page,
-      this.props.location.query.size, 
-      this.props.location.query.sort)
-    .then(testRuns => {
-      this.setState({ testRuns: testRuns})
-    });
-  }
-
 
   render() {
     function linkToTestRunsByBuild(build) {
@@ -102,14 +78,14 @@ class TestRunsPageTable extends React.Component {
         <table className="table table-bordered table-hover">
           <thead>
             <tr>
-              <th onClick={ this.getSortedData }>Jenkins Build</th>
-              <th onClick={ this.getSortedData }>Test Suite</th>
-              <th onClick={ this.getSortedData }>Execution Finished</th>
-              <th onClick={ this.getSortedData }>Total Cases</th>
-              <th>Failed Cases</th>
-              <th>Pending Cases</th>
-              <th onClick={ this.getSortedData }>Success Rate</th>
-              <th onClick={ this.getSortedData }>Duration</th>
+              <TableHeader sortKey="build">Jenkins Build</TableHeader>
+              <TableHeader sortKey="testSuite.suite">Test Suite</TableHeader>
+              <TableHeader sortKey="updatedAt">Execution Finished</TableHeader>
+              <TableHeader sortKey="exampleCount">Total Cases</TableHeader>
+              <TableHeader sortKey="failureCount">Failed Cases</TableHeader>
+              <TableHeader sortKey="pendingCount">Pending Cases</TableHeader>
+              <TableHeader>Success Rate</TableHeader>
+              <TableHeader sortKey="duration">Duration</TableHeader>
             </tr>
           </thead>
           <tbody>
