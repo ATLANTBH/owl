@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
-import ExecutionResult from '../../components/Execution-Result';
 import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';

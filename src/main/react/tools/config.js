@@ -9,6 +9,5 @@
  */
 
 module.exports = {
-  title: 'Test Reporter',                   // Your website title
-  url: 'https://rsb.kriasoft.com'           // Your website URL
+  title: 'Test Reporter'                   // Your website title
 };
