@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import Waypoint from 'react-waypoint';
 import Layout from '../../components/Layout';
-import ExecutionResult from '../../components/Execution-Result';
+import ExecutionResult from '../../components/ExecutionResult';
 import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';

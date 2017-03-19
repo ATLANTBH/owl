@@ -2,7 +2,6 @@ import 'babel-polyfill';
 import 'whatwg-fetch';
 
 import React from 'react';
-//import ReactDOM from 'react-dom';
 import { render } from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 
@@ -23,6 +22,7 @@ function getBootstrap() {
 }
 
 function renderApplication(bootstrap) {
+  document.title = bootstrap.projectName;
   window.bootstrap = bootstrap;
 
   render(
