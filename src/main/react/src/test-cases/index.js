@@ -8,11 +8,11 @@ import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
 import DurationFormat from '../../components/DurationFormat';
 import TableHeader from '../../components/TableHeader';
+import { getTestRun, getTestCases } from '../api';
 
 const EMPTY_TEST_RUN = {
   build: null,
   testSuite: {
-    name: null
   }
 }
 
@@ -26,6 +26,7 @@ class TestStepsPage extends React.Component {
 
     this.state = {
       isDataLoading: true,
+      errorResponse: null,
       testRun: EMPTY_TEST_RUN,
       testCases: EMPTY_TEST_CASES
     }
@@ -43,30 +44,24 @@ class TestStepsPage extends React.Component {
   getPageData(props) {
     const promises = [
       this.getTestRun(props.params.testRunId),
-      this.getTestCases(props.params.testRunId,
-                      props.location.query.page,
-                      props.location.query.size,
-                      props.location.query.sort)
+      getTestCases(props.params.testRunId,
+                   props.location.query.page,
+                   props.location.query.size,
+                   props.location.query.sort)
     ];
 
     Promise.all(promises)
-      .then(([testRun, testCases]) => {
-        this.setState({ isDataLoading: false, testRun, testCases: testCases });
-      })
-  }
-
-  getTestCases(testRunId, page = 0, size = 10, sort = '') {
-    return fetch(`/api/v1/test-runs/${testRunId}/test-cases?page=${page}&size=${size}&sort=${sort}`)
-      .then(response => response.json());
+      .then(([testRun, testCases]) => this.setState({ isDataLoading: false, testRun, testCases: testCases }) )
+      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }) )
   }
 
   getTestRun(testRunId) {
+    // Cache the test run in this component
     if (this.state.testRun !== EMPTY_TEST_RUN) {
       return this.state.testRun;
     }
 
-    return fetch(`/api/v1/test-runs/${testRunId}`)
-      .then(response => response.json());
+    return getTestRun(testRunId);
   }
 
   render() {
@@ -80,7 +75,7 @@ class TestStepsPage extends React.Component {
 
     return (
       <Layout>
-        <Spinner isShown={this.state.isDataLoading} text="Fetching test cases">
+        <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test cases">
           <div className="row">
             <div className="col-md-12">
               <ol className="breadcrumb">

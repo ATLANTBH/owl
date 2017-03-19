@@ -8,6 +8,7 @@ import SuccessRate from '../../components/SuccessRate';
 import TimeFormat from '../../components/TimeFormat';
 import DurationFormat from '../../components/DurationFormat';
 import TableHeader from '../../components/TableHeader';
+import { getTestRuns } from '../api';
 
 const EMPTY_TEST_RUNS = {
   content: []
@@ -19,6 +20,7 @@ class TestRunsPageTable extends React.Component {
 
     this.state = {
       isDataLoading: true,
+      errorResponse: null,
       testRuns: EMPTY_TEST_RUNS
     }
   }
@@ -34,16 +36,12 @@ class TestRunsPageTable extends React.Component {
   }
 
   getPageData(props) {
-    this.getTestRuns(props.location.query.build,
+    getTestRuns(props.location.query.build,
       props.location.query.page,
       props.location.query.size,
       props.location.query.sort)
-    .then(testRuns => this.setState({ isDataLoading: false, testRuns: testRuns }));
-  }
-
-  getTestRuns(build = '', page = 0, size = 10, sort = '') {
-    return fetch(`/api/v1/test-runs?build=${build}&page=${page}&size=${size}&sort=${sort}`)
-      .then(response => response.json());
+    .then(testRuns => this.setState({ isDataLoading: false, testRuns: testRuns }) )
+    .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }) );
   }
 
   render() {
@@ -59,13 +57,21 @@ class TestRunsPageTable extends React.Component {
       return `/test-runs/${testRunId}/test-steps/${testGroupName}`;
     }
 
+    function testCaseLink(testRun) {
+      if (testRun.testSuite) {
+        return (<Link to={linkToTestCase(testRun.id)}>{testRun.testSuite.suite}</Link>);
+      }
+
+      return null;
+    }
+
     let activeBuildQuery = null;
     if (this.props.location.query.build) {
       activeBuildQuery = <li className="active">{this.props.location.query.build}</li>;
     }
 
     return (
-      <Spinner isShown={this.state.isDataLoading} text="Fetching test runs">
+      <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test runs">
         <div className="row">
           <div className="col-md-12">
             <ol className="breadcrumb">
@@ -93,7 +99,7 @@ class TestRunsPageTable extends React.Component {
             this.state.testRuns.content.map(testRun =>
               <tr key={testRun.id}>
                 <td><Link to={linkToTestRunsByBuild(testRun.build)}>{testRun.build}</Link></td>
-                <td><Link to={linkToTestCase(testRun.id)}>{testRun.testSuite.suite}</Link></td>
+                <td>{testCaseLink(testRun)}</td>
                 <td><TimeFormat time={testRun.updatedAt} format='dd/mm/yyyy HH:MM' /></td>
                 <td>{testRun.exampleCount}</td>
                 <td>{testRun.failureCount}</td>
@@ -103,7 +109,7 @@ class TestRunsPageTable extends React.Component {
               </tr>
             ),
             <tr>
-              <td colSpan="6" className="text-center text-muted">No test runs available for this build.</td>
+              <td colSpan="8" className="text-center text-muted">No test runs available for this build.</td>
             </tr>
           )}
           </tbody>

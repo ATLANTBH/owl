@@ -6,12 +6,16 @@ import com.atlantbh.test.reporter.repositories.TestSuiteRepository;
 import com.atlantbh.test.reporter.services.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import static com.atlantbh.test.reporter.utils.services.ServicesUtils.CREATED_AT_DESC_SORT;
+import static com.atlantbh.test.reporter.utils.services.ServicesUtils.createPageRequest;
 
 /**
  * TestSuite service. All test suite related domain operations are defined here.
@@ -64,11 +68,12 @@ public class TestSuiteService {
 	/**
 	 * Returns paginated list of test suites.
 	 *
-	 * @param pageable Spring pageable object.
+	 * @param page Spring pageable object.
 	 * @return Paginated list of test suites.
 	 */
-	public Page<TestSuite> getTestSuites(Pageable pageable) {
-		return testSuiteRepository.findAll(pageable);
+	public Page<TestSuite> getTestSuites(Pageable page) {
+		final PageRequest pageRequest = createPageRequest(page, CREATED_AT_DESC_SORT);
+		return testSuiteRepository.findAll(pageRequest);
 	}
 
 	/**

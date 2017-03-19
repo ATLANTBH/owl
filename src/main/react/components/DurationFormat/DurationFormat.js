@@ -3,7 +3,7 @@ import dateformat from 'dateformat';
 
 class DurationFormat extends React.Component {
   static propTypes = {
-    duration: PropTypes.number.isRequired,
+    duration: PropTypes.number,
   };
 
   render() {
@@ -19,6 +19,10 @@ function round(value) {
 }
 
 export function durationFormat(duration) {
+  if (duration === null) {
+    return '-';
+  }
+
   let durationString = round(duration) + 's';
 
   if (duration < 1) {
