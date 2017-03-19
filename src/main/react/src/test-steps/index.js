@@ -8,6 +8,7 @@ import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import DurationFormat from '../../components/DurationFormat';
 import TableHeader from '../../components/TableHeader';
+import { getTestRun, getTestSteps } from '../api';
 
 const EMPTY_TEST_RUN = {
   build: null,
@@ -35,6 +36,7 @@ class TestCasesPage extends React.Component {
       currentExecutionResult: null,
       isInitialDataLoaded: false,
       isDataLoading: true,
+      errorResponse: null,
       testRun: EMPTY_TEST_RUN,
       testSteps: EMPTY_TEST_STEPS
     }
@@ -55,11 +57,11 @@ class TestCasesPage extends React.Component {
 
     const promises = [
       this.getTestRun(props.params.testRunId),
-      this.getTestSteps(props.params.testRunId,
-                      props.params.splat,
-                      resetPagination ? 0 : (this.state.testSteps.number + 1),
-                      this.state.testSteps.size,
-                      props.location.query.sort)
+      getTestSteps(props.params.testRunId,
+                   props.params.splat,
+                   resetPagination ? 0 : (this.state.testSteps.number + 1),
+                   this.state.testSteps.size,
+                   props.location.query.sort)
     ];
 
     Promise.all(promises)
@@ -73,20 +75,16 @@ class TestCasesPage extends React.Component {
           };
         });
       })
-  }
-
-  getTestSteps(testRunId, testGroupName, page = 0, size = 10, sort = '') {
-    return fetch(`/api/v1/test-runs/${testRunId}/test-steps?group=${testGroupName}&page=${page}&size=${size}&sort=${sort}`)
-      .then(response => response.json());
+      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }) );
   }
 
   getTestRun(testRunId) {
+    // Cache test run in this component
     if (this.state.testRun !== EMPTY_TEST_RUN) {
       return this.state.testRun;
     }
 
-    return fetch(`/api/v1/test-runs/${testRunId}`)
-      .then(response => response.json());
+    return getTestRun(testRunId);
   }
 
   onShowExecutionResult(testStep) {
@@ -140,7 +138,7 @@ class TestCasesPage extends React.Component {
           {notEmpty(this.state.testSteps.content,
             this.state.testSteps.content.map(testStep =>
               <tr key={testStep.id}>
-                <td className="focused-cell">{testStep.context} - {testStep.id}</td>
+                <td className="focused-cell">{testStep.context}</td>
                 <td>{testStep.description}</td>
                 <td><ExecutionResult executionResult={testStep.executionResult} onClick={() => this.onShowExecutionResult(testStep)} /></td>
                 <td><DurationFormat duration={testStep.duration} /></td>
@@ -162,7 +160,7 @@ class TestCasesPage extends React.Component {
 
         <Waypoint onEnter={this.onRequestPageData} />
 
-        <Spinner isShown={this.state.isDataLoading} text="Fetching test steps"/>
+        <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test steps"/>
 
         <Modal isShown={this.state.isExecutionResultShown} onClose={this.onExecutionResultModalClose}>
           <div className="modal-header">

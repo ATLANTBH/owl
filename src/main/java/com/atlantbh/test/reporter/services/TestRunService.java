@@ -7,8 +7,12 @@ import com.atlantbh.test.reporter.repositories.TestRunRepository;
 import com.atlantbh.test.reporter.services.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import static com.atlantbh.test.reporter.utils.services.ServicesUtils.CREATED_AT_DESC_SORT;
+import static com.atlantbh.test.reporter.utils.services.ServicesUtils.createPageRequest;
 
 /**
  * TestRun service. All test run related domain operations are defined here.
@@ -37,7 +41,8 @@ public class TestRunService {
 	 * @return Paginated list of all test runs.
 	 */
 	public Page<TestRun> getAllTestRuns(TestRunFilter filter, Pageable page) {
-		return testRunRepository.findAll(new TestRunFilterSpecification(filter), page);
+		final PageRequest pageRequest = createPageRequest(page, CREATED_AT_DESC_SORT);
+		return testRunRepository.findAll(new TestRunFilterSpecification(filter), pageRequest);
 	}
 
 	/**

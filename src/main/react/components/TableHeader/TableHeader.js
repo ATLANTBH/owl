@@ -47,8 +47,8 @@ class TableHeader extends React.Component {
 
       if (sortDirection) {
         let indicatorClassName = sortDirection === 'asc' ?
-          'glyphicon glyphicon-chevron-down' :
-          'glyphicon glyphicon-chevron-up';
+          'glyphicon glyphicon-triangle-bottom' :
+          'glyphicon glyphicon-triangle-top';
 
         sortDirectionIndicator = <i className={classnames(style.sortIndicator, indicatorClassName)}></i>
 

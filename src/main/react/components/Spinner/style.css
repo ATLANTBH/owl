@@ -1,7 +1,7 @@
 
 .spinner {
   margin: 100px auto;
-  width: 50px;
+  width: 150px;
   height: 50px;
   text-align: center;
   font-size: 10px;
@@ -55,8 +55,28 @@
 
 .loadingText {
   margin-top: 10px;
-  width: 120px;
-  margin-left: -40px;
   font-size: 14px;
   color: #9098a3;
+}
+
+.errorText {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #c85858;
+}
+
+.error {
+  display: inline-block;
+  width: 200px;
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+.errorIcon {
+  font-size: 40px;
+  color: #c85858;
+  border: 4px solid #c85858;
+  border-radius: 100px;
+  padding: 5px;
 }

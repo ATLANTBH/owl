@@ -8,6 +8,7 @@ import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
 import TimeFormat from '../../components/TimeFormat';
 import TableHeader from '../../components/TableHeader';
+import { getTestSuites } from '../api';
 
 const EMPTY_TEST_SUITES = {
   content: []
@@ -19,6 +20,7 @@ class TestSuitesPage extends React.Component {
 
     this.state = {
       isDataLoading: true,
+      errorResponse: null,
       testSuites: EMPTY_TEST_SUITES
     }
   }
@@ -34,23 +36,17 @@ class TestSuitesPage extends React.Component {
   }
 
   getPageData(props) {
-    this.getTestSuites(props.location.query.page,
-      props.location.query.size,
-      props.location.query.sort)
-    .then(testSuites => {
-      this.setState({ isDataLoading: false, testSuites });
-    });
-  }
-
-  getTestSuites(page = 0, size = 10, sort = '') {
-    return fetch(`/api/v1/test-suites?page=${page}&size=${size}&sort=${sort}`)
-      .then(response => response.json());
+    getTestSuites(props.location.query.page,
+                  props.location.query.size,
+                  props.location.query.sort)
+    .then(testSuites => this.setState({ isDataLoading: false, testSuites }) )
+    .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }) );
   }
 
   render() {
     return (
       <Layout>
-        <Spinner isShown={this.state.isDataLoading} text="Fetching test suites">
+        <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test suites">
           <div className="row">
             <div className="col-md-12">
               <ol className="breadcrumb">
@@ -75,7 +71,7 @@ class TestSuitesPage extends React.Component {
                 </tr>
               ),
               <tr>
-                <td colSpan="1" className="text-center text-muted">No test suites available.</td>
+                <td colSpan="2" className="text-center text-muted">No test suites available.</td>
               </tr>
             )}
             </tbody>

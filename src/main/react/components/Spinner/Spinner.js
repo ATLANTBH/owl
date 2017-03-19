@@ -5,7 +5,8 @@ import style from './style.css';
 class Spinner extends React.Component {
   static propTypes = {
     isShown: PropTypes.bool.isRequired,
-    text: PropTypes.string
+    text: PropTypes.string,
+    errorResponse: PropTypes.object
   }
 
   render() {
@@ -20,7 +21,16 @@ class Spinner extends React.Component {
         </div>);
     }
 
-    return <div>{this.props.children}</div>;
+    if (this.props.errorResponse) {
+      return (<div className="text-center">
+          <div className={style.error}>
+            <i className={classnames("glyphicon glyphicon-fire", style.errorIcon)}></i>
+            <div className={style.errorText}>{this.props.errorResponse.message}</div>
+          </div>
+        </div>);
+    }
+
+    return (<div>{this.props.children}</div>);
   }
 }
 

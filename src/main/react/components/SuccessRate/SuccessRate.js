@@ -4,11 +4,15 @@ import style from './style.css';
 
 class SuccessRate extends React.Component {
   static propTypes = {
-    total: PropTypes.number.isRequired,
-    current: PropTypes.number.isRequired
+    total: PropTypes.number,
+    current: PropTypes.number
   };
 
   render() {
+    if (this.props.current === null || this.props.total === null) {
+      return null;
+    }
+
     const percentage = Math.floor(((1 - (this.props.current/this.props.total)) * 100) * 100) / 100;
 
     const labelClassName = (percentage === 100) ? "label-success" : "label-danger";
