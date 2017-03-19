@@ -37,6 +37,12 @@ public class TestRun {
 	@Length(max = 255)
 	private String build;
 
+	@Column(name = "git_hash")
+	private String gitHash;
+
+	@Column(name = "git_branch")
+	private String gitBranch;
+
 	@Column(name = "computer_name")
 	private String computerName;
 
@@ -235,5 +241,41 @@ public class TestRun {
 	 */
 	public void setTestSuite(TestSuite testSuite) {
 		this.testSuite = testSuite;
+	}
+
+	/**
+	 * Gets git hash.
+	 *
+	 * @return the git hash
+	 */
+	public String getGitHash() {
+		return gitHash;
+	}
+
+	/**
+	 * Sets git hash.
+	 *
+	 * @param gitHash the git hash
+	 */
+	public void setGitHash(String gitHash) {
+		this.gitHash = gitHash;
+	}
+
+	/**
+	 * Gets git branch.
+	 *
+	 * @return the git branch
+	 */
+	public String getGitBranch() {
+		return gitBranch;
+	}
+
+	/**
+	 * Sets git branch.
+	 *
+	 * @param gitBranch the git branch
+	 */
+	public void setGitBranch(String gitBranch) {
+		this.gitBranch = gitBranch;
 	}
 }
