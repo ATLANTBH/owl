@@ -19,10 +19,12 @@ If there is external configuration, it should be passed as:
 java -jar target/test-reporter-VERSION.jar --spring.config.location=PATH_TO_CONFIGURATION
 ```
 
-There should be database with populated data and flyway baseline migrations run with:
+If there is already database with data, flyway baseline migration should be run:
 ```$xslt
-mvn flyway:baseline
+brew install flyway
+flyway -url=jdbc:postgresql://localhost:5432/test-reporter -user=testreporter -password=testreporter baseline
 ```
+Replace `test-reporter`/`testreporter` database/user/password with whatever database name and user you're using.
 
 ## API
 
