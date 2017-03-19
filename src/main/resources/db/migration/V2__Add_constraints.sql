@@ -39,3 +39,24 @@ CREATE INDEX test_runs_build_number_idx ON test_runs(build);
 -- Create index on build number column in test runs
 DROP INDEX IF EXISTS test_cases_test_group_idx;
 CREATE INDEX test_cases_test_group_idx ON test_cases(test_group);
+
+-- Add helper function
+CREATE OR REPLACE function f_add_col(_tbl regclass, _col  text, _type regtype)
+  RETURNS bool AS
+$func$
+BEGIN
+  IF EXISTS (SELECT 1 FROM pg_attribute
+  WHERE  attrelid = _tbl
+         AND    attname = _col
+         AND    NOT attisdropped) THEN
+    RETURN FALSE;
+  ELSE
+    EXECUTE format('ALTER TABLE %s ADD COLUMN %I %s', _tbl, _col, _type);
+    RETURN TRUE;
+  END IF;
+END
+$func$  LANGUAGE plpgsql;
+
+-- Add git info columns
+SELECT f_add_col('public.test_runs', 'git_hash', 'VARCHAR(255)');
+SELECT f_add_col('public.test_runs', 'git_branch', 'VARCHAR(255)');

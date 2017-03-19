@@ -5,7 +5,6 @@ import com.atlantbh.test.reporter.services.TestSuiteService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.CacheControl;
@@ -33,7 +32,6 @@ public class BootstrapController {
 	private static final Logger LOGGER = Logger.getLogger(BootstrapController.class);
 
 	@Autowired
-	@Qualifier("resolvedBootstrap")
 	private Bootstrap bootstrap;
 
 	/**
@@ -52,8 +50,8 @@ public class BootstrapController {
 	 * @param testSuiteService the test suite service
 	 * @return the bootstrap
 	 */
-	@Bean("resolvedBootstrap")
-	public Bootstrap resolvedBootstrap(Bootstrap bootstrap, TestSuiteService testSuiteService) {
+	@Bean
+	public Bootstrap createBootstrapBean(Bootstrap bootstrap, TestSuiteService testSuiteService) {
 		// Resolve test suite names
 		List<Bootstrap.TestSuite> testSuites = Arrays.stream(bootstrap.getSuiteNameStatistics())
 			.map(name -> {
@@ -92,6 +90,12 @@ public class BootstrapController {
 	public static class Bootstrap {
 		@Value("${project.name}")
 		private String projectName;
+
+		@Value("${project.features.git.info}")
+		private boolean gitInfoFeatureToggle;
+
+		@Value("${git.github.repo}")
+		private String githubRepoLink;
 
 		@JsonIgnore
 		@Value("${suite.statistics}")
@@ -190,6 +194,30 @@ public class BootstrapController {
 			this.suiteStatistics = suiteStatistics;
 		}
 
+		/**
+		 * Is git info feature toggle boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isGitInfoFeatureToggle() {
+			return gitInfoFeatureToggle;
+		}
+
+		/**
+		 * Gets github repo link.
+		 *
+		 * @return the github repo link
+		 */
+		public String getGithubRepoLink() {
+			return githubRepoLink;
+		}
+
+		/**
+		 * Create test suite test suite.
+		 *
+		 * @param testSuite the test suite
+		 * @return the test suite
+		 */
 		public static TestSuite createTestSuite(com.atlantbh.test.reporter.models.TestSuite testSuite) {
 			return new TestSuite(testSuite.getId(), testSuite.getSuite());
 		}

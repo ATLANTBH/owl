@@ -8,7 +8,9 @@ import SuccessRate from '../../components/SuccessRate';
 import TimeFormat from '../../components/TimeFormat';
 import DurationFormat from '../../components/DurationFormat';
 import TableHeader from '../../components/TableHeader';
+import FeatureToggle, { ifFeatureToggled } from '../../components/FeatureToggle';
 import { getTestRuns } from '../api';
+import GithubInfo from '../../components/GithubInfo';
 
 const EMPTY_TEST_RUNS = {
   content: []
@@ -85,6 +87,9 @@ class TestRunsPageTable extends React.Component {
           <thead>
             <tr>
               <TableHeader sortKey="build">Jenkins Build</TableHeader>
+              <FeatureToggle toggleKey="gitInfoFeatureToggle">
+                <TableHeader sortKey="gitBranch">Git Branch</TableHeader>
+              </FeatureToggle>
               <TableHeader sortKey="testSuite.suite">Test Suite</TableHeader>
               <TableHeader sortKey="updatedAt">Execution Finished</TableHeader>
               <TableHeader sortKey="exampleCount">Total Cases</TableHeader>
@@ -99,6 +104,11 @@ class TestRunsPageTable extends React.Component {
             this.state.testRuns.content.map(testRun =>
               <tr key={testRun.id}>
                 <td><Link to={linkToTestRunsByBuild(testRun.build)}>{testRun.build}</Link></td>
+                <FeatureToggle toggleKey="gitInfoFeatureToggle">
+                  <td>
+                    <GithubInfo hash={testRun.gitHash} branch={testRun.gitBranch} />
+                  </td>
+                </FeatureToggle>
                 <td>{testCaseLink(testRun)}</td>
                 <td><TimeFormat time={testRun.updatedAt} format='dd/mm/yyyy HH:MM' /></td>
                 <td>{testRun.exampleCount}</td>
@@ -109,7 +119,7 @@ class TestRunsPageTable extends React.Component {
               </tr>
             ),
             <tr>
-              <td colSpan="8" className="text-center text-muted">No test runs available for this build.</td>
+              <td colSpan={ifFeatureToggled("gitInfoFeatureToggle", "9", "8")} className="text-center text-muted">No test runs available for this build.</td>
             </tr>
           )}
           </tbody>

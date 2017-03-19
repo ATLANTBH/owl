@@ -20,8 +20,6 @@ import static com.atlantbh.test.reporter.utils.services.ServicesUtils.createPage
  */
 @Service
 public class TestStepService {
-
-
 	private TestRunService testRunService;
 	private TestStepRepository testStepRepository;
 
