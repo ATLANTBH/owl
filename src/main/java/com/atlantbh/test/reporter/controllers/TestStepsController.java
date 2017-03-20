@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,5 +50,23 @@ public class TestStepsController {
 									   Pageable page)
 			throws ServiceException {
 		return testStepService.getTestSteps(testRunId, group, page);
+	}
+
+	/**
+	 * API: PUT /api/v1/test-runs/{TEST_RUN_ID}/test-steps/{TEST_STEP_ID}
+	 *
+	 * Updates test step.
+	 *
+	 * @param testRunId Test run id.
+	 * @param testStepId Test step id.
+	 * @param testStep Test step data.
+	 * @return Updated test step.
+	 * @throws ServiceException
+	 */
+	@RequestMapping(value = "/{testStepId}", method = RequestMethod.PUT)
+	public TestStep updateTestStep(@PathVariable("testRunId") Long testRunId,
+								   @PathVariable("testStepId") Long testStepId, @RequestBody TestStep testStep)
+			throws ServiceException {
+		return testStepService.update(testRunId, testStepId, testStep);
 	}
 }

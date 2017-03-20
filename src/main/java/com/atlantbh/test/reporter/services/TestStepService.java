@@ -57,4 +57,24 @@ public class TestStepService {
 		final PageRequest pageRequest = createPageRequest(page, CREATED_AT_ASC_SORT);
 		return testStepRepository.findByTestRunAndGroup(testRun, testGroup, pageRequest);
 	}
+
+	/**
+	 * Updates test step
+	 *
+	 * @param testRunId Test run id.
+	 * @param testStepId Test step id.
+	 * @param updateTestStep Update test step model.
+	 * @return Updated test step.
+	 */
+	public TestStep update(Long testRunId, Long testStepId, TestStep updateTestStep) throws ServiceException {
+		final TestRun testRun = testRunService.get(testRunId);
+		final TestStep testStep = testStepRepository.findByTestRunAndId(testRun, testStepId);
+		if (testStep == null) {
+			throw new ServiceException("Test step not found.");
+		}
+
+		testStep.setNotes(updateTestStep.getNotes());
+
+		return testStepRepository.save(testStep);
+	}
 }

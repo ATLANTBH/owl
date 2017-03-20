@@ -61,6 +61,9 @@ public class TestStep {
 	@JsonIgnore
 	private TestRun testRun;
 
+	@Column(name = "notes")
+	private String notes;
+
 	/**
 	 * Instantiates a new Test case.
 	 */
@@ -300,5 +303,23 @@ public class TestStep {
 	 */
 	public void setTestRun(TestRun testRun) {
 		this.testRun = testRun;
+	}
+
+	/**
+	 * Gets notes.
+	 *
+	 * @return the notes
+	 */
+	public String getNotes() {
+		return notes;
+	}
+
+	/**
+	 * Sets notes.
+	 *
+	 * @param notes the notes
+	 */
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 }

@@ -60,3 +60,8 @@ $func$  LANGUAGE plpgsql;
 -- Add git info columns
 SELECT f_add_col('public.test_runs', 'git_hash', 'VARCHAR(255)');
 SELECT f_add_col('public.test_runs', 'git_branch', 'VARCHAR(255)');
+
+SELECT f_add_col('public.test_cases', 'notes', 'TEXT');
+
+ALTER TABLE test_suites DROP CONSTRAINT IF EXISTS test_suites_suite_uq;
+ALTER TABLE test_suites ADD CONSTRAINT test_suites_suite_uq UNIQUE (suite);
