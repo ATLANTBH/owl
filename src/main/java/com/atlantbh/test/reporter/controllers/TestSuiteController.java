@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,5 +56,31 @@ public class TestSuiteController {
 	public Collection<TestSuiteStatistics> getStatistics(@PathVariable("testSuiteId") Long testSuiteId, Pageable page)
 			throws ServiceException {
 		return testSuiteService.getStatistics(testSuiteId);
+	}
+
+	/**
+	 * API: POST /api/v1/test-suites
+	 *
+	 * Creates test suite
+	 *
+	 * @param testSuite Test suite.
+	 * @return Created test suite.
+	 */
+	@RequestMapping(method = RequestMethod.POST)
+	public TestSuite createTestSuite(@RequestBody TestSuite testSuite) {
+		return testSuiteService.create(testSuite);
+	}
+
+	/**
+	 * API: GET /api/v1/test-suites/:testSuiteName
+	 *
+	 * Gets test suite
+	 *
+	 * @return Get test suite.
+	 * @throws ServiceException If test suite is not found.
+	 */
+	@RequestMapping(value = "/{testSuiteName}", method = RequestMethod.POST)
+	public TestSuite getTestSuite(@PathVariable("testSuiteName") String value) throws ServiceException {
+		return testSuiteService.getByName(value);
 	}
 }

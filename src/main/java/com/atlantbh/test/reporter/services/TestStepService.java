@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 import static com.atlantbh.test.reporter.utils.services.ServicesUtils.CREATED_AT_ASC_SORT;
 import static com.atlantbh.test.reporter.utils.services.ServicesUtils.createPageRequest;
 
@@ -75,6 +77,20 @@ public class TestStepService {
 
 		testStep.setNotes(updateTestStep.getNotes());
 
+		return testStepRepository.save(testStep);
+	}
+
+	/**
+	 * Creates a test steps and saves it to db.
+	 *
+	 * @param testRun Test run.
+	 * @param testStep Test step data.
+	 * @return Saved test step.
+	 */
+	public TestStep create(TestRun testRun, TestStep testStep) {
+		testStep.setCreatedAt(new Date());
+		testStep.setUpdatedAt(new Date());
+		testStep.setTestRun(testRun);
 		return testStepRepository.save(testStep);
 	}
 }

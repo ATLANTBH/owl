@@ -6,9 +6,11 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -20,8 +22,12 @@ import java.util.Date;
 @Table(name = "test_cases")
 @Entity
 public class TestStep {
+	public static final String EXECUTION_RESULT_SUCCESS = "passed";
+	public static final String EXECUTION_RESULT_FAILURE = "failed";
+
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "test_cases_id_seq", sequenceName = "test_cases_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "test_cases_id_seq")
 	private Long id;
 
 	@Column(name = "test_group")

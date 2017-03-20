@@ -5,10 +5,13 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -20,7 +23,8 @@ import java.util.Date;
 @Entity
 public class TestRun {
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "test_runs_id_seq", sequenceName = "test_runs_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "test_runs_id_seq")
 	private Long id;
 
 	private Double duration;
@@ -34,6 +38,7 @@ public class TestRun {
 	@Column(name = "pending_count")
 	private Integer pendingCount;
 
+	@NotNull
 	@Length(max = 255)
 	private String build;
 
@@ -54,6 +59,7 @@ public class TestRun {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "test_suites_id")
 	private TestSuite testSuite;

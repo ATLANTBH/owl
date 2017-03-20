@@ -10,7 +10,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityResult;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
@@ -38,7 +40,8 @@ import java.util.Date;
 @Entity
 public class TestSuite {
 	@Id
-	@GeneratedValue
+	@SequenceGenerator(name = "test_suites_id_seq", sequenceName = "test_suites_id_seq")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "test_suites_id_seq")
 	private Long id;
 
 	@Length(max = 255)

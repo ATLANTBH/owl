@@ -62,6 +62,14 @@ Test steps are lowest level tests, that contain asserts and execution results.
 
 This API returns all test suits in Test-reporter.
 
+`POST /api/v1/test-suites`
+
+This API creates new test suite.
+
+`PUT /api/v1/test-suites/{testSuiteId}`
+
+This API updates test suite.
+
 `GET /api/v1/test-suites/{testSuiteId}/statistics`
 
 This API returns statistics for given test suite id. Statistics is composed of `build` identifier with appropriate counts such as `totalCasesCount`, `failedCasesCount` etc.

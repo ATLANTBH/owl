@@ -111,7 +111,7 @@ class TestStepsPage extends React.Component {
                 </tr>
               ),
               <tr>
-                <td colSpan="6" className="text-center text-muted">No test cases available for this test run.</td>
+                <td colSpan="7" className="text-center text-muted">No test cases available for this test run.</td>
               </tr>
             )}
             </tbody>

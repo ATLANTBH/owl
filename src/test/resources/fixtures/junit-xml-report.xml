@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuite hostname="MacBook-Pro" name="com.github.package.TestClass" tests="2" errors="0" failures="1" time="0.009">
+    <properties>
+    </properties>
+    <testcase classname="com.github.package.TestClass" name="testMethod" time="0.002">
+        <failure type="FAILURE-TYPE">FAILURE-STACK</failure>
+    </testcase>
+    <testcase classname="com.github.package.TestClass" name="testMethod2" time="0.007">
+
+    </testcase>
+    <system-out></system-out>
+    <system-err></system-err>
+</testsuite>
