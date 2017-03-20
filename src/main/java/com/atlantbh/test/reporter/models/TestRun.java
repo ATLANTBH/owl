@@ -37,9 +37,11 @@ public class TestRun {
 	@Length(max = 255)
 	private String build;
 
+	@Length(max = 255)
 	@Column(name = "git_hash")
 	private String gitHash;
 
+	@Length(max = 255)
 	@Column(name = "git_branch")
 	private String gitBranch;
 

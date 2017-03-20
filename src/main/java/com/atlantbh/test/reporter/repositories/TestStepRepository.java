@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import javax.annotation.Nullable;
+
 /**
  * TestStep related database operations are defined here.
  *
@@ -22,4 +24,14 @@ public interface TestStepRepository extends PagingAndSortingRepository<TestStep,
 	 * @return Paginated result of test steps.
 	 */
 	Page<TestStep> findByTestRunAndGroup(TestRun testRun, String group, Pageable pageable);
+
+	/**
+	 * Finds test step by test run id and id.
+	 *
+	 * @param testRun Test run.
+	 * @param testStepId Test step id.
+	 * @return Test step or null.
+	 */
+	@Nullable
+	TestStep findByTestRunAndId(TestRun testRun, Long testStepId);
 }
