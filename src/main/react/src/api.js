@@ -36,9 +36,13 @@ export function getTestSuites(page = 0, size = 10, sort = '') {
 
 export function postNotes(testRunId, testStepId, notes) {
   return fetch(`/api/v1/test-runs/${testRunId}/test-steps/${testStepId}`, {
-  method: 'post',
+  method: 'put',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  },
   body: JSON.stringify({
-    notes
+    notes: notes
     })
   })
     .then(fetchResponseHandler);

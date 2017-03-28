@@ -37,7 +37,6 @@ class Notes extends React.Component {
     this.setState({
       showNotes: false
     });
-    debugger;
     if (this.state.value !== ""){
      this.setState({
        timestamp: date.toLocaleDateString() + ' \n' + date.toLocaleTimeString()
