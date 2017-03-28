@@ -33,3 +33,13 @@ export function getTestSuites(page = 0, size = 10, sort = '') {
   return fetch(`/api/v1/test-suites?page=${page}&size=${size}&sort=${sort}`)
     .then(fetchResponseHandler);
 }
+
+export function postNotes(testRunId, testStepId, notes) {
+  return fetch(`/api/v1/test-runs/${testRunId}/test-steps/${testStepId}`, {
+  method: 'post',
+  body: JSON.stringify({
+    notes
+    })
+  })
+    .then(fetchResponseHandler);
+}

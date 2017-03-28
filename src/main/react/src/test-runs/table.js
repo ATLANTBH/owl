@@ -114,7 +114,7 @@ class TestRunsPageTable extends React.Component {
                 <td>{testRun.failureCount}</td>
                 <td>{testRun.pendingCount}</td>
                 <td><SuccessRate total={testRun.exampleCount} current={testRun.failureCount + testRun.pendingCount} /></td>
-                <td><DurationFormat duration={testRun.duration} /></td>
+                <td><DurationFormat duration={testRun.duration}/></td>
               </tr>
             ),
             <tr>
