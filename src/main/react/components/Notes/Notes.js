@@ -10,7 +10,7 @@ class Notes extends React.Component {
     
     this.onNoteClose = this.onNoteClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
+    noteContent = this.props.note;
     this.state = {
       showNotes: false,
       currentNote: null,

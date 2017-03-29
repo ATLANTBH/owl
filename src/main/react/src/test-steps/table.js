@@ -56,7 +56,7 @@ class TestStepsTable extends React.Component {
 
   getPageData(props, resetPagination = false) {
     this.setState({ isDataLoading: true });
-
+    
     const promises = [
       this.getTestRun(props.params.testRunId),
       getTestSteps(props.params.testRunId,
@@ -110,7 +110,7 @@ class TestStepsTable extends React.Component {
       .then(updatedTestStep => {
         Object.assign(testStep, updatedTestStep);
         this.setState({
-          testSteps: this.state.testSteps
+          testSteps: updatedTestStep
         });
       });
   }
@@ -157,7 +157,7 @@ class TestStepsTable extends React.Component {
                 <td>{testStep.description}</td>
                 <td><ExecutionResult executionResult={testStep.executionResult} onClick={() => this.onShowExecutionResult(testStep)} /></td>
                 <td><DurationFormat duration={testStep.duration} /></td>
-                  <td><Notes onClick={(notes) => this.saveNotes(notes, testStep)}>Notes</Notes></td> 
+                  <td><Notes note={testStep.notes} onClick={(notes) => this.saveNotes(notes, testStep)}>Notes</Notes></td> 
               </tr>
             ),
             <tr>
