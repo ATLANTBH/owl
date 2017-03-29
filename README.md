@@ -1,5 +1,12 @@
 # Test Reporter
 
+## Prerequisites
+
+This tool is used for reporting and representation of automated test runs. In order to use this tool, a database with formatted test results should exist. For assistance on how to create such a database and write test results to it see the [rspec2db](https://github.com/ATLANTBH/rspec) gem, which is used to write RSpec tests to a database. The tool currently supports PostgreSQL databases.
+
+To run the application, Java (JRE) should be installed.
+
+
 ## Building
 
 Maven (>= v3) is required for building Test-reporter. Run following command to build:
@@ -8,23 +15,53 @@ Maven (>= v3) is required for building Test-reporter. Run following command to b
 mvn clean package
 ```
 
+This command creates `target/test-reporter-VERSION.jar` file, which can be started locally or copied to another host to be started on.
+
 ## Running
+
+To start the application with the default configuration ([application.properties](src/main/resources/application.properties)) run:
 
 ```
 java -jar target/test-reporter-VERSION.jar
 ```
 
-If there is external configuration, it should be passed as:
-```$xslt
+An external configuration can be provided when starting the app to configure the project name, database properties, change the port the app is running on or toggle specific features.
+
+```
+# Sets the project name to be visible on frontend
+project.name=Test Report App
+
+# Comma separated list of suite names that will be shown on dashboard
+suite.statistics=
+
+# Feature toogles
+# Show git information on dashboard - branch and commit hash of the tested code
+project.features.git.info=false
+
+# Github repo link used to generate links to specific commits
+git.github.repo=
+
+# Database Properties
+spring.datasource.url=jdbc:postgresql://<database_host>:5432/<database_name>
+spring.datasource.username=<database_username>
+spring.datasource.password=<database_password>
+
+# Logging Properties
+logging.level.org.hibernate.SQL=debug
+
+# Set port - 0 means the default port will be used
+server.port=0
+```
+
+The configuration can be saved to a file and passed when starting the app with:
+```
 java -jar target/test-reporter-VERSION.jar --spring.config.location=PATH_TO_CONFIGURATION
 ```
 
-If there is already database with data, flyway baseline migration should be run:
-```$xslt
-brew install flyway
-flyway -url=jdbc:postgresql://localhost:5432/test-reporter -user=testreporter -password=testreporter baseline
+If there is already a database with data, flyway should be installed (`brew install flyway` for macOS with homebrew) and flyway baseline migration should be run with the database properties you are using:
 ```
-Replace `test-reporter`/`testreporter` database/user/password with whatever database name and user you're using.
+flyway -url=jdbc:postgresql://<database_host>:5432/<database_name> -user=<database_user> -password=<database_password> baseline
+```
 
 ## API
 
