@@ -46,6 +46,12 @@ class TestRunsPageTable extends React.Component {
   }
 
   render() {
+    function onRowClick(testRun){
+      if (testRun.testSuite) {
+        browserHistory.push('/test-runs/'+testRun.id+'/test-cases');
+      }
+    }
+
     function linkToTestRunsByBuild(build) {
       return `/test-runs?build=${build}`;
     }
@@ -101,7 +107,7 @@ class TestRunsPageTable extends React.Component {
           <tbody>
           {notEmpty(this.state.testRuns.content,
             this.state.testRuns.content.map(testRun =>
-              <tr key={testRun.id}>
+              <tr key={testRun.id} onClick={() => onRowClick(testRun)} >
                 <td><Link to={linkToTestRunsByBuild(testRun.build)}>{testRun.build}</Link></td>
                 <FeatureToggle toggleKey="gitInfoFeatureToggle">
                   <td>

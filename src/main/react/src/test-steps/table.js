@@ -105,7 +105,6 @@ class TestStepsTable extends React.Component {
   
 
   saveNotes(notes, testStep){
-    testStep.notes = notes; 
     postNotes(this.state.testRun.id, testStep.id, notes)
       .then(updatedTestStep => {
         Object.assign(testStep, updatedTestStep);
@@ -116,8 +115,7 @@ class TestStepsTable extends React.Component {
   }
 
   render() {
-    const group = (this.state.testSteps.content[0] || {}).group;
-
+    // const group = (this.state.testSteps.content[0] || {}).group;
     const testRunLink = `/test-runs/${this.state.testRun.id}/test-cases`;
 
     function linkToBuild(build) {
@@ -134,7 +132,7 @@ class TestStepsTable extends React.Component {
             <li><Link to="/">Dashboard</Link></li>
             <li><Link to={linkToBuild(this.state.testRun.build)}>{this.state.testRun.build}</Link></li>
             <li><Link to={testRunLink}>{this.state.testRun.testSuite.suite}</Link></li>
-            {valueOrNull(group, <li className="active">{group}</li>)}
+            {/*{valueOrNull(group, <li className="active">{group}</li>)}*/}
           </ol>
         </div>
         </div>;

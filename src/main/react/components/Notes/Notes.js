@@ -10,7 +10,7 @@ class Notes extends React.Component {
     
     this.onNoteClose = this.onNoteClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    noteContent = this.props.note;
+    
     this.state = {
       showNotes: false,
       currentNote: null,
@@ -26,8 +26,10 @@ class Notes extends React.Component {
   }
 
   onNoteOpen(note){
+    if (note === null) note = ""
     this.setState({
-      showNotes: true
+      showNotes: true,
+      value: note
     });
   }
 
@@ -46,7 +48,7 @@ class Notes extends React.Component {
 
 
  render() {
-    const notes = this.props.notes;
+    const notes = this.props.note;
 
     return (
       <div>
@@ -62,7 +64,6 @@ class Notes extends React.Component {
               <textarea cols="80" rows="10" value={this.state.value} onChange={this.handleChange}></textarea>
             </div>
             <div className="modal-footer">
-              {/*<button type="button" className="btn btn-default" data-dismiss="modal" onClick={() => this.onSave(this.state.value)}>Save</button>*/}
               <button type="button" className="btn btn-default" data-dismiss="modal" onClick={ () => this.props.onClick(this.state.value)}>Save </button>
               <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
             </div>
