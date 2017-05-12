@@ -155,7 +155,7 @@ class TestStepsTable extends React.Component {
                 <td>{testStep.description}</td>
                 <td><ExecutionResult executionResult={testStep.executionResult} onClick={() => this.onShowExecutionResult(testStep)} /></td>
                 <td><DurationFormat duration={testStep.duration} /></td>
-                  <td><Notes note={testStep.notes} onClick={(notes) => this.saveNotes(notes, testStep)}>Notes</Notes></td> 
+                <td><Notes note={testStep.notes} onClick={(notes) => this.saveNotes(notes, testStep)}>Notes</Notes></td> 
               </tr>
             ),
             <tr>

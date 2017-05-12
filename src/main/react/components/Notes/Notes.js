@@ -53,7 +53,7 @@ class Notes extends React.Component {
     return (
       <div>
         <button onClick={() => this.onNoteOpen(notes)}>Notes</button>
-        <div>{this.state.timestamp}</div>
+        {/*<div>{this.state.timestamp}</div> */} 
 
           <Modal isShown={this.state.showNotes} onClose={this.onNoteClose} >
             <div className="modal-header">
