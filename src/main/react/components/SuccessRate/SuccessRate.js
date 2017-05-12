@@ -13,7 +13,10 @@ class SuccessRate extends React.Component {
       return null;
     }
 
-    const percentage = Math.floor(((1 - (this.props.current/this.props.total)) * 100) * 100) / 100;
+    let percentage = 0;
+    if (this.props.total) {
+      percentage = Math.floor(((1 - (this.props.current/this.props.total)) * 100) * 100) / 100;
+    }
 
     const labelClassName = (percentage === 100) ? "label-success" : "label-danger";
 

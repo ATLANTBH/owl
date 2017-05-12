@@ -6,10 +6,15 @@ import com.atlantbh.test.reporter.services.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * Test Case controller. All test case related APIs entries are here.
@@ -46,5 +51,23 @@ public class TestCasesController {
 	public Page<TestCase> getTestCases(@PathVariable("testRunId") Long testRunId, Pageable page)
 			throws ServiceException {
 		return testCaseService.getTestCases(testRunId, page);
+	}
+
+	/**
+	 * API: POST /api/v1/test-runs/{TEST_RUN_ID}/test-cases/junit-xml-report
+	 *
+	 * Returns paginated result of all test cases for given test run. Pagination is controlled via size and page query
+	 * parameters.
+	 *
+	 * @param testRunId Test run id.
+	 * @param file      Uploaded file.
+	 * @throws ServiceException If test run is not found.
+	 */
+	@RequestMapping(value = "/junit-xml-report", method = RequestMethod.POST)
+	public ResponseEntity createTestCaseFromJUnitXmlReport(@PathVariable("testRunId") Long testRunId,
+														   @RequestParam("file") MultipartFile file)
+			throws ServiceException, IOException {
+		testCaseService.createTestCaseFromJunitXmlReport(testRunId, file.getInputStream());
+		return ResponseEntity.ok().build();
 	}
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static com.atlantbh.test.reporter.utils.services.ServicesUtils.CREATED_AT_DESC_SORT;
@@ -88,5 +89,33 @@ public class TestSuiteService {
 		List<TestSuiteStatistics> statistics = testSuiteRepository.getStatistics(testSuite.getId(), STATISTICS_TOP_COUNT);
 		Collections.reverse(statistics);
 		return statistics;
+	}
+
+	/**
+	 * Creates a test suite.
+	 *
+	 * @param testSuite Test suite data.
+	 * @return Created test suite.
+	 */
+	public TestSuite create(TestSuite testSuite) {
+		testSuite.setCreatedAt(new Date());
+		testSuite.setUpdatedAt(new Date());
+		return testSuiteRepository.save(testSuite);
+	}
+
+	/**
+	 * Updates a test suite.
+	 *
+	 * @param testSuiteId  Test suite id.
+	 * @param updateTestSuite Test suite data.
+	 * @return Updated test suite.
+	 */
+	public TestSuite update(Long testSuiteId, TestSuite updateTestSuite) throws ServiceException {
+		TestSuite testSuite = get(testSuiteId);
+
+		testSuite.setSuite(updateTestSuite.getSuite());
+		testSuite.setUpdatedAt(new Date());
+
+		return testSuiteRepository.save(testSuite);
 	}
 }

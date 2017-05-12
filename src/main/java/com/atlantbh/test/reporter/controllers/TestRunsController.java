@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,5 +59,17 @@ public class TestRunsController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public TestRun getTestRun(@PathVariable("id") Long id) throws ServiceException {
 		return testRunService.get(id);
+	}
+
+	/**
+	 * API: POST /api/v1/test-runs
+	 *
+	 * Create a test run.
+	 *
+	 * @return Test run.
+	 */
+	@RequestMapping(method = RequestMethod.POST)
+	public TestRun createTestRun(@RequestBody TestRun testRun) throws ServiceException {
+		return testRunService.create(testRun);
 	}
 }

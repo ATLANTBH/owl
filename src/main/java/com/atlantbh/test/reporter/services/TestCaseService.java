@@ -2,12 +2,20 @@ package com.atlantbh.test.reporter.services;
 
 import com.atlantbh.test.reporter.models.TestCase;
 import com.atlantbh.test.reporter.models.TestRun;
+import com.atlantbh.test.reporter.models.TestStep;
+import com.atlantbh.test.reporter.parser.junit.JunitXmlReportParser;
+import com.atlantbh.test.reporter.parser.junit.exception.ParseException;
 import com.atlantbh.test.reporter.repositories.TestCaseRepository;
 import com.atlantbh.test.reporter.services.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.io.InputStream;
+
+import static com.atlantbh.test.reporter.models.TestStep.EXECUTION_RESULT_FAILURE;
+import static com.atlantbh.test.reporter.models.TestStep.EXECUTION_RESULT_SUCCESS;
 
 /**
  * TestCase service. All test case domain operations are defined here.
@@ -18,6 +26,17 @@ import org.springframework.stereotype.Service;
 public class TestCaseService {
 	private TestRunService testRunService;
 	private TestCaseRepository testCaseRepository;
+	private TestStepService testStepService;
+
+	/**
+	 * Sets test step service.
+	 *
+	 * @param testStepService the test step service
+	 */
+	@Autowired
+	public void setTestStepService(TestStepService testStepService) {
+		this.testStepService = testStepService;
+	}
 
 	/**
 	 * Sets test run service.
@@ -50,5 +69,61 @@ public class TestCaseService {
 	public Page<TestCase> getTestCases(Long testRunId, Pageable page) throws ServiceException {
 		final TestRun testRun = testRunService.get(testRunId);
 		return testCaseRepository.findByTestRunId(testRun.getId(), page);
+	}
+
+	/**
+	 * Creates a test cases and test steps from junit xml test report.
+	 *
+	 * @param testRunId Test run id.
+	 * @param inputStream  Test report input stream.
+	 * @throws ServiceException the service exception
+	 */
+	public void createTestCaseFromJunitXmlReport(Long testRunId, InputStream inputStream) throws ServiceException {
+		TestRun testRun = testRunService.get(testRunId);
+		try {
+			JunitXmlReportParser.TestSuite junitTestSuite = JunitXmlReportParser.parse(inputStream);
+			if (junitTestSuite != null) {
+				junitTestSuite.getTestCaseList()
+						.forEach(junitTestCase -> {
+							TestStep testStep = createTestStep(junitTestSuite, junitTestCase);
+							testStepService.create(testRun, testStep);
+						});
+
+				int totalCases = junitTestSuite.getTestCaseList().size();
+				int failedCases = (int) junitTestSuite.getTestCaseList()
+						.stream()
+						.filter(JunitXmlReportParser.TestSuite.TestCase::isFailed)
+						.count();
+
+				float duration = junitTestSuite.getTestCaseList()
+							.stream()
+							.map(JunitXmlReportParser.TestSuite.TestCase::getTime)
+							.reduce(0f, (previous, time) -> previous + time);
+
+				testRunService.updateCounts(testRun.getId(), totalCases, failedCases, duration);
+			}
+		} catch (ParseException e) {
+			throw new ServiceException(e.getMessage(), e);
+		}
+	}
+
+	/**
+	 * Create test step test step.
+	 *
+	 * @param testSuite the test suite
+	 * @param testCase  the test case
+	 * @return the test step
+	 */
+	public static TestStep createTestStep(JunitXmlReportParser.TestSuite testSuite,
+										  JunitXmlReportParser.TestSuite.TestCase testCase) {
+		TestStep result = new TestStep();
+
+		result.setGroup(testSuite.getName());
+		result.setContext(testCase.getName());
+		result.setExecutionResult(testCase.isFailed() ? EXECUTION_RESULT_FAILURE : EXECUTION_RESULT_SUCCESS);
+		result.setException(testCase.getFailureReason());
+		result.setDuration((double) testCase.getTime());
+
+		return result;
 	}
 }
