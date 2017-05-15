@@ -1,0 +1,7 @@
+.notetext{
+  text-overflow: ellipsis;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  float:left
+}

@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 // import classnames from 'classnames';
 import Layout from '../../components/Layout';
 import Modal from '../../components/Modal';
+import style from './style.css'
 
 
 class Notes extends React.Component {
@@ -52,7 +53,7 @@ class Notes extends React.Component {
 
     return (
       <div>
-        <button onClick={() => this.onNoteOpen(notes)}>Notes</button>
+        <button className={style.button} onClick={() => this.onNoteOpen(notes)}>Notes</button>
         {/*<div>{this.state.timestamp}</div> */} 
 
           <Modal isShown={this.state.showNotes} onClose={this.onNoteClose} >

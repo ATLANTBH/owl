@@ -9,6 +9,7 @@ import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import DurationFormat from '../../components/DurationFormat';
 import TableHeader from '../../components/TableHeader';
+import style from './table.css'
 import { getTestRun, getTestSteps, postNotes } from '../api';
 
 const EMPTY_TEST_RUN = {
@@ -155,7 +156,7 @@ class TestStepsTable extends React.Component {
                 <td>{testStep.description}</td>
                 <td><ExecutionResult executionResult={testStep.executionResult} onClick={() => this.onShowExecutionResult(testStep)} /></td>
                 <td><DurationFormat duration={testStep.duration} /></td>
-                <td><Notes note={testStep.notes} onClick={(notes) => this.saveNotes(notes, testStep)}>Notes</Notes></td> 
+                <td> <div className={style.notetext}>{testStep.notes}</div> <Notes className={style.button} note={testStep.notes} onClick={(notes) => this.saveNotes(notes, testStep)}>Notes</Notes></td> 
               </tr>
             ),
             <tr>
