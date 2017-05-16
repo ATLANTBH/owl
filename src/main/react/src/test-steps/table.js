@@ -103,15 +103,12 @@ class TestStepsTable extends React.Component {
       currentExecutionResult: null
     });
   }  
-  
 
-  saveNotes(notes, testStep){
-    postNotes(this.state.testRun.id, testStep.id, notes)
+  saveNotes(notes, testStep) {
+    return postNotes(this.state.testRun.id, testStep.id, notes)
       .then(updatedTestStep => {
         Object.assign(testStep, updatedTestStep);
-        this.setState({
-          testSteps: updatedTestStep
-        });
+        this.forceUpdate();
       });
   }
 
@@ -133,7 +130,6 @@ class TestStepsTable extends React.Component {
             <li><Link to="/">Dashboard</Link></li>
             <li><Link to={linkToBuild(this.state.testRun.build)}>{this.state.testRun.build}</Link></li>
             <li><Link to={testRunLink}>{this.state.testRun.testSuite.suite}</Link></li>
-            {/*{valueOrNull(group, <li className="active">{group}</li>)}*/}
           </ol>
         </div>
         </div>;
