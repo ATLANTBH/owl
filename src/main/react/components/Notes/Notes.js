@@ -66,8 +66,8 @@ class Notes extends React.Component {
             <textarea cols="80" rows="10" value={this.state.value} onChange={this.handleChange}></textarea>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-default" onClick={this.onSaveNote}>Save </button>
             <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" className="btn btn-default" onClick={this.onSaveNote}>Save </button>
           </div>
         </Modal>
       </div>
