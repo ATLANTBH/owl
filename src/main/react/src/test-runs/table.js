@@ -114,7 +114,7 @@ class TestRunsPageTable extends React.Component {
                     <GithubInfo hash={testRun.gitHash} branch={testRun.gitBranch} />
                   </td>
                 </FeatureToggle>
-                <td>{testCaseLink(testRun)}</td>
+                <td><Link to={linkToTestRunsByBuild(testRun.build)}>{testRun.testSuite.suite}</Link></td>
                 <td><TimeFormat time={testRun.updatedAt} format='dd/mm/yyyy HH:MM' /></td>
                 <td>{testRun.exampleCount}</td>
                 <td>{testRun.failureCount}</td>

@@ -6,3 +6,6 @@
 .executionResultNoEvents {
   pointer-events: none;
 }
+
+td { cursor: pointer; cursor: hand; }
+
