@@ -54,7 +54,7 @@ class TestRunsPageTable extends React.Component {
 
   render() {
     function onRowClick(testRun, ev) {
-      if (ev.target.tagName !== 'A') {
+      if (ev.target.tagName !== 'A' && ev.target.parentNode.tagName !== 'A') {
         if (testRun.testSuite) {
           browserHistory.push('/test-runs/'+testRun.id+'/test-cases');
         }
@@ -105,13 +105,13 @@ class TestRunsPageTable extends React.Component {
           {notEmpty(this.state.testRuns.content,
             this.state.testRuns.content.map(testRun =>
               <tr className="navigateable-row" key={testRun.id} onClick={(ev) => onRowClick(testRun, ev)} >
-                <td><Link to={linkToTestRunsByBuild(testRun.build)}>{testRun.build}</Link></td>
+                <td><Link to={linkToTestRunsByBuild(testRun.build)}>{testRun.build} <i className="external-page-icon glyphicon glyphicon glyphicon-new-window"/></Link></td>
                 <FeatureToggle toggleKey="gitInfoFeatureToggle">
                   <td>
                     <GithubInfo hash={testRun.gitHash} branch={testRun.gitBranch} />
                   </td>
                 </FeatureToggle>
-                <td><Link to={linkToTestRunsBySuite(testRun.testSuite.id)}>{testRun.testSuite.suite}</Link></td>
+                <td><Link to={linkToTestRunsBySuite(testRun.testSuite.id)}>{testRun.testSuite.suite} <i className="external-page-icon glyphicon glyphicon glyphicon-new-window"/></Link></td>
                 <td><TimeFormat time={testRun.updatedAt} format='dd/mm/yyyy HH:MM' /></td>
                 <td>{testRun.exampleCount}</td>
                 <td>{testRun.failureCount}</td>

@@ -68,7 +68,7 @@ class TestStepsPage extends React.Component {
     const testRunId = this.state.testRun.id;
 
     function onRowClick(testCase, ev) {
-      if (ev.target.tagName !== 'A') {
+      if (ev.target.tagName !== 'A' && ev.target.parentNode.tagName !== 'A') {
           browserHistory.push(linkToTestSteps(testRunId, testCase.group));
       }
     }
@@ -102,7 +102,7 @@ class TestStepsPage extends React.Component {
             {notEmpty(this.state.testCases.content,
               this.state.testCases.content.map((testCase, index) =>
                 <tr className="navigateable-row" key={index} onClick={(ev) => onRowClick(testCase, ev)}>
-                  <td><Link to={linkToTestSteps(testRunId, testCase.group)}>{testCase.group}</Link></td>
+                  <td><Link to={linkToTestSteps(testRunId, testCase.group)}>{testCase.group} <i className="external-page-icon glyphicon  glyphicon-new-window"/></Link></td>
                   <td>{testCase.stepCount}</td>
                   <td>{testCase.stepsPassed}</td>
                   <td>{testCase.stepsFailed}</td>
