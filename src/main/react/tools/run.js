@@ -52,7 +52,7 @@ module.exports = task('run', () => new Promise((resolve) => {
           baseDir: 'public',
           middleware: [
             webpackDevMiddleware,
-            proxyMiddleware('/api', { target: 'http://localhost:8080' }),
+            proxyMiddleware('/api', { target: 'http://localhost:8090' }),
             require('webpack-hot-middleware')(compiler),
             require('connect-history-api-fallback')(),
           ],

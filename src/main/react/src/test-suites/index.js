@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import Layout from '../../components/Layout';
 import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
@@ -8,6 +8,7 @@ import SuccessRate from '../../components/SuccessRate';
 import TimeFormat from '../../components/TimeFormat';
 import TableHeader from '../../components/TableHeader';
 import { getTestSuites } from '../api';
+import { linkToTestRunsBySuite } from '../links';
 
 const EMPTY_TEST_SUITES = {
   content: []
@@ -43,6 +44,10 @@ class TestSuitesPage extends React.Component {
   }
 
   render() {
+    function onRowClick(testSuite) {
+      browserHistory.push(linkToTestRunsBySuite(testSuite.id));
+    }
+
     return (
       <Layout>
         <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test suites">
@@ -64,7 +69,7 @@ class TestSuitesPage extends React.Component {
             <tbody>
             {notEmpty(this.state.testSuites.content,
               this.state.testSuites.content.map(testSuite =>
-                <tr key={testSuite.id}>
+                <tr className="navigateable-row" key={testSuite.id} onClick={(ev) => onRowClick(testSuite, ev)}>
                   <td className="focused-cell">{testSuite.suite}</td>
                   <td><TimeFormat time={testSuite.createdAt} /></td>
                 </tr>

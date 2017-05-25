@@ -19,8 +19,8 @@ export function getTestCases(testRunId, page = 0, size = 10, sort = '') {
     .then(fetchResponseHandler);
 }
 
-export function getTestRuns(build = '', page = 0, size = 10, sort = '') {
-  return fetch(`/api/v1/test-runs?build=${build}&page=${page}&size=${size}&sort=${sort}`)
+export function getTestRuns(build = '', suite = '', page = 0, size = 10, sort = '') {
+  return fetch(`/api/v1/test-runs?build=${build}&testSuite=${suite}&page=${page}&size=${size}&sort=${sort}`)
     .then(fetchResponseHandler);
 }
 

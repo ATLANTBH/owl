@@ -37,6 +37,28 @@ public class TestRunFilterSpecification extends BaseFilterSpecification<TestRunF
 			result = criteriaBuilder.equal(root.get(BUILD_PROPERTY), filter.getBuild());
 		}
 
+		if (filter.getTestSuite() != null) {
+			result = and(criteriaBuilder, result,
+					criteriaBuilder.equal(root.get("testSuite").get("id"), filter.getTestSuite()));
+		}
+
 		return result;
 	}
+
+
+	private static Predicate and(CriteriaBuilder criteriaBuilder, Predicate... predicate) {
+		Predicate result = null;
+		for (int i = 0; i < predicate.length; i++) {
+			if (predicate[i] != null) {
+				if (result == null) {
+					result = predicate[i];
+				} else {
+					result = criteriaBuilder.and(result, predicate[i]);
+				}
+			}
+		}
+
+		return result;
+	}
+
 }

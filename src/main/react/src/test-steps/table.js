@@ -11,6 +11,7 @@ import DurationFormat from '../../components/DurationFormat';
 import TableHeader from '../../components/TableHeader';
 import style from './table.css'
 import { getTestRun, getTestSteps, postNotes } from '../api';
+import { linkToTestRunsByBuild } from '../links';
 
 const EMPTY_TEST_RUN = {
   build: null,
@@ -57,7 +58,7 @@ class TestStepsTable extends React.Component {
 
   getPageData(props, resetPagination = false) {
     this.setState({ isDataLoading: true });
-    
+
     const promises = [
       this.getTestRun(props.params.testRunId),
       getTestSteps(props.params.testRunId,
@@ -102,7 +103,7 @@ class TestStepsTable extends React.Component {
       isExecutionResultShown: false,
       currentExecutionResult: null
     });
-  }  
+  }
 
   saveNotes(notes, testStep) {
     return postNotes(this.state.testRun.id, testStep.id, notes)
@@ -116,10 +117,6 @@ class TestStepsTable extends React.Component {
     // const group = (this.state.testSteps.content[0] || {}).group;
     const testRunLink = `/test-runs/${this.state.testRun.id}/test-cases`;
 
-    function linkToBuild(build) {
-      return `/test-runs?build=${build}`;
-    }
-
     let testStepsTable = null;
     let breadCrumbs = null;
 
@@ -128,7 +125,7 @@ class TestStepsTable extends React.Component {
         <div className="col-md-12">
           <ol className="breadcrumb">
             <li><Link to="/">Dashboard</Link></li>
-            <li><Link to={linkToBuild(this.state.testRun.build)}>{this.state.testRun.build}</Link></li>
+            <li><Link to={linkToTestRunsByBuild(this.state.testRun.build)}>{this.state.testRun.build}</Link></li>
             <li><Link to={testRunLink}>{this.state.testRun.testSuite.suite}</Link></li>
           </ol>
         </div>
@@ -152,13 +149,13 @@ class TestStepsTable extends React.Component {
                 <td>{testStep.description}</td>
                 <td><ExecutionResult executionResult={testStep.executionResult} onClick={() => this.onShowExecutionResult(testStep)} /></td>
                 <td><DurationFormat duration={testStep.duration} /></td>
-                <td> <div className={style.notetext}>{testStep.notes}</div> <Notes className={style.button} note={testStep.notes} onClick={(notes) => this.saveNotes(notes, testStep)}>Notes</Notes></td> 
+                <td> <div className={style.notetext}>{testStep.notes}</div> <Notes className={style.button} note={testStep.notes} onClick={(notes) => this.saveNotes(notes, testStep)}>Notes</Notes></td>
               </tr>
             ),
             <tr>
               <td colSpan="4" className="text-center text-muted">No test steps available for this test case.</td>
             </tr>
-          )}  
+          )}
           </tbody>
         </table>;
     }
@@ -172,7 +169,7 @@ class TestStepsTable extends React.Component {
         <Waypoint onEnter={this.onRequestPageData} />
 
         <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test steps"/>
-        
+
         <Modal isShown={this.state.isExecutionResultShown} onClose={this.onExecutionResultModalClose}>
           <div className="modal-header">
             <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

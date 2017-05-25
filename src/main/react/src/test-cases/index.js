@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import Layout from '../../components/Layout';
 import Pagination from '../../components/Pagination';
 import Modal from '../../components/Modal';
@@ -8,6 +8,7 @@ import SuccessRate from '../../components/SuccessRate';
 import DurationFormat from '../../components/DurationFormat';
 import TableHeader from '../../components/TableHeader';
 import { getTestRun, getTestCases } from '../api';
+import { linkToTestSteps, linkToTestRunsByBuild } from '../links';
 
 const EMPTY_TEST_RUN = {
   build: null,
@@ -64,12 +65,12 @@ class TestStepsPage extends React.Component {
   }
 
   render() {
-    function linkToTestCase(testRunId, testGroupName) {
-      return `/test-runs/${testRunId}/test-steps/${testGroupName}`;
-    }
+    const testRunId = this.state.testRun.id;
 
-    function linkToTestRunsByBuild(build) {
-      return `/test-runs?build=${build}`;
+    function onRowClick(testCase, ev) {
+      if (ev.target.tagName !== 'A') {
+          browserHistory.push(linkToTestSteps(testRunId, testCase.group));
+      }
     }
 
     return (
@@ -100,8 +101,8 @@ class TestStepsPage extends React.Component {
             <tbody>
             {notEmpty(this.state.testCases.content,
               this.state.testCases.content.map((testCase, index) =>
-                <tr key={index}>
-                  <td><Link to={linkToTestCase(this.state.testRun.id, testCase.group)}>{testCase.group}</Link></td>
+                <tr className="navigateable-row" key={index} onClick={(ev) => onRowClick(testCase, ev)}>
+                  <td><Link to={linkToTestSteps(testRunId, testCase.group)}>{testCase.group}</Link></td>
                   <td>{testCase.stepCount}</td>
                   <td>{testCase.stepsPassed}</td>
                   <td>{testCase.stepsFailed}</td>

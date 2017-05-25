@@ -10,6 +10,12 @@ import TableHeader from '../../components/TableHeader';
 import FeatureToggle, { ifFeatureToggled } from '../../components/FeatureToggle';
 import { getTestRuns } from '../api';
 import GithubInfo from '../../components/GithubInfo';
+import {
+  linkToTestRunsByBuild,
+  linkToTestRunsBySuite,
+  linkToTestCase,
+  linkToTestSteps
+} from '../links';
 
 const EMPTY_TEST_RUNS = {
   content: []
@@ -38,6 +44,7 @@ class TestRunsPageTable extends React.Component {
 
   getPageData(props) {
     getTestRuns(props.location.query.build,
+      props.location.query.testSuite,
       props.location.query.page,
       props.location.query.size,
       props.location.query.sort)
@@ -46,22 +53,12 @@ class TestRunsPageTable extends React.Component {
   }
 
   render() {
-    function onRowClick(testRun){
-      if (testRun.testSuite) {
-        browserHistory.push('/test-runs/'+testRun.id+'/test-cases');
+    function onRowClick(testRun, ev) {
+      if (ev.target.tagName !== 'A') {
+        if (testRun.testSuite) {
+          browserHistory.push('/test-runs/'+testRun.id+'/test-cases');
+        }
       }
-    }
-
-    function linkToTestRunsByBuild(build) {
-      return `/test-runs?build=${build}`;
-    }
-
-    function linkToTestCase(testRunId) {
-      return `/test-runs/${testRunId}/test-cases`;
-    }
-
-    function linkToTestSteps(testRunId, testGroupName) {
-      return `/test-runs/${testRunId}/test-steps/${testGroupName}`;
     }
 
     function testCaseLink(testRun) {
@@ -107,14 +104,14 @@ class TestRunsPageTable extends React.Component {
           <tbody>
           {notEmpty(this.state.testRuns.content,
             this.state.testRuns.content.map(testRun =>
-              <tr key={testRun.id} onClick={() => onRowClick(testRun)} >
+              <tr className="navigateable-row" key={testRun.id} onClick={(ev) => onRowClick(testRun, ev)} >
                 <td><Link to={linkToTestRunsByBuild(testRun.build)}>{testRun.build}</Link></td>
                 <FeatureToggle toggleKey="gitInfoFeatureToggle">
                   <td>
                     <GithubInfo hash={testRun.gitHash} branch={testRun.gitBranch} />
                   </td>
                 </FeatureToggle>
-                <td><Link to={linkToTestRunsByBuild(testRun.build)}>{testRun.testSuite.suite}</Link></td>
+                <td><Link to={linkToTestRunsBySuite(testRun.testSuite.id)}>{testRun.testSuite.suite}</Link></td>
                 <td><TimeFormat time={testRun.updatedAt} format='dd/mm/yyyy HH:MM' /></td>
                 <td>{testRun.exampleCount}</td>
                 <td>{testRun.failureCount}</td>
