@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Date;
 
 import static com.atlantbh.test.reporter.utils.services.ServicesUtils.CREATED_AT_DESC_SORT;
@@ -24,6 +25,7 @@ import static com.atlantbh.test.reporter.utils.services.ServicesUtils.createPage
 @Service
 public class TestRunService {
 	private TestRunRepository testRunRepository;
+	private TestRun distinctBuilds;
 
 	/**
 	 * Sets test run repository.
@@ -88,6 +90,16 @@ public class TestRunService {
 	 */
 	public void updateCounts(Long id, int totalCases, int failedCases, float duration) {
 		testRunRepository.updateCounts(id, totalCases, failedCases, duration);
+	}
+
+	/**
+	 * Returns list of distinct build strings.
+	 *
+	 * @param filterQuery Filter query.
+	 * @return List of distinct build strings.
+	 */
+	public Collection<String> getDistinctBuilds(String filterQuery) {
+		return testRunRepository.getDistinctBuilds(filterQuery, new PageRequest(0, 10)).getContent();
 	}
 
 	private static <T> T nullOrDefault(T value, T defaultValue) {

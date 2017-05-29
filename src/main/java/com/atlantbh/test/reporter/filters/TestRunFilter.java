@@ -1,5 +1,11 @@
 package com.atlantbh.test.reporter.filters;
 
+import com.atlantbh.test.reporter.utils.DataUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * TestRunFilter wraps filter query params.
  * <p>
@@ -9,16 +15,16 @@ package com.atlantbh.test.reporter.filters;
  * @author Kenan Klisura
  */
 public class TestRunFilter {
-	private String build;
-	private Long testSuite;
+	private List<String> builds;
+	private List<Long> testSuites;
 
 	/**
 	 * Gets testSuite.
 	 *
 	 * @return the testSuite
 	 */
-	public Long getTestSuite() {
-		return testSuite;
+	public List<Long> getTestSuites() {
+		return testSuites;
 	}
 
 	/**
@@ -26,8 +32,8 @@ public class TestRunFilter {
 	 *
 	 * @param testSuite the testSuite
 	 */
-	public void setTestSuite(Long testSuite) {
-		this.testSuite = testSuite;
+	public void setTestSuite(String testSuite) {
+		this.testSuites = DataUtils.splitToLongList(testSuite);
 	}
 
 	/**
@@ -35,8 +41,8 @@ public class TestRunFilter {
 	 *
 	 * @return the build
 	 */
-	public String getBuild() {
-		return build;
+	public List<String> getBuilds() {
+		return builds;
 	}
 
 	/**
@@ -45,6 +51,6 @@ public class TestRunFilter {
 	 * @param build the build
 	 */
 	public void setBuild(String build) {
-		this.build = build;
+		this.builds = Arrays.asList(StringUtils.split(build, ','));
 	}
 }

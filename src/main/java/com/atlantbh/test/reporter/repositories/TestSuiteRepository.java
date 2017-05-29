@@ -2,6 +2,7 @@ package com.atlantbh.test.reporter.repositories;
 
 import com.atlantbh.test.reporter.models.TestSuite;
 import com.atlantbh.test.reporter.models.suite.TestSuiteStatistics;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -12,7 +13,8 @@ import java.util.List;
  *
  * @author Kenan Klisura
  */
-public interface TestSuiteRepository extends PagingAndSortingRepository<TestSuite, Long> {
+public interface TestSuiteRepository extends PagingAndSortingRepository<TestSuite, Long>,
+		JpaSpecificationExecutor<TestSuite> {
 	String STATISTICS_PER_BUILD_QUERY = "WITH\n" +
 			"    unique_builds AS (SELECT DISTINCT build\n" +
 			"      FROM test_runs\n" +

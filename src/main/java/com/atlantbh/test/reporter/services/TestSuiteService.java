@@ -1,5 +1,7 @@
 package com.atlantbh.test.reporter.services;
 
+import com.atlantbh.test.reporter.filters.TestSuiteFilter;
+import com.atlantbh.test.reporter.filters.specifications.TestSuiteFilterSpecification;
 import com.atlantbh.test.reporter.models.TestSuite;
 import com.atlantbh.test.reporter.models.suite.TestSuiteStatistics;
 import com.atlantbh.test.reporter.repositories.TestSuiteRepository;
@@ -69,12 +71,14 @@ public class TestSuiteService {
 	/**
 	 * Returns paginated list of test suites.
 	 *
+	 *
+	 * @param filter
 	 * @param page Spring pageable object.
 	 * @return Paginated list of test suites.
 	 */
-	public Page<TestSuite> getTestSuites(Pageable page) {
+	public Page<TestSuite> getTestSuites(TestSuiteFilter filter, Pageable page) {
 		final PageRequest pageRequest = createPageRequest(page, CREATED_AT_DESC_SORT);
-		return testSuiteRepository.findAll(pageRequest);
+		return testSuiteRepository.findAll(new TestSuiteFilterSpecification(filter), pageRequest);
 	}
 
 	/**
@@ -117,5 +121,20 @@ public class TestSuiteService {
 		testSuite.setUpdatedAt(new Date());
 
 		return testSuiteRepository.save(testSuite);
+	}
+
+	/**
+	 * Returns a single test suite.
+	 * @param testSuiteId Test suite id.
+	 * @return Test suite.
+	 * @throws ServiceException If test suite is not found.
+	 */
+	public TestSuite getTestSuite(Long testSuiteId) throws ServiceException {
+		TestSuite testSuite = testSuiteRepository.findOne(testSuiteId);
+		if (testSuite != null)  {
+			return testSuite;
+		}
+
+		throw new ServiceException("Cannot find test suite with id " + testSuiteId);
 	}
 }

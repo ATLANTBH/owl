@@ -1,6 +1,8 @@
 package com.atlantbh.test.reporter.repositories;
 
 import com.atlantbh.test.reporter.models.TestRun;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +10,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 
 /**
  * TestRun related database operations are defined here.
@@ -30,4 +33,12 @@ public interface TestRunRepository extends PagingAndSortingRepository<TestRun, L
 			"WHERE tr.id = :id")
 	void updateCounts(@Param("id")  Long id, @Param("totalCases") int totalCases, @Param("failedCases") int failedCases,
 					  @Param("duration ") float duration);
+
+	/**
+	 * Returns list of distinct builds from test runs.
+	 * @param filterQuery Filter build string.
+	 * @return List of distinct build strings.
+	 */
+	@Query("SELECT DISTINCT build FROM TestRun WHERE build LIKE %:filterQuery%")
+	Slice<String> getDistinctBuilds(@Param("filterQuery") String filterQuery, Pageable pageable);
 }

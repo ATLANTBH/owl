@@ -1,5 +1,6 @@
 package com.atlantbh.test.reporter.controllers;
 
+import com.atlantbh.test.reporter.filters.TestSuiteFilter;
 import com.atlantbh.test.reporter.models.TestSuite;
 import com.atlantbh.test.reporter.models.suite.TestSuiteStatistics;
 import com.atlantbh.test.reporter.services.TestSuiteService;
@@ -41,8 +42,18 @@ public class TestSuiteController {
 	 * Returns paginated list of all test suites.
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public Page<TestSuite> getTestSuites(Pageable page) {
-		return testSuiteService.getTestSuites(page);
+	public Page<TestSuite> getTestSuites(Pageable page, TestSuiteFilter filter) {
+		return testSuiteService.getTestSuites(filter, page);
+	}
+
+	/**
+	 * API: GET /api/v1/test-suites/:testSuiteId
+	 * <p>
+	 * Returns single test suite.
+	 */
+	@RequestMapping(value = "/{testSuiteId}", method = RequestMethod.GET)
+	public TestSuite getTestSuite(@PathVariable("testSuiteId") Long testSuiteId) throws ServiceException {
+		return testSuiteService.getTestSuite(testSuiteId);
 	}
 
 	/**
@@ -53,7 +64,7 @@ public class TestSuiteController {
 	 *
 	 */
 	@RequestMapping(value = "/{testSuiteId}/statistics", method = RequestMethod.GET)
-	public Collection<TestSuiteStatistics> getStatistics(@PathVariable("testSuiteId") Long testSuiteId, Pageable page)
+	public Collection<TestSuiteStatistics> getStatistics(@PathVariable("testSuiteId") Long testSuiteId)
 			throws ServiceException {
 		return testSuiteService.getStatistics(testSuiteId);
 	}

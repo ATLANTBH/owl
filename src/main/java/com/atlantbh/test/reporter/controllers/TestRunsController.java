@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.websocket.server.PathParam;
+import java.util.Collection;
+
 /**
  * Test Run controller. All test run related APIs entries are here.
  *
@@ -71,5 +74,17 @@ public class TestRunsController {
 	@RequestMapping(method = RequestMethod.POST)
 	public TestRun createTestRun(@RequestBody TestRun testRun) throws ServiceException {
 		return testRunService.create(testRun);
+	}
+
+	/**
+	 * API: GET /api/v1/test-runs/distinct-builds
+	 *
+	 * Gets a list of distinct builds.
+	 *
+	 * @return Test run.
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/distinct-builds")
+	public Collection<String> getDistinctBuilds(@PathParam("query") String query) throws ServiceException {
+		return testRunService.getDistinctBuilds(query);
 	}
 }

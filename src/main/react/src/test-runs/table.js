@@ -1,21 +1,25 @@
 import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
+import Select from 'react-select';
 import Pagination from '../../components/Pagination';
-import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
 import TimeFormat from '../../components/TimeFormat';
 import DurationFormat from '../../components/DurationFormat';
 import TableHeader from '../../components/TableHeader';
 import FeatureToggle, { ifFeatureToggled } from '../../components/FeatureToggle';
-import { getTestRuns } from '../api';
+import {
+  getTestRuns,
+  getDisinctBuilds,
+  getFilteredTestSuites,
+  getTestSuite } from '../api';
 import GithubInfo from '../../components/GithubInfo';
 import {
   linkToTestRunsByBuild,
   linkToTestRunsBySuite,
-  linkToTestCase,
-  linkToTestSteps
+  linkToTestCase
 } from '../links';
+import { updateQueryParams } from '../utils';
 
 const EMPTY_TEST_RUNS = {
   content: []
@@ -25,31 +29,126 @@ class TestRunsPageTable extends React.Component {
   constructor(){
     super();
 
+    this.onUpdateFilteredTestSuites = this.onUpdateFilteredTestSuites.bind(this);
+    this.onUpdateFilteredBuilds     = this.onUpdateFilteredBuilds.bind(this);
+
+    this.onLoadTestSuites           = this.onLoadTestSuites.bind(this);
+
     this.state = {
       isDataLoading: true,
       errorResponse: null,
-      testRuns: EMPTY_TEST_RUNS
+      testRuns: EMPTY_TEST_RUNS,
+      filteredBuilds: [],
+      filteredTestSuites: []
     }
   }
 
   componentDidMount() {
     this.setState({ isDataLoading: true });
 
+    this.setFilteredBuilds(this.props);
+    this.setFilteredTestSuites(this.props);
     this.getPageData(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
+    this.setFilteredBuilds(nextProps);
+    this.setFilteredTestSuites(nextProps);
     this.getPageData(nextProps);
+  }
+
+  setFilteredBuilds(props) {
+    if (props.location.query.build) {
+      this.setState({
+        filteredBuilds: props.location.query.build.split(',').map(build => {
+          return {
+            value: build,
+            label: build
+          }
+        })
+      });
+    } else {
+      this.setState({
+        filteredBuilds: []
+      });
+    }
+  }
+
+  setFilteredTestSuites(props) {
+    if (props.location.query.testSuite) {
+      let testSuiteIds = props.location.query.testSuite.split(',');
+
+      function resolveTestSuite(id) {
+        return getTestSuite(id)
+          .then(testSuite => {
+            return {
+              value: testSuite.id,
+              label: testSuite.suite
+            };
+          }, () => { null });
+      }
+
+      Promise.all(testSuiteIds.map(resolveTestSuite))
+        .then(testSuites => {
+          this.setState({
+            filteredTestSuites: testSuites
+          });
+        });
+    } else {
+      this.setState({
+        filteredTestSuites: []
+      });
+    }
   }
 
   getPageData(props) {
     getTestRuns(props.location.query.build,
-      props.location.query.testSuite,
-      props.location.query.page,
-      props.location.query.size,
-      props.location.query.sort)
-    .then(testRuns => this.setState({ isDataLoading: false, testRuns: testRuns }) )
-    .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }) );
+                props.location.query.testSuite,
+                props.location.query.page,
+                props.location.query.size,
+                props.location.query.sort)
+      .then(testRuns       => this.setState({ isDataLoading: false, testRuns }) )
+      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }) );
+  }
+
+  onUpdateFilteredTestSuites(options) {
+    const testSuite = options.map(option => option.value).join();
+    updateQueryParams({ testSuite });
+  }
+
+  onUpdateFilteredBuilds(options) {
+    const build = options.map(option => option.value).join();
+    updateQueryParams({ build });
+  }
+
+  onLoadDistinctBuilds(input, callback) {
+    getDisinctBuilds(input)
+      .then(function (data) {
+        callback(null, {
+          complete: true,
+          options: data.map(value => {
+            return {
+              value,
+              label: value
+            };
+          })
+        });
+      });
+  }
+
+  onLoadTestSuites(input, callback) {
+    getFilteredTestSuites(input, 'suite')
+      .then(function (testSuites) {
+        callback(null, {
+          complete: true,
+          options: testSuites.content.map(testSuite => {
+            return {
+              value: testSuite.id,
+              label: testSuite.suite
+            };
+          })
+        });
+      });
   }
 
   render() {
@@ -74,14 +173,42 @@ class TestRunsPageTable extends React.Component {
       activeBuildQuery = <li className="active">{this.props.location.query.build}</li>;
     }
 
+    var availableTestSuites = [
+      { value: 'one', label: 'One' },
+      { value: 'two', label: 'Two' }
+    ];
+
     return (
       <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test runs">
-        <div className="row">
-          <div className="col-md-12">
-            <ol className="breadcrumb">
-              <li><Link to="/">Dashboard</Link></li>
-              {activeBuildQuery}
-            </ol>
+        <div className="navbar-section">
+          <div className="row">
+            <div className="col-md-12">
+              <ol className="breadcrumb">
+                <li><Link to="/">Dashboard</Link></li>
+              </ol>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-12">
+              <Select.Async
+                name="select-builds"
+                multi={true}
+                value={this.state.filteredBuilds}
+                placeholder='Jenkins Builds'
+                loadOptions={this.onLoadDistinctBuilds}
+                onChange={this.onUpdateFilteredBuilds}
+              />
+
+              <Select.Async
+                name="select-test-suites"
+                multi={true}
+                value={this.state.filteredTestSuites}
+                placeholder='Test Suites'
+                loadOptions={this.onLoadTestSuites}
+                onChange={this.onUpdateFilteredTestSuites}
+              />
+            </div>
           </div>
         </div>
 

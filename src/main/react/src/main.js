@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import 'whatwg-fetch';
+import "!style-loader!css-loader!react-select/dist/react-select.css";
 
 import React from 'react';
 import { render } from 'react-dom';

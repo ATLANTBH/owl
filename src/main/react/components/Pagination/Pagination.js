@@ -53,7 +53,7 @@ class Pagination extends React.Component {
 
     const pages = [];
 
-    const lowerPage = Math.max(0, activePageNumber - numberOfViewPages);
+    const lowerPage = Math.max(0, activePageNumber - numberOfViewPages + 1);
     const higherPage = Math.min(paginatedResponse.totalPages, activePageNumber + numberOfViewPages);
 
     let hasLastElement = lowerPage === higherPage;

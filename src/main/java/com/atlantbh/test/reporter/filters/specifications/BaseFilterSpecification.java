@@ -59,4 +59,19 @@ public class BaseFilterSpecification<T, U> implements Specification<U> {
 	public Predicate toPredicate(Root<U> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 		return null;
 	}
+
+	protected static Predicate and(CriteriaBuilder criteriaBuilder, Predicate... predicate) {
+		Predicate result = null;
+		for (int i = 0; i < predicate.length; i++) {
+			if (predicate[i] != null) {
+				if (result == null) {
+					result = predicate[i];
+				} else {
+					result = criteriaBuilder.and(result, predicate[i]);
+				}
+			}
+		}
+
+		return result;
+	}
 }

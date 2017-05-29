@@ -138,15 +138,8 @@ const config = {
             options: {
               config: './tools/postcss.config.js',
             },
-          },
+          }
         ],
-      },
-      {
-        test: /\.json$/,
-        exclude: [
-          path.resolve(__dirname, '../src/routes.json'),
-        ],
-        loader: 'json-loader',
       },
       {
         test: /\.json$/,

@@ -2,7 +2,7 @@ package com.atlantbh.test.reporter.filters.specifications;
 
 import com.atlantbh.test.reporter.filters.TestRunFilter;
 import com.atlantbh.test.reporter.models.TestRun;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -33,32 +33,15 @@ public class TestRunFilterSpecification extends BaseFilterSpecification<TestRunF
 	public Predicate toPredicate(Root<TestRun> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 		Predicate result = null;
 
-		if (StringUtils.isNotEmpty(filter.getBuild())) {
-			result = criteriaBuilder.equal(root.get(BUILD_PROPERTY), filter.getBuild());
+		if (!CollectionUtils.isEmpty(filter.getBuilds())) {
+			result = criteriaBuilder.in(root.get(BUILD_PROPERTY)).value(filter.getBuilds());
 		}
 
-		if (filter.getTestSuite() != null) {
+		if (!CollectionUtils.isEmpty(filter.getTestSuites())) {
 			result = and(criteriaBuilder, result,
-					criteriaBuilder.equal(root.get("testSuite").get("id"), filter.getTestSuite()));
+					criteriaBuilder.in(root.get("testSuite").get("id")).value(filter.getTestSuites()));
 		}
 
 		return result;
 	}
-
-
-	private static Predicate and(CriteriaBuilder criteriaBuilder, Predicate... predicate) {
-		Predicate result = null;
-		for (int i = 0; i < predicate.length; i++) {
-			if (predicate[i] != null) {
-				if (result == null) {
-					result = predicate[i];
-				} else {
-					result = criteriaBuilder.and(result, predicate[i]);
-				}
-			}
-		}
-
-		return result;
-	}
-
 }
