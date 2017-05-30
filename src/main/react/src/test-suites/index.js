@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import Layout from '../../components/Layout';
 import Pagination from '../../components/Pagination';
-import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
 import TimeFormat from '../../components/TimeFormat';

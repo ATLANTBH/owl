@@ -63,7 +63,11 @@ class Notes extends React.Component {
             <h4 className="modal-title text-muted">Notes</h4>
           </div>
           <div className="modal-body">
-            <textarea cols="80" rows="10" value={this.state.value} onChange={this.handleChange}></textarea>
+            <div className="row">
+              <div className="col-md-12">
+                <textarea className="form-control" cols="80" rows="10" value={this.state.value} onChange={this.handleChange}></textarea>
+              </div>
+            </div>
           </div>
           <div className="modal-footer">
             <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>

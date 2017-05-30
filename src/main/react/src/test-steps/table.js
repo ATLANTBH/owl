@@ -127,6 +127,7 @@ class TestStepsTable extends React.Component {
             <li><Link to="/">Dashboard</Link></li>
             <li><Link to={linkToTestRunsByBuild(this.state.testRun.build)}>{this.state.testRun.build}</Link></li>
             <li><Link to={testRunLink}>{this.state.testRun.testSuite.suite}</Link></li>
+            <li className="active">Test Steps</li>
           </ol>
         </div>
         </div>;

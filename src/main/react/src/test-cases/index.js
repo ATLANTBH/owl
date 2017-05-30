@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { Link, browserHistory } from 'react-router';
 import Layout from '../../components/Layout';
 import Pagination from '../../components/Pagination';
-import Modal from '../../components/Modal';
 import Spinner from '../../components/Spinner';
 import SuccessRate from '../../components/SuccessRate';
 import DurationFormat from '../../components/DurationFormat';
@@ -102,7 +101,7 @@ class TestStepsPage extends React.Component {
             {notEmpty(this.state.testCases.content,
               this.state.testCases.content.map((testCase, index) =>
                 <tr className="navigateable-row" key={index} onClick={(ev) => onRowClick(testCase, ev)}>
-                  <td><Link to={linkToTestSteps(testRunId, testCase.group)}>{testCase.group} <i className="external-page-icon glyphicon  glyphicon-new-window"/></Link></td>
+                  <td><Link to={linkToTestSteps(testRunId, testCase.group)}>{testCase.group}</Link></td>
                   <td>{testCase.stepCount}</td>
                   <td>{testCase.stepsPassed}</td>
                   <td>{testCase.stepsFailed}</td>
