@@ -81,10 +81,22 @@ public class TestRunsController {
 	 *
 	 * Gets a list of distinct builds.
 	 *
-	 * @return Test run.
+	 * @return Distinct list of test builds.
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/distinct-builds")
 	public Collection<String> getDistinctBuilds(@PathParam("query") String query) throws ServiceException {
 		return testRunService.getDistinctBuilds(query);
+	}
+
+	/**
+	 * API: GET /api/v1/test-runs/distinct-git
+	 *
+	 * Gets a list of distinct branches or hashes.
+	 *
+	 * @return Test run.
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/distinct-git")
+	public Collection<String> getDistinctGitBranch(@PathParam("query") String query) throws ServiceException {
+		return testRunService.getDistinctGitBranch(query);
 	}
 }

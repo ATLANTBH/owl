@@ -19,8 +19,8 @@ export function getTestCases(testRunId, page = 0, size = 10, sort = '') {
     .then(fetchResponseHandler);
 }
 
-export function getTestRuns(build = '', suite = '', page = 0, size = 10, sort = '') {
-  return fetch(`/api/v1/test-runs?build=${build}&testSuite=${suite}&page=${page}&size=${size}&sort=${sort}`)
+export function getTestRuns(build = '', git = '', suite = '', page = 0, size = 10, sort = '') {
+  return fetch(`/api/v1/test-runs?build=${build}&git=${git}&testSuite=${suite}&page=${page}&size=${size}&sort=${sort}`)
     .then(fetchResponseHandler);
 }
 
@@ -41,6 +41,11 @@ export function getTestSuite(id) {
 
 export function getFilteredTestSuites(suite, sort = '') {
   return fetch(`/api/v1/test-suites?suite=${suite}&sort=${sort}`)
+    .then(fetchResponseHandler);
+}
+
+export function getDisinctGit(query) {
+  return fetch(`/api/v1/test-runs/distinct-git?query=${query}`)
     .then(fetchResponseHandler);
 }
 

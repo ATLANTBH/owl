@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 
 import static com.atlantbh.test.reporter.utils.services.ServicesUtils.CREATED_AT_DESC_SORT;
 import static com.atlantbh.test.reporter.utils.services.ServicesUtils.createPageRequest;
@@ -25,7 +26,6 @@ import static com.atlantbh.test.reporter.utils.services.ServicesUtils.createPage
 @Service
 public class TestRunService {
 	private TestRunRepository testRunRepository;
-	private TestRun distinctBuilds;
 
 	/**
 	 * Sets test run repository.
@@ -71,10 +71,10 @@ public class TestRunService {
 	 * @return Test run.
 	 */
 	public TestRun create(TestRun testRun) {
-		testRun.setExampleCount(nullOrDefault(testRun.getExampleCount(), 0));
-		testRun.setPendingCount(nullOrDefault(testRun.getPendingCount(), 0));
-		testRun.setFailureCount(nullOrDefault(testRun.getFailureCount(), 0));
-		testRun.setDuration(nullOrDefault(testRun.getDuration(), 0D));
+		testRun.setExampleCount(Optional.ofNullable(testRun.getExampleCount()).orElse(0));
+		testRun.setPendingCount(Optional.ofNullable(testRun.getPendingCount()).orElse(0));
+		testRun.setFailureCount(Optional.ofNullable(testRun.getFailureCount()).orElse(0));
+		testRun.setDuration(Optional.ofNullable(testRun.getDuration()).orElse(0D));
 
 		testRun.setCreatedAt(new Date());
 		testRun.setUpdatedAt(new Date());
@@ -102,7 +102,13 @@ public class TestRunService {
 		return testRunRepository.getDistinctBuilds(filterQuery, new PageRequest(0, 10)).getContent();
 	}
 
-	private static <T> T nullOrDefault(T value, T defaultValue) {
-		return value != null ? value : defaultValue;
+	/**
+	 * Returns list of distinct git branch information.
+	 *
+	 * @param filterQuery Filter query.
+	 * @return List of distinct branches/hashes.
+	 */
+	public Collection<String> getDistinctGitBranch(String filterQuery) {
+		return testRunRepository.getDistinctGitBranch(Optional.ofNullable(filterQuery).orElse(""));
 	}
 }

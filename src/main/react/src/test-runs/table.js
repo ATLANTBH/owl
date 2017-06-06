@@ -11,6 +11,7 @@ import FeatureToggle, { ifFeatureToggled } from '../../components/FeatureToggle'
 import {
   getTestRuns,
   getDisinctBuilds,
+  getDisinctGit,
   getFilteredTestSuites,
   getTestSuite } from '../api';
 import GithubInfo from '../../components/GithubInfo';
@@ -31,6 +32,7 @@ class TestRunsPageTable extends React.Component {
 
     this.onUpdateFilteredTestSuites = this.onUpdateFilteredTestSuites.bind(this);
     this.onUpdateFilteredBuilds     = this.onUpdateFilteredBuilds.bind(this);
+    this.onUpdateFilteredGitBranch  = this.onUpdateFilteredGitBranch.bind(this);
 
     this.onLoadTestSuites           = this.onLoadTestSuites.bind(this);
 
@@ -39,6 +41,7 @@ class TestRunsPageTable extends React.Component {
       errorResponse: null,
       testRuns: EMPTY_TEST_RUNS,
       filteredBuilds: [],
+      filteredGitBranch: [],
       filteredTestSuites: []
     }
   }
@@ -47,12 +50,14 @@ class TestRunsPageTable extends React.Component {
     this.setState({ isDataLoading: true });
 
     this.setFilteredBuilds(this.props);
+    this.setFilteredGitBranch(this.props);
     this.setFilteredTestSuites(this.props);
     this.getPageData(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setFilteredBuilds(nextProps);
+    this.setFilteredGitBranch(nextProps);
     this.setFilteredTestSuites(nextProps);
     this.getPageData(nextProps);
   }
@@ -70,6 +75,23 @@ class TestRunsPageTable extends React.Component {
     } else {
       this.setState({
         filteredBuilds: []
+      });
+    }
+  }
+
+  setFilteredGitBranch(props) {
+    if (props.location.query.git) {
+      this.setState({
+        filteredGitBranch: props.location.query.git.split(',').map(value => {
+          return {
+            value,
+            label: value
+          }
+        })
+      });
+    } else {
+      this.setState({
+        filteredGitBranch: []
       });
     }
   }
@@ -103,6 +125,7 @@ class TestRunsPageTable extends React.Component {
 
   getPageData(props) {
     getTestRuns(props.location.query.build,
+                props.location.query.git,
                 props.location.query.testSuite,
                 props.location.query.page,
                 props.location.query.size,
@@ -121,8 +144,28 @@ class TestRunsPageTable extends React.Component {
     updateQueryParams({ build });
   }
 
+  onUpdateFilteredGitBranch(options) {
+    const git = options.map(option => option.value).join();
+    updateQueryParams({ git });
+  }
+
   onLoadDistinctBuilds(input, callback) {
     getDisinctBuilds(input)
+      .then(function (data) {
+        callback(null, {
+          complete: true,
+          options: data.map(value => {
+            return {
+              value,
+              label: value
+            };
+          })
+        });
+      });
+  }
+
+  onLoadDistinctGitBranch(input, callback) {
+    getDisinctGit(input)
       .then(function (data) {
         callback(null, {
           complete: true,
@@ -168,15 +211,18 @@ class TestRunsPageTable extends React.Component {
       return null;
     }
 
+    function testSuiteLink(testRun) {
+      if (testRun.testSuite) {
+        return (<Link to={linkToTestRunsBySuite(testRun.testSuite.id)}>{testRun.testSuite.suite} <i className="external-page-icon glyphicon glyphicon-filter"/></Link>);
+      }
+
+      return null;
+    }
+
     let activeBuildQuery = null;
     if (this.props.location.query.build) {
       activeBuildQuery = <li className="active">{this.props.location.query.build}</li>;
     }
-
-    var availableTestSuites = [
-      { value: 'one', label: 'One' },
-      { value: 'two', label: 'Two' }
-    ];
 
     return (
       <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test runs">
@@ -199,6 +245,17 @@ class TestRunsPageTable extends React.Component {
                 loadOptions={this.onLoadDistinctBuilds}
                 onChange={this.onUpdateFilteredBuilds}
               />
+
+              <FeatureToggle toggleKey="gitInfoFeatureToggle">
+                <Select.Async
+                  name="select-git-branch"
+                  multi={true}
+                  value={this.state.filteredGitBranch}
+                  placeholder='Git Branch/Commit'
+                  loadOptions={this.onLoadDistinctGitBranch}
+                  onChange={this.onUpdateFilteredGitBranch}
+                />
+              </FeatureToggle>
 
               <Select.Async
                 name="select-test-suites"
@@ -232,13 +289,13 @@ class TestRunsPageTable extends React.Component {
           {notEmpty(this.state.testRuns.content,
             this.state.testRuns.content.map(testRun =>
               <tr className="navigateable-row" key={testRun.id} onClick={(ev) => onRowClick(testRun, ev)} >
-                <td><Link to={linkToTestRunsByBuild(testRun.build)}>{testRun.build} <i className="external-page-icon glyphicon glyphicon glyphicon-filter"/></Link></td>
+                <td className="focused-cell">{testRun.build}</td>
                 <FeatureToggle toggleKey="gitInfoFeatureToggle">
                   <td>
                     <GithubInfo hash={testRun.gitHash} branch={testRun.gitBranch} />
                   </td>
                 </FeatureToggle>
-                <td><Link to={linkToTestRunsBySuite(testRun.testSuite.id)}>{testRun.testSuite.suite} <i className="external-page-icon glyphicon glyphicon-filter"/></Link></td>
+                <td>{testSuiteLink(testRun)}</td>
                 <td><TimeFormat time={testRun.updatedAt} format='dd/mm/yyyy HH:MM' /></td>
                 <td>{testRun.exampleCount}</td>
                 <td>{testRun.failureCount}</td>

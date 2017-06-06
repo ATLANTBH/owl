@@ -10,15 +10,25 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * TestRun related database operations are defined here.
  *
  * @author Kenan Klisura
  */
-public interface TestRunRepository extends PagingAndSortingRepository<TestRun, Long>,
-		JpaSpecificationExecutor<TestRun> {
+public interface TestRunRepository extends PagingAndSortingRepository<TestRun, Long>, JpaSpecificationExecutor<TestRun>
+{
+	String DISTINCT_GIT_BRANCH_QUERY = "SELECT tbl.col \n" +
+			"FROM\n" +
+			"  ((SELECT DISTINCT git_hash AS col \n" +
+			"    FROM test_runs \n" +
+			"    WHERE git_hash IS NOT NULL AND git_hash LIKE %:filterQuery% LIMIT 5)\n" +
+			"  UNION (SELECT DISTINCT git_branch AS col \n" +
+			"         FROM test_runs \n" +
+			"         WHERE git_branch IS NOT NULL AND git_branch LIKE %:filterQuery% LIMIT 5)) AS tbl\n" +
+			"ORDER BY tbl.col ASC";
+
 	/**
 	 * Updates counts of test run.
 	 * @param id Test run id.
@@ -41,4 +51,12 @@ public interface TestRunRepository extends PagingAndSortingRepository<TestRun, L
 	 */
 	@Query("SELECT DISTINCT build FROM TestRun WHERE build LIKE %:filterQuery%")
 	Slice<String> getDistinctBuilds(@Param("filterQuery") String filterQuery, Pageable pageable);
+
+	/**
+	 * Returns list of distinct builds from test runs.
+	 * @param filterQuery Filter build string.
+	 * @return List of distinct build strings.
+	 */
+	@Query(value = DISTINCT_GIT_BRANCH_QUERY, nativeQuery = true)
+	List<String> getDistinctGitBranch(@Param("filterQuery") String filterQuery);
 }

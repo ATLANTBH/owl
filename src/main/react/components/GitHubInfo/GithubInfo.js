@@ -17,13 +17,16 @@ class GithubInfo extends React.Component {
       return (<a href={githubRepoLink + '/commit/' + commit} target="_blank">{title ? title : commit}</a>)
     }
 
+    function shorttenHash(hash) {
+      return (hash || '').substr(0, 8);
+    }
+
     const branch = this.props.branch ?
       githubBranchLink(this.props.branch) :
       null;
 
-    const hashTitle = this.props.branch ?
-      '(#' + this.props.hash + ')' :
-      '#' + this.props.hash;
+    const shortHash = '#' + shorttenHash(this.props.hash);
+    const hashTitle = this.props.branch ? '(' + shortHash + ')' : shortHash;
 
     const hash = this.props.hash ?
       githubCommitLink(this.props.hash, hashTitle) :

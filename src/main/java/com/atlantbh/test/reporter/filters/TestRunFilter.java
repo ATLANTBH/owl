@@ -17,6 +17,25 @@ import java.util.List;
 public class TestRunFilter {
 	private List<String> builds;
 	private List<Long> testSuites;
+	private List<String> git;
+
+	/**
+	 * Gets git.
+	 *
+	 * @return the git
+	 */
+	public List<String> getGit() {
+		return git;
+	}
+
+	/**
+	 * Sets git.
+	 *
+	 * @param git the git
+	 */
+	public void setGit(String git) {
+		this.git = Arrays.asList(StringUtils.split(git, ','));
+	}
 
 	/**
 	 * Gets testSuite.

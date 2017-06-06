@@ -42,6 +42,16 @@ public class TestRunFilterSpecification extends BaseFilterSpecification<TestRunF
 					criteriaBuilder.in(root.get("testSuite").get("id")).value(filter.getTestSuites()));
 		}
 
+		if (!CollectionUtils.isEmpty(filter.getGit())) {
+			result = and(criteriaBuilder, result,
+					criteriaBuilder.or(
+							criteriaBuilder.in(root.get("gitHash")).value(filter.getGit()),
+							criteriaBuilder.in(root.get("gitBranch")).value(filter.getGit())
+					));
+		}
+
+		result = and(criteriaBuilder, result, criteriaBuilder.isNotNull(root.get("testSuite")));
+
 		return result;
 	}
 }
