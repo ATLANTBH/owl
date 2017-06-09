@@ -51,16 +51,21 @@ logging.level.org.hibernate.SQL=debug
 
 # Set port - 0 means the default port will be used
 server.port=0
+
+# Properties for flyway baseline migrations
+flyway.url=jdbc:postgresql://<database_host>:5432/<database_name>
+flyway.user=<database_username>
+flyway.password=<database_password>
 ```
 
 The configuration can be saved to a file and passed when starting the app with:
 ```
-java -jar target/test-reporter-VERSION.jar --spring.config.location=PATH_TO_CONFIGURATION
+java -jar target/test-reporter-VERSION.jar --spring.config.location=<application.properties>
 ```
 
-If there is already a database with data, flyway should be installed (`brew install flyway` for macOS with homebrew) and flyway baseline migration should be run with the database properties you are using:
+If there is already a database with data, flyway baseline migration should be run with the flyway properties specified in the properties file:
 ```
-flyway -url=jdbc:postgresql://<database_host>:5432/<database_name> -user=<database_user> -password=<database_password> baseline
+mvn flyway:baseline -Dflyway.configFile=<application.properties>
 ```
 
 ## API
