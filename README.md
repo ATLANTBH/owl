@@ -128,7 +128,7 @@ This API returns statistics for given test suite id. Statistics is composed of `
 	yarn --version
 	```
 
-- Database named `test-repoter` with user `testreporter' and pw `testreporter` should be created and populated with initial data.
+- Database named `test-repoter` with user `testreporter` and pw `testreporter` should be created and populated with initial data.
  
 - Baseline migrations should be applied by running
 
