@@ -31,8 +31,8 @@ An external configuration can be provided when starting the app to configure the
 # Sets the project name to be visible on frontend
 project.name=Test Report App
 
-# Comma separated list of suite names that will be shown on dashboard
-suite.statistics=
+# Comma separated list of suite names that will be shown on dashboard (can be left empty)
+suite.statistics=smoke test,regression test
 
 # Feature toogles
 # Show git information on dashboard - branch and commit hash of the tested code
