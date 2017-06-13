@@ -23,6 +23,7 @@ public interface TestCaseRepository extends PagingAndSortingRepository<TestCase,
 		"  SUM((execution_result = 'failed')\\:\\:INTEGER) AS \"steps_failed\",\n" +
 		"  SUM((execution_result = 'pending')\\:\\:INTEGER) AS \"steps_pending\",\n" +
 		"  SUM(duration) AS \"duration\",\n" +
+		"  AVG((execution_result = 'passed')\\:\\:INTEGER) AS \"success_rate\"," +
 		"  :testRunId AS \"test_runs_id\"\n" +
 		"FROM test_cases\n" +
 		"WHERE test_runs_id = :testRunId\n" +

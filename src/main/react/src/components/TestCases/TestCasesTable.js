@@ -29,7 +29,7 @@ class TestCasesTable extends React.Component {
             <TableHeader sortKey="steps_passed">Steps Passed</TableHeader>
             <TableHeader sortKey="steps_failed">Steps Failed</TableHeader>
             <TableHeader sortKey="steps_pending">Steps Pending</TableHeader>
-            <TableHeader>Success Rate</TableHeader>
+            <TableHeader sortKey="success_rate">Success Rate</TableHeader>
             <TableHeader sortKey="duration">Duration</TableHeader>
           </tr>
         </thead>
