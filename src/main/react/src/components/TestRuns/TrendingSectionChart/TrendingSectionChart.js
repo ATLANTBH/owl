@@ -112,7 +112,7 @@ function getStatistics(statistics) {
 }
 
 function round(value) {
-  return Math.floor(value * 100) / 100;
+  return Math.floor((value || 0) * 100) / 100;
 }
 
 export default TrendingSectionChart;
