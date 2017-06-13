@@ -29,9 +29,14 @@ public class TestSuiteFilterSpecification extends BaseFilterSpecification<TestSu
 		Predicate result = null;
 
 		if (StringUtils.isNotEmpty(filter.getSuite())) {
-			result = criteriaBuilder.like(root.get(SUITE_PROPERTY), filter.getSuite());
+			result = criteriaBuilder.like(criteriaBuilder.lower(root.get(SUITE_PROPERTY)),
+					buildLikeValue(filter.getSuite()));
 		}
 
 		return result;
+	}
+
+	private static String buildLikeValue(String value) {
+		return "%" + value.toLowerCase() + "%";
 	}
 }

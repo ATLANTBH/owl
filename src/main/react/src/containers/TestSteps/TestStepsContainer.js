@@ -5,9 +5,9 @@ import TestStepsTable from '../../components/TestSteps/TestStepsTable';
 import Layout from '../../components/Layout';
 import {getTestRun, getTestSteps, saveNotes} from '../../api';
 import Spinner from '../../components/ui/Spinner';
-import {linkToTestRunsByBuild} from '../../links';
 import ExecutionResultModalContainer from './ExecutionResultModalContainer';
-import EditNotesModalContainer from './EditNotesModalContainer';
+import EditNotesModalContainer from './EditNotesModal/EditNotesModalContainer';
+import {mergePaginatedModels} from '../../utils/model';
 
 const EMPTY_TEST_RUN = {
   build: null,
@@ -117,7 +117,7 @@ class TestStepsContainer extends React.Component {
             isInitialDataLoading: false,
             isDataLoading: false,
             testRun,
-            testSteps: resetPagination ? testSteps : mergeTestSteps(prev.testSteps, testSteps)
+            testSteps: resetPagination ? testSteps : mergePaginatedModels(prev.testSteps, testSteps)
           })
         )
       )
@@ -134,6 +134,8 @@ class TestStepsContainer extends React.Component {
   }
 
   render() {
+    const testCase = this.props.params.splat;
+
     return (
       <Layout>
         <Spinner isShown={this.state.isInitialDataLoading} errorResponse={this.state.errorResponse} text="Fetching test runs...">
@@ -141,8 +143,9 @@ class TestStepsContainer extends React.Component {
             <div className="col-md-12">
               <ol className="breadcrumb">
                 <li><Link to="/">Dashboard</Link></li>
-                <li><Link to={linkToTestRunsByBuild(this.state.testRun.build)}>{this.state.testRun.build}</Link></li>
+                <li title="Build">{this.state.testRun.build}</li>
                 <li><Link to={`/test-runs/${this.state.testRun.id}/test-cases`}>{this.state.testRun.testSuite.suite}</Link></li>
+                <li>{testCase}</li>
                 <li className="active">Test Steps</li>
               </ol>
             </div>
@@ -171,13 +174,6 @@ class TestStepsContainer extends React.Component {
       </Layout>
     );
   }
-}
-
-function mergeTestSteps(prev, next) {
-  return {
-    ...next,
-    content: prev.content.concat(next.content)
-  };
 }
 
 export default TestStepsContainer;

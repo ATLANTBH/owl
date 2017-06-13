@@ -17,8 +17,8 @@ class TestStepsTable extends React.Component {
       <table className="table table-bordered table-hover">
         <thead>
           <tr>
-            <TableHeader sortKey="context">Description</TableHeader>
-            <TableHeader sortKey="description">Expected Result</TableHeader>
+            <TableHeader>Description</TableHeader>
+            <TableHeader>Expected Result</TableHeader>
             <TableHeader sortKey="executionResult">Execution Result</TableHeader>
             <TableHeader sortKey="duration">Duration</TableHeader>
             <TableHeader>Notes</TableHeader>

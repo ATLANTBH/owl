@@ -9,13 +9,16 @@ import com.atlantbh.test.reporter.repositories.TestCaseRepository;
 import com.atlantbh.test.reporter.services.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.Collections;
 
 import static com.atlantbh.test.reporter.models.TestStep.EXECUTION_RESULT_FAILURE;
 import static com.atlantbh.test.reporter.models.TestStep.EXECUTION_RESULT_SUCCESS;
+import static com.atlantbh.test.reporter.utils.services.ServicesUtils.createPageRequest;
 
 /**
  * TestCase service. All test case domain operations are defined here.
@@ -24,6 +27,8 @@ import static com.atlantbh.test.reporter.models.TestStep.EXECUTION_RESULT_SUCCES
  */
 @Service
 public class TestCaseService {
+	private static final String TEST_GROUP_SORT_PROPERTY = "test_group";
+
 	private TestRunService testRunService;
 	private TestCaseRepository testCaseRepository;
 	private TestStepService testStepService;
@@ -68,7 +73,8 @@ public class TestCaseService {
 	 */
 	public Page<TestCase> getTestCases(Long testRunId, Pageable page) throws ServiceException {
 		final TestRun testRun = testRunService.get(testRunId);
-		return testCaseRepository.findByTestRunId(testRun.getId(), page);
+		final PageRequest pageRequest = createPageRequest(page, null, Collections.singletonList(TEST_GROUP_SORT_PROPERTY));
+		return testCaseRepository.findByTestRunId(testRun.getId(), pageRequest);
 	}
 
 	/**

@@ -23,11 +23,11 @@ public interface TestRunRepository extends PagingAndSortingRepository<TestRun, L
 			"FROM\n" +
 			"  ((SELECT DISTINCT git_hash AS col \n" +
 			"    FROM test_runs \n" +
-			"    WHERE git_hash IS NOT NULL AND git_hash LIKE %:filterQuery% LIMIT 5)\n" +
+			"    WHERE git_hash IS NOT NULL AND LOWER(git_hash) LIKE %:filterQuery% LIMIT 5)\n" +
 			"  UNION (SELECT DISTINCT git_branch AS col \n" +
 			"         FROM test_runs \n" +
-			"         WHERE git_branch IS NOT NULL AND git_branch LIKE %:filterQuery% LIMIT 5)) AS tbl\n" +
-			"ORDER BY tbl.col ASC";
+			"         WHERE git_branch IS NOT NULL AND LOWER(git_branch) LIKE %:filterQuery% LIMIT 5)) AS tbl\n" +
+			"ORDER BY LOWER(tbl.col) ASC";
 
 	/**
 	 * Updates counts of test run.

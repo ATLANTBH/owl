@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
 import Layout from '../../components/Layout';
 import Pagination from '../../components/ui/Pagination';
 import Spinner from '../../components/ui/Spinner';
@@ -46,7 +45,7 @@ class TestSuitesContainer extends React.Component {
           <div className="row">
             <div className="col-md-12">
               <ol className="breadcrumb">
-                <li><Link to="/test-suites">Test Suites</Link></li>
+                <li className="active">Test Suites</li>
               </ol>
             </div>
           </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router';
 import Layout from '../../components/Layout';
 import Pagination from '../../components/ui/Pagination';
 import TestRunsTable from '../../components/TestRuns/TestRunsTable';
@@ -33,8 +32,7 @@ class TestRunsContainer extends React.Component {
   }
 
   getTestRuns(props) {
-    getTestRuns(props.location.query.build,
-                props.location.query.git,
+    getTestRuns(props.location.query.git,
                 props.location.query.testSuite,
                 props.location.query.page,
                 props.location.query.size,
@@ -46,12 +44,12 @@ class TestRunsContainer extends React.Component {
   render() {
     return (
       <Layout>
-        <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test runs">
+        <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test runs...">
           <div className="navbar-section">
             <div className="row">
               <div className="col-md-12">
                 <ol className="breadcrumb">
-                  <li><Link to="/">Dashboard</Link></li>
+                  <li className="active">Dashboard</li>
                 </ol>
               </div>
             </div>

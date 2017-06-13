@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -99,7 +100,9 @@ public class TestRunService {
 	 * @return List of distinct build strings.
 	 */
 	public Collection<String> getDistinctBuilds(String filterQuery) {
-		return testRunRepository.getDistinctBuilds(filterQuery, new PageRequest(0, 10)).getContent();
+		Sort.Order buildOrder = new Sort.Order(Sort.Direction.ASC, "build");
+		return testRunRepository.getDistinctBuilds(filterQuery,
+				new PageRequest(0, 10, new Sort(buildOrder))).getContent();
 	}
 
 	/**
@@ -109,6 +112,6 @@ public class TestRunService {
 	 * @return List of distinct branches/hashes.
 	 */
 	public Collection<String> getDistinctGitBranch(String filterQuery) {
-		return testRunRepository.getDistinctGitBranch(Optional.ofNullable(filterQuery).orElse(""));
+		return testRunRepository.getDistinctGitBranch(Optional.ofNullable(filterQuery).orElse("").toLowerCase());
 	}
 }

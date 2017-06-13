@@ -12,6 +12,16 @@ export function updateQueryParams(params) {
 }
 
 /**
+ * Removes a query param.
+ * @param key Param to remove.
+ */
+export function removeQueryParam(key) {
+  const location = Object.assign({}, browserHistory.getCurrentLocation());
+  delete location.query[key];
+  browserHistory.push(location);
+}
+
+/**
  * Returns query params object.
  *
  * @returns Query params object

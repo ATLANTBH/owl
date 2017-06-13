@@ -1,7 +1,23 @@
 import React, {PropTypes} from 'react';
 import classNames from 'classnames';
 import style from './style.css';
-import {updateQueryParams, getQueryParams} from '../../../utils/location';
+import {updateQueryParams, getQueryParams, removeQueryParam} from '../../../utils/location';
+
+const NONE_SORT = 'none';
+const ASC_SORT  = 'asc';
+const DESC_SORT = 'desc';
+
+const SORT_STATE_MAP = {
+  'none': ASC_SORT,
+  'asc':  DESC_SORT,
+  'desc': NONE_SORT
+};
+
+const SORT_DIRECTION_INDICATOR = {
+  'none': '',
+  'asc':  'glyphicon glyphicon-triangle-bottom',
+  'desc': 'glyphicon glyphicon-triangle-top'
+};
 
 class TableHeader extends React.Component {
   static propTypes = {
@@ -16,11 +32,18 @@ class TableHeader extends React.Component {
 
   onSort() {
     if (this.props.sortKey) {
-      const sortDirection = this.getSortDirection() === 'asc' ? 'desc' : 'asc';
-      const sort = [this.props.sortKey, sortDirection].join(',');
-
-      updateQueryParams({ sort });
+      const sortDirection = this.getNextSortDirection();
+      let sort = [this.props.sortKey, sortDirection].join(',');
+      if (sortDirection === NONE_SORT) {
+        removeQueryParam('sort');
+      } else {
+        updateQueryParams({ sort });
+      }
     }
+  }
+
+  getNextSortDirection() {
+    return SORT_STATE_MAP[this.getSortDirection()] || NONE_SORT;
   }
 
   getSortDirection() {
@@ -33,7 +56,7 @@ class TableHeader extends React.Component {
       }
     }
 
-    return null;
+    return NONE_SORT;
   }
 
   render() {
@@ -41,22 +64,16 @@ class TableHeader extends React.Component {
       const sortDirection = this.getSortDirection();
       let sortDirectionIndicator = null;
 
-      if (sortDirection) {
-        let indicatorClassName = sortDirection === 'asc' ? 'glyphicon glyphicon-triangle-bottom' :
-                                                           'glyphicon glyphicon-triangle-top';
-
+      let indicatorClassName = SORT_DIRECTION_INDICATOR[sortDirection];
+      if (indicatorClassName) {
         sortDirectionIndicator = <i className={classNames(style.sortIndicator, indicatorClassName)} />;
-
-        return (
-          <th className={style.sortableTableHeader} onClick={this.onSort}>
-            {sortDirectionIndicator}
-            <span className={style.tableHeaderName}>{this.props.children}</span>
-          </th>
-        );
       }
 
       return (
-        <th className={style.sortableTableHeader} onClick={this.onSort}>{this.props.children}</th>
+        <th className={style.sortableTableHeader} onClick={this.onSort}>
+          {sortDirectionIndicator}
+          <span className={style.tableHeaderName}>{this.props.children}</span>
+        </th>
       );
     }
 

@@ -1,5 +1,7 @@
 import React, {PropTypes} from 'react';
-import Modal from '../../components/Modal';
+import Modal from '../../../components/Modal';
+import style from './style.css';
+import classNames from 'classnames';
 
 class EditNotesModalContainer extends React.Component {
   static propTypes = {
@@ -15,18 +17,11 @@ class EditNotesModalContainer extends React.Component {
     this.onNoteValueChange = this.onNoteValueChange.bind(this);
     this.onSaveNote        = this.onSaveNote.bind(this);
 
-    this.state = this.createStateObject(props);
-  }
-
-  createStateObject(props) {
-    return {
-      value: props.testStep ? (props.testStep.notes || '') : '',
-      isEditNotesModalShown: props.isEditNotesModalShown
-    }
+    this.state = createStateObject(props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(this.createStateObject(nextProps));
+    this.setState(createStateObject(nextProps));
   }
 
   onNoteValueChange(event) {
@@ -49,7 +44,7 @@ class EditNotesModalContainer extends React.Component {
         <div className="modal-body">
           <div className="row">
             <div className="col-md-12">
-              <textarea className="form-control" cols="80" rows="10" value={this.state.value} onChange={this.onNoteValueChange} />
+              <textarea className={classNames('form-control', style.textArea)} cols="80" rows="10" value={this.state.value} onChange={this.onNoteValueChange} />
             </div>
           </div>
         </div>
@@ -59,6 +54,13 @@ class EditNotesModalContainer extends React.Component {
         </div>
       </Modal>
     );
+  }
+}
+
+function createStateObject(props) {
+  return {
+    value: props.testStep ? (props.testStep.notes || '') : '',
+    isEditNotesModalShown: props.isEditNotesModalShown
   }
 }
 
