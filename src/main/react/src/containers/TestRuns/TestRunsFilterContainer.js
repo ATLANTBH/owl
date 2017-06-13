@@ -112,7 +112,6 @@ function onUpdateFilteredGitBranch(options) {
 function onLoadDistinctGitBranch(input, callback) {
   getDistinctGit(input)
     .then(function (data) {
-      console.log('complete git:', data.length == 0);
       callback(null, {
         complete: data.length == 0,
         options: data.map(value => {
@@ -128,7 +127,6 @@ function onLoadDistinctGitBranch(input, callback) {
 function onLoadTestSuites(input, callback) {
   getFilteredTestSuites(input, 'suite')
     .then(function (testSuites) {
-      console.log('complete suite:', testSuites.content.length == 0);
       callback(null, {
         complete: testSuites.content.length == 0,
         options: testSuites.content.map(testSuite => {
