@@ -1,0 +1,35 @@
+// -----------------------------------------------------------------------------
+// Custom Global Styles
+// -----------------------------------------------------------------------------
+
+@import 'bootstrap-customizations';
+@import 'trending-section-chart';
+@import 'select-customizations';
+
+// TODO(kklisura): Move this to its own file.
+.filter-section {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+tr.navigateable-row {
+  cursor: pointer;
+}
+
+.external-page-icon {
+  font-size: 11px;
+  padding: 4px;
+}
+
+
+.navbar-section {
+  margin-bottom: 10px;
+}
+
+
+.navbar-section .Select {
+  display: inline-block;
+  min-width: 200px;
+  margin-right: 15px;
+}
+

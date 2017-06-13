@@ -1,0 +1,39 @@
+
+.Select .Select-control {
+  border-radius: 0px;
+  -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.06);
+  border: 1px solid #ddd;
+  height: 34px;
+}
+
+.Select.is-focused:not(.is-open) > .Select-control {
+  border-color: rgba(0, 126, 255, 0.45);
+  box-shadow: none;
+}
+
+.Select.Select--multi .Select-value-icon {
+  padding-right: 4px;
+  border-right: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.Select.Select--multi .Select-input {
+  height: 32px;
+}
+
+.Select.Select--multi .Select-value {
+  background-color: rgb(94, 116, 145);
+  color: #fff;
+  border: none;
+  border-radius: 0;
+}
+
+.Select.Select--multi .Select-value-icon:hover,
+.Select.Select--multi .Select-value-icon:focus {
+  color: #5bc0de;
+}
+
+.Select .Select-placeholder,
+.Select .Select--single > .Select-control .Select-value {
+ line-height: 32px;
+}

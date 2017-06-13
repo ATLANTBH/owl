@@ -1,14 +1,4 @@
 
-function fetchResponseHandler(response) {
-  if (!response.ok) {
-    return response.json()
-      .then(response => {
-        throw response;
-      });
-  }
-  return response.json();
-}
-
 export function getTestRun(testRunId) {
   return fetch(`/api/v1/test-runs/${testRunId}`)
     .then(fetchResponseHandler);
@@ -44,26 +34,38 @@ export function getFilteredTestSuites(suite, sort = '') {
     .then(fetchResponseHandler);
 }
 
-export function getDisinctGit(query) {
+export function getDistinctGit(query) {
   return fetch(`/api/v1/test-runs/distinct-git?query=${query}`)
     .then(fetchResponseHandler);
 }
 
-export function getDisinctBuilds(query) {
+export function getDistinctBuilds(query) {
   return fetch(`/api/v1/test-runs/distinct-builds?query=${query}`)
     .then(fetchResponseHandler);
 }
 
-export function postNotes(testRunId, testStepId, notes) {
-  return fetch(`/api/v1/test-runs/${testRunId}/test-steps/${testStepId}`, {
-  method: 'put',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    notes: notes
-    })
-  })
+export function getBootstrap() {
+  return fetch('/api/v1/bootstrap')
     .then(fetchResponseHandler);
+}
+
+export function saveNotes(testRunId, testStepId, notes) {
+  return fetch(`/api/v1/test-runs/${testRunId}/test-steps/${testStepId}`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ notes })
+    }).then(fetchResponseHandler);
+}
+
+function fetchResponseHandler(response) {
+  if (!response.ok) {
+    return response.json()
+      .then(response => {
+        throw response;
+      });
+  }
+  return response.json();
 }

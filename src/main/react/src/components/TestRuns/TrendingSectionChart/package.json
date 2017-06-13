@@ -1,0 +1,6 @@
+{
+  "name": "TrendingSectionChart",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./TrendingSectionChart.js"
+}

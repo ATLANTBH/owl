@@ -1,0 +1,16 @@
+
+.noteText {
+  text-overflow: ellipsis;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  float: left;
+  margin-right: 20px;
+  margin-bottom: -20px;
+}
+
+.editNotesBtn {
+  cursor: pointer;
+  float: right;
+  margin-top: 3px;
+}

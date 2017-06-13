@@ -32,6 +32,13 @@ const config = {
   // The base directory for resolving the entry option
   context: path.resolve(__dirname, '../src'),
 
+  resolve: {
+    modules: [
+      'node_modules',
+      'src'
+    ]
+  },
+
   // Exclude moment library since its used by chart.js on time scales
   // We don't use time scales now, so we do not need this dep.
   externals: {
@@ -110,7 +117,6 @@ const config = {
         test: /\.jsx?$/,
         include: [
           path.resolve(__dirname, '../src'),
-          path.resolve(__dirname, '../components'),
         ],
         loader: 'babel-loader',
         options: babelConfig,
