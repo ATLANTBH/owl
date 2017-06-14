@@ -26,9 +26,9 @@ class TestStepsTable extends React.Component {
         </thead>
         <tbody>
         {notEmpty(this.props.testSteps,
-          this.props.testSteps.map(testStep =>
+          this.props.testSteps.map((testStep, index) =>
             <tr key={testStep.id}>
-              <td className="focused-cell">{testStep.context}</td>
+              {testStepContext(testStep, index, this.props.testSteps)}
               <td>{testStep.description}</td>
               <td><ExecutionResult executionResult={testStep.executionResult} onClick={() => this.props.onShowExecutionResultModal(testStep)} /></td>
               <td><DurationFormat duration={testStep.duration} /></td>
@@ -48,6 +48,18 @@ class TestStepsTable extends React.Component {
       </table>
     );
   }
+}
+
+function testStepContext(testStep, index, testSteps) {
+  const context = testStep.context;
+  if (index) {
+    const previousTestStep = testSteps[index - 1];
+    if (context === previousTestStep.context) {
+      return <td className="focused-cell-empty" />;
+    }
+  }
+
+  return <td className="focused-cell">{context}</td>;
 }
 
 function notEmpty(input, value, valueIfEmpty) {
