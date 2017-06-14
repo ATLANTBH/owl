@@ -24,7 +24,14 @@ class TestRunsTable extends React.Component {
 
     function testSuiteLink(testRun) {
       if (testRun.testSuite) {
-        return (<Link to={linkToTestRunsBySuite(testRun.testSuite.id)}>{testRun.testSuite.suite} <i className="external-page-icon glyphicon glyphicon-filter"/></Link>);
+        return (
+        <div className="test-runs">
+          {testRun.testSuite.suite}
+          <Link to={linkToTestRunsBySuite(testRun.testSuite.id)}><i className="external-page-icon glyphicon glyphicon-filter"/>
+          </Link>
+        </div>
+        
+        );
       }
 
       return null;
