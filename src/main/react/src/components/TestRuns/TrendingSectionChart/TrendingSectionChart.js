@@ -56,7 +56,7 @@ class TrendingSectionChart extends React.Component {
             const datasetLabel = data.datasets[tooltipItem.datasetIndex].label;
 
             if (datasetLabel === 'Duration') {
-              const datasetData = data.datasets[tooltipItem.datasetIndex].data;
+              const datasetData = data.datasets[tooltipItem.datasetIndex].unscaledData
               const dataValue = datasetData[tooltipItem.index];
 
               return datasetLabel + ': ' + durationFormat(dataValue);
@@ -104,6 +104,7 @@ function getStatistics(statistics) {
         type: 'line',
         label: 'Duration',
         data: statistics.map(stats => ((stats.duration / maxDuration)) * 100).map(round),
+        unscaledData: statistics.map(stats => stats.duration),
         backgroundColor: 'rgba(0, 0, 0, 0)',
         borderColor: '#D9A17D'
       }]
@@ -111,7 +112,7 @@ function getStatistics(statistics) {
 }
 
 function round(value) {
-  return Math.floor(value * 100) / 100;
+  return Math.floor((value || 0) * 100) / 100;
 }
 
 export default TrendingSectionChart;

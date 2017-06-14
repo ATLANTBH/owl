@@ -5,7 +5,7 @@ export function getTestRun(testRunId) {
     .then(fetchResponseHandler);
 }
 
-export function getTestCases(testRunId, page = 0, size = 10, sort = '') {
+export function getTestCases(testRunId, page = 0, size = 20, sort = '') {
   return fetch(`/api/v1/test-runs/${testRunId}/test-cases?page=${page}&size=${size}&sort=${sort}`)
     .then(fetchResponseHandler);
 }

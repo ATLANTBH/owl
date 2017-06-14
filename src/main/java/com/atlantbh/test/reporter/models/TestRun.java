@@ -59,7 +59,6 @@ public class TestRun {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "test_suites_id")
 	private TestSuite testSuite;
