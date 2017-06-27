@@ -14,3 +14,13 @@
   float: right;
   margin-top: 3px;
 }
+
+.bugIcon {
+  cursor: pointer;
+  float: right;
+  margin-top: 3px;
+}
+
+.bugTrackingColumn {
+  width: 110px;
+}

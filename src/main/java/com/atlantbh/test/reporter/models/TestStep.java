@@ -22,7 +22,13 @@ import java.util.Date;
 @Table(name = "test_cases")
 @Entity
 public class TestStep {
+	/**
+	 * The constant EXECUTION_RESULT_SUCCESS.
+	 */
 	public static final String EXECUTION_RESULT_SUCCESS = "passed";
+	/**
+	 * The constant EXECUTION_RESULT_FAILURE.
+	 */
 	public static final String EXECUTION_RESULT_FAILURE = "failed";
 
 	@Id
@@ -69,6 +75,12 @@ public class TestStep {
 
 	@Column(name = "notes")
 	private String notes;
+
+	@Column(name = "bug_url")
+	private String bugUrl;
+
+	@Column(name = "bug_title")
+	private String bugTitle;
 
 	/**
 	 * Instantiates a new Test case.
@@ -327,5 +339,41 @@ public class TestStep {
 	 */
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+	/**
+	 * Gets bug url.
+	 *
+	 * @return the bug url
+	 */
+	public String getBugUrl() {
+		return bugUrl;
+	}
+
+	/**
+	 * Sets bug url.
+	 *
+	 * @param bugUrl the bug url
+	 */
+	public void setBugUrl(String bugUrl) {
+		this.bugUrl = bugUrl;
+	}
+
+	/**
+	 * Gets bug title.
+	 *
+	 * @return the bug title
+	 */
+	public String getBugTitle() {
+		return bugTitle;
+	}
+
+	/**
+	 * Sets bug title.
+	 *
+	 * @param bugTitle the bug title
+	 */
+	public void setBugTitle(String bugTitle) {
+		this.bugTitle = bugTitle;
 	}
 }

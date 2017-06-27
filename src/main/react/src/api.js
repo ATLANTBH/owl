@@ -50,7 +50,7 @@ export function getBootstrap() {
 }
 
 export function saveNotes(testRunId, testStepId, notes) {
-  return fetch(`/api/v1/test-runs/${testRunId}/test-steps/${testStepId}`, {
+  return fetch(`/api/v1/test-runs/${testRunId}/test-steps/${testStepId}/notes`, {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -58,6 +58,17 @@ export function saveNotes(testRunId, testStepId, notes) {
       },
       body: JSON.stringify({ notes })
     }).then(fetchResponseHandler);
+}
+
+export function addBugReportLink(testRunId, testStepId, bugReportRequest) {
+  return fetch(`/api/v1/test-runs/${testRunId}/test-steps/${testStepId}/bug-report`, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(bugReportRequest)
+  }).then(fetchResponseHandler);
 }
 
 function fetchResponseHandler(response) {

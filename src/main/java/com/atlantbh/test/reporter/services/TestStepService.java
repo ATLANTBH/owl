@@ -1,5 +1,6 @@
 package com.atlantbh.test.reporter.services;
 
+import com.atlantbh.test.reporter.models.BugReportRequest;
 import com.atlantbh.test.reporter.models.TestRun;
 import com.atlantbh.test.reporter.models.TestStep;
 import com.atlantbh.test.reporter.repositories.TestStepRepository;
@@ -68,7 +69,7 @@ public class TestStepService {
 	 * @param updateTestStep Update test step model.
 	 * @return Updated test step.
 	 */
-	public TestStep update(Long testRunId, Long testStepId, TestStep updateTestStep) throws ServiceException {
+	public TestStep updateNotes(Long testRunId, Long testStepId, TestStep updateTestStep) throws ServiceException {
 		final TestRun testRun = testRunService.get(testRunId);
 		final TestStep testStep = testStepRepository.findByTestRunAndId(testRun, testStepId);
 		if (testStep == null) {
@@ -91,6 +92,28 @@ public class TestStepService {
 		testStep.setCreatedAt(new Date());
 		testStep.setUpdatedAt(new Date());
 		testStep.setTestRun(testRun);
+		return testStepRepository.save(testStep);
+	}
+
+	/**
+	 * Updates bug report on test step.
+	 *
+	 * @param testRunId Test run id.
+	 * @param testStepId Test step id.
+	 * @param reportRequest Bug report request.
+	 * @return Updated test step.
+	 */
+	public TestStep updateBugReport(Long testRunId, Long testStepId, BugReportRequest reportRequest)
+			throws ServiceException {
+		final TestRun testRun = testRunService.get(testRunId);
+		final TestStep testStep = testStepRepository.findByTestRunAndId(testRun, testStepId);
+		if (testStep == null) {
+			throw new ServiceException("Test step not found.");
+		}
+
+		testStep.setBugUrl(reportRequest.getBugUrl());
+		testStep.setBugTitle(reportRequest.getBugTitle());
+
 		return testStepRepository.save(testStep);
 	}
 }

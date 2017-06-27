@@ -4,12 +4,14 @@ import TableHeader from '../../ui/TableHeader';
 import ExecutionResult from '../../ui/ExecutionResult';
 import style from './style.css';
 import editNotesBtn from './edit-notes-btn.png';
+import FeatureToggle from '../../ui/FeatureToggle';
 
 class TestStepsTable extends React.Component {
   static propTypes = {
     testSteps: PropTypes.array.isRequired,
     onShowExecutionResultModal: PropTypes.func.isRequired,
-    onShowEditNotesModal: PropTypes.func.isRequired
+    onShowEditNotesModal: PropTypes.func.isRequired,
+    onShowAddBugReportLinkModal: PropTypes.func.isRequired
   };
 
   render() {
@@ -21,6 +23,9 @@ class TestStepsTable extends React.Component {
             <TableHeader>Expected Result</TableHeader>
             <TableHeader sortKey="executionResult">Execution Result</TableHeader>
             <TableHeader sortKey="duration">Duration</TableHeader>
+            <FeatureToggle toggleKey="bugTrackingFeatureToggle">
+              <TableHeader className={style.bugTrackingColumn}>Bug Tracking</TableHeader>
+            </FeatureToggle>
             <TableHeader>Notes</TableHeader>
           </tr>
         </thead>
@@ -32,6 +37,13 @@ class TestStepsTable extends React.Component {
               <td>{testStep.description}</td>
               <td><ExecutionResult executionResult={testStep.executionResult} onClick={() => this.props.onShowExecutionResultModal(testStep)} /></td>
               <td><DurationFormat duration={testStep.duration} /></td>
+              <FeatureToggle toggleKey="bugTrackingFeatureToggle">
+                <td>
+                  {createLink(testStep)}
+                  <img src={editNotesBtn} alt="Click to add bug report link." title="Click to add bug report link." className={style.editNotesBtn}
+                       onClick={() => this.props.onShowAddBugReportLinkModal(testStep)} />
+                </td>
+              </FeatureToggle>
               <td>
                 {notes(testStep)}
 
@@ -48,6 +60,16 @@ class TestStepsTable extends React.Component {
       </table>
     );
   }
+}
+
+function createLink(testStep) {
+  if (testStep.bugUrl) {
+    let url = testStep.bugUrl;
+    const startsWithProtocol = /^http(s):\/\//.test(url || '');
+    url = startsWithProtocol ? url : ('http://' + url);
+    return <a href={url} target="_blank">{testStep.bugTitle || 'Link'}</a>
+  }
+  return null;
 }
 
 function testStepContext(testStep, index, testSteps) {

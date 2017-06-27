@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * Created by kenanklisura on 06/03/2017.
+ * Test reporter app configuration.
  */
 @Configuration
 public class TestReporterConfiguration extends WebMvcConfigurerAdapter {
