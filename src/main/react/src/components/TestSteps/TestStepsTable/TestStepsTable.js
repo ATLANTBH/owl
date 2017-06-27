@@ -5,6 +5,7 @@ import ExecutionResult from '../../ui/ExecutionResult';
 import style from './style.css';
 import editNotesBtn from './edit-notes-btn.png';
 import FeatureToggle from '../../ui/FeatureToggle';
+import TooltipSpan from '../../ui/TooltipSpan';
 
 class TestStepsTable extends React.Component {
   static propTypes = {
@@ -89,7 +90,7 @@ function notEmpty(input, value, valueIfEmpty) {
 }
 
 function notes(testStep) {
-  return <span className={style.noteText} title={testStep.notes}>{testStep.notes}</span>;
+  return <TooltipSpan className={style.noteText} text={testStep.notes} title={testStep.notes} placement="bottom" />
 }
 
 export default TestStepsTable;

@@ -1,0 +1,6 @@
+{
+  "name": "TooltipSpan",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./TooltipSpan.js"
+}
