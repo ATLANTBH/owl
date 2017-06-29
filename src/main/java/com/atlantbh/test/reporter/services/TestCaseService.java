@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -28,6 +29,9 @@ import static com.atlantbh.test.reporter.utils.services.ServicesUtils.createPage
 @Service
 public class TestCaseService {
 	private static final String TEST_GROUP_SORT_PROPERTY = "test_group";
+	private static final String SUCCESS_RATE_SORT_PROPERTY = "success_rate";
+	private static final Sort DEFAULT_SORT = new Sort(new Sort.Order(Sort.Direction.ASC, SUCCESS_RATE_SORT_PROPERTY))
+			.and(new Sort(new Sort.Order(Sort.Direction.ASC, TEST_GROUP_SORT_PROPERTY)));
 
 	private TestRunService testRunService;
 	private TestCaseRepository testCaseRepository;
@@ -73,7 +77,7 @@ public class TestCaseService {
 	 */
 	public Page<TestCase> getTestCases(Long testRunId, Pageable page) throws ServiceException {
 		final TestRun testRun = testRunService.get(testRunId);
-		final PageRequest pageRequest = createPageRequest(page, null, Collections.singletonList(TEST_GROUP_SORT_PROPERTY));
+		final PageRequest pageRequest = createPageRequest(page, DEFAULT_SORT, Collections.singletonList(TEST_GROUP_SORT_PROPERTY));
 		return testCaseRepository.findByTestRunId(testRun.getId(), pageRequest);
 	}
 
