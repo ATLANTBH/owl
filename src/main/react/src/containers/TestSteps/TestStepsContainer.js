@@ -3,10 +3,11 @@ import {Link} from 'react-router';
 import Waypoint from 'react-waypoint';
 import TestStepsTable from '../../components/TestSteps/TestStepsTable';
 import Layout from '../../components/Layout';
-import {getTestRun, getTestSteps, saveNotes} from '../../api';
+import {getTestRun, getTestSteps, saveNotes, addBugReportLink} from '../../api';
 import Spinner from '../../components/ui/Spinner';
 import ExecutionResultModalContainer from './ExecutionResultModalContainer';
 import EditNotesModalContainer from './EditNotesModal/EditNotesModalContainer';
+import AddBugReportLinkModalContainer from './AddBugReportLinkModal/AddBugReportLinkModalContainer';
 import {mergePaginatedModels} from '../../utils/model';
 
 const EMPTY_TEST_RUN = {
@@ -27,14 +28,18 @@ class TestStepsContainer extends React.Component {
   constructor(){
     super();
 
-    this.onExecutionResultModalClose = this.onExecutionResultModalClose.bind(this);
-    this.onRequestPageData           = this.onRequestPageData.bind(this);
-    this.onShowExecutionResultModal  = this.onShowExecutionResultModal.bind(this);
-    this.onEditNotesModalClose       = this.onEditNotesModalClose.bind(this);
-    this.onShowEditNotesModal        = this.onShowEditNotesModal.bind(this);
-    this.onSaveNote                  = this.onSaveNote.bind(this);
+    this.onExecutionResultModalClose    = this.onExecutionResultModalClose.bind(this);
+    this.onRequestPageData              = this.onRequestPageData.bind(this);
+    this.onShowExecutionResultModal     = this.onShowExecutionResultModal.bind(this);
+    this.onEditNotesModalClose          = this.onEditNotesModalClose.bind(this);
+    this.onShowEditNotesModal           = this.onShowEditNotesModal.bind(this);
+    this.onSaveNote                     = this.onSaveNote.bind(this);
+    this.onShowAddBugReportLinkModal    = this.onShowAddBugReportLinkModal.bind(this);
+    this.onAddBugReportLinkModalClose   = this.onAddBugReportLinkModalClose.bind(this);
+    this.onAddBugReportLink             = this.onAddBugReportLink.bind(this);
 
     this.state = {
+      isAddBugReportLinkModalShown: false,
       isEditNotesModalShown: false,
       currentTestStep: null,
       isExecutionResultShown: false,
@@ -94,7 +99,6 @@ class TestStepsContainer extends React.Component {
     return saveNotes(this.state.testRun.id, testStep.id, notes)
       .then(updatedTestStep => {
         Object.assign(testStep, updatedTestStep);
-        // this.forceUpdate();
       });
   }
 
@@ -133,6 +137,27 @@ class TestStepsContainer extends React.Component {
     return getTestRun(testRunId);
   }
 
+  onShowAddBugReportLinkModal(testStep) {
+    this.setState({
+      isAddBugReportLinkModalShown: true,
+      currentTestStep: testStep
+    });
+  }
+
+  onAddBugReportLinkModalClose() {
+    this.setState({
+      isAddBugReportLinkModalShown: false,
+      currentTestStep: null
+    });
+  }
+
+  onAddBugReportLink(testStep, bugTitle, bugUrl) {
+    return addBugReportLink(this.state.testRun.id, testStep.id, { bugTitle, bugUrl })
+      .then(updatedTestStep => {
+        Object.assign(testStep, updatedTestStep);
+      });
+  }
+
   render() {
     const testCase = this.props.params.splat;
 
@@ -154,7 +179,8 @@ class TestStepsContainer extends React.Component {
           <TestStepsTable
             testSteps={this.state.testSteps.content}
             onShowExecutionResultModal={this.onShowExecutionResultModal}
-            onShowEditNotesModal={this.onShowEditNotesModal}/>
+            onShowEditNotesModal={this.onShowEditNotesModal}
+            onShowAddBugReportLinkModal={this.onShowAddBugReportLinkModal}/>
 
           <Waypoint onEnter={this.onRequestPageData} />
 
@@ -169,6 +195,12 @@ class TestStepsContainer extends React.Component {
             isEditNotesModalShown={this.state.isEditNotesModalShown}
             onEditNotesModalClose={this.onEditNotesModalClose}
             onSaveNote={this.onSaveNote}
+            testStep={this.state.currentTestStep}/>
+
+          <AddBugReportLinkModalContainer
+            isAddBugReportLinkModalShown={this.state.isAddBugReportLinkModalShown}
+            onAddBugReportLinkModalClose={this.onAddBugReportLinkModalClose}
+            onAddBugReportLink={this.onAddBugReportLink}
             testStep={this.state.currentTestStep}/>
         </Spinner>
       </Layout>

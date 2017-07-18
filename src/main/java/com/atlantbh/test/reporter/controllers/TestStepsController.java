@@ -1,5 +1,6 @@
 package com.atlantbh.test.reporter.controllers;
 
+import com.atlantbh.test.reporter.models.BugReportRequest;
 import com.atlantbh.test.reporter.models.TestStep;
 import com.atlantbh.test.reporter.services.TestStepService;
 import com.atlantbh.test.reporter.services.exceptions.ServiceException;
@@ -53,20 +54,39 @@ public class TestStepsController {
 	}
 
 	/**
-	 * API: PUT /api/v1/test-runs/{TEST_RUN_ID}/test-steps/{TEST_STEP_ID}
+	 * API: PUT /api/v1/test-runs/{TEST_RUN_ID}/test-steps/{TEST_STEP_ID}/notes
 	 *
-	 * Updates test step.
+	 * Updates test step notes.
 	 *
 	 * @param testRunId Test run id.
 	 * @param testStepId Test step id.
 	 * @param testStep Test step data.
 	 * @return Updated test step.
-	 * @throws ServiceException
+	 * @throws ServiceException If updating fails.
 	 */
-	@RequestMapping(value = "/{testStepId}", method = RequestMethod.PUT)
-	public TestStep updateTestStep(@PathVariable("testRunId") Long testRunId,
-								   @PathVariable("testStepId") Long testStepId, @RequestBody TestStep testStep)
+	@RequestMapping(value = "/{testStepId}/notes", method = RequestMethod.PUT)
+	public TestStep updateTestStepNotes(@PathVariable("testRunId") Long testRunId,
+										@PathVariable("testStepId") Long testStepId, @RequestBody TestStep testStep)
 			throws ServiceException {
-		return testStepService.update(testRunId, testStepId, testStep);
+		return testStepService.updateNotes(testRunId, testStepId, testStep);
+	}
+
+	/**
+	 * API: PUT /api/v1/test-runs/{TEST_RUN_ID}/test-steps/{TEST_STEP_ID}/bug-report
+	 *
+	 * Updates test step.
+	 *
+	 * @param testRunId Test run id.
+	 * @param testStepId Test step id.
+	 * @param reportRequest Bug report request.
+	 * @return Updated test step.
+	 * @throws ServiceException If updating fails.
+	 */
+	@RequestMapping(value = "/{testStepId}/bug-report", method = RequestMethod.PUT)
+	public TestStep updateBugReport(@PathVariable("testRunId") Long testRunId,
+									@PathVariable("testStepId") Long testStepId,
+									@RequestBody BugReportRequest reportRequest)
+			throws ServiceException {
+		return testStepService.updateBugReport(testRunId, testStepId, reportRequest);
 	}
 }

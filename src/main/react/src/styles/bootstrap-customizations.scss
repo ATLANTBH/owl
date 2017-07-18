@@ -46,6 +46,23 @@ table > tbody > tr > td {
     color: $table-fouces-td-color;
   }
 
+  &.focused-cell-empty {
+    position: relative;
+  }
+
+  &.focused-cell-empty:before {
+    content: '';
+    background-color: white;
+    width: 100%;
+    height: 2px;
+    display: block;
+    top: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    margin-top: -2px;
+  }
+
   a {
     font-size: 15px;
     color: $table-fouces-td-color;

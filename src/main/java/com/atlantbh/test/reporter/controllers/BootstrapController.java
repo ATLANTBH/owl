@@ -94,6 +94,9 @@ public class BootstrapController {
 		@Value("${project.features.git.info}")
 		private boolean gitInfoFeatureToggle;
 
+		@Value("${project.features.bug.tracking}")
+		private boolean bugTrackingFeatureToggle;
+
 		@Value("${git.github.repo}")
 		private String githubRepoLink;
 
@@ -150,30 +153,12 @@ public class BootstrapController {
 		}
 
 		/**
-		 * Sets project name.
-		 *
-		 * @param projectName the project name
-		 */
-		public void setProjectName(String projectName) {
-			this.projectName = projectName;
-		}
-
-		/**
 		 * Get suite name statistics string [ ].
 		 *
 		 * @return the string [ ]
 		 */
 		public String[] getSuiteNameStatistics() {
 			return suiteNameStatistics;
-		}
-
-		/**
-		 * Sets suite name statistics.
-		 *
-		 * @param suiteNameStatistics the suite name statistics
-		 */
-		public void setSuiteNameStatistics(String[] suiteNameStatistics) {
-			this.suiteNameStatistics = suiteNameStatistics;
 		}
 
 		/**
@@ -210,6 +195,15 @@ public class BootstrapController {
 		 */
 		public String getGithubRepoLink() {
 			return githubRepoLink;
+		}
+
+		/**
+		 * Is bug tracking feature toggle boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isBugTrackingFeatureToggle() {
+			return bugTrackingFeatureToggle;
 		}
 
 		/**

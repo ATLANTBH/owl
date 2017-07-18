@@ -21,7 +21,8 @@ const SORT_DIRECTION_INDICATOR = {
 
 class TableHeader extends React.Component {
   static propTypes = {
-    sortKey: PropTypes.string
+    sortKey: PropTypes.string,
+    className: PropTypes.string
   };
 
   constructor() {
@@ -78,7 +79,7 @@ class TableHeader extends React.Component {
     }
 
     return (
-      <th>{this.props.children}</th>
+      <th className={this.props.className}>{this.props.children}</th>
     );
   }
 }
