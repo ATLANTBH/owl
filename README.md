@@ -1,35 +1,35 @@
-# Test Reporter
+# Owl
 
 ## Prerequisites
 
-This tool is used for reporting and representation of automated test runs. In order to use this tool, a database with formatted test results should exist. For assistance on how to create such a database and write test results to it see the [rspec2db](https://github.com/ATLANTBH/rspec) gem, which is used to write RSpec tests to a database. The tool currently supports PostgreSQL databases.
+Owl is used for reporting and representation of automated test runs. In order to use Owl, a database with formatted test results should exist. For assistance on how to create such a database and write test results to it see the [rspec2db](https://github.com/ATLANTBH/rspec) gem, which is used to write RSpec tests to a database. Owl currently supports PostgreSQL databases.
 
 To run the application, Java (JRE) should be installed.
 
 
 ## Building
 
-Maven (>= v3) is required for building Test-reporter. Run following command to build:
+Maven (>= v3) is required for building Owl. Run following command to build:
 
 ```
 mvn clean package
 ```
 
-This command creates `target/test-reporter-VERSION.jar` file, which can be started locally or copied to another host to be started on.
+This command creates `target/owl-VERSION.jar` file, which can be started locally or copied to another host to be started on.
 
 ## Running
 
 To start the application with the default configuration ([application.properties](src/main/resources/application.properties)) run:
 
 ```
-java -jar target/test-reporter-VERSION.jar
+java -jar target/owl-VERSION.jar
 ```
 
 An external configuration can be provided when starting the app to configure the project name, database properties, change the port the app is running on or toggle specific features.
 
 ```
 # Sets the project name to be visible on frontend
-project.name=Test Report App
+project.name=<your_project_name>
 
 # Comma separated list of suite names that will be shown on dashboard (can be left empty)
 suite.statistics=smoke test,regression test
@@ -60,7 +60,7 @@ flyway.password=<database_password>
 
 The configuration can be saved to a file and passed when starting the app with:
 ```
-java -jar target/test-reporter-VERSION.jar --spring.config.location=<application.properties>
+java -jar target/owl-VERSION.jar --spring.config.location=<application.properties>
 ```
 
 If there is already a database with data, flyway baseline migration should be run with the flyway properties specified in the properties file:
