@@ -58,6 +58,7 @@ public class JunitXmlReportParser {
 		private static final String TEST_SUITE_TAG = "testsuite";
 		private static final String TEST_CASE_TAG = "testcase";
 		private static final String TEST_CASE_FAILURE_TAG = "failure";
+		private static final String SKIPPED_TAG = "skipped";
 
 		private static final String NAME_ATTRIBUTE = "name";
 		private static final String TESTS_ATTRIBUTE = "tests";
@@ -80,42 +81,49 @@ public class JunitXmlReportParser {
 
 		@Override
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-			if (TEST_SUITE_TAG.equals(qName)) {
-				if (testSuite != null) {
-					throw new SAXException("Failed reading junit xml report. Test suite is already defined.");
+			if (SKIPPED_TAG.equals(qName)) {
+				if (currentTestCase != null) {
+					testSuite.getTestCaseList().remove(currentTestCase);
+					currentTestCase = null;
 				}
-				testSuite = new TestSuite(attributes.getValue(NAME_ATTRIBUTE),
-						getInt(attributes, TESTS_ATTRIBUTE, 0),
-						getInt(attributes, ERRORS_ATTRIBUTE, 0),
-						getInt(attributes, FAILURES_ATTRIBUTE, 0),
-						getFloat(attributes, TIME_ATTRIBUTE, 0f));
 			} else {
-				if (TEST_CASE_TAG.equals(qName)) {
-					if (testSuite == null) {
-						throw new SAXException("Failed reading junit xml report. Test suite is not defined.");
+				if (TEST_SUITE_TAG.equals(qName)) {
+					if (testSuite != null) {
+						throw new SAXException("Failed reading junit xml report. Test suite is already defined.");
 					}
-					if (currentTestCase != null) {
-						throw new SAXException("Failed reading junit xml report. Test case is already defined.");
-					}
-
-					currentTestCase = new TestSuite.TestCase(attributes.getValue(CLASS_NAME_ATTRIBUTE),
-							attributes.getValue(NAME_ATTRIBUTE),
+					testSuite = new TestSuite(attributes.getValue(NAME_ATTRIBUTE),
+							getInt(attributes, TESTS_ATTRIBUTE, 0),
+							getInt(attributes, ERRORS_ATTRIBUTE, 0),
+							getInt(attributes, FAILURES_ATTRIBUTE, 0),
 							getFloat(attributes, TIME_ATTRIBUTE, 0f));
-					testSuite.getTestCaseList().add(currentTestCase);
 				} else {
-					if (TEST_CASE_FAILURE_TAG.equals(qName)) {
+					if (TEST_CASE_TAG.equals(qName)) {
 						if (testSuite == null) {
 							throw new SAXException("Failed reading junit xml report. Test suite is not defined.");
 						}
-						if (currentTestCase == null) {
-							throw new SAXException("Failed reading junit xml report. Test case is not defined.");
-						}
-						if (inFailureBlock) {
-							throw new SAXException("Failed reading junit xml report. Test case failure is already defined.");
+						if (currentTestCase != null) {
+							throw new SAXException("Failed reading junit xml report. Test case is already defined.");
 						}
 
-						currentTestCase.failed = true;
-						inFailureBlock = true;
+						currentTestCase = new TestSuite.TestCase(attributes.getValue(CLASS_NAME_ATTRIBUTE),
+								attributes.getValue(NAME_ATTRIBUTE),
+								getFloat(attributes, TIME_ATTRIBUTE, 0f));
+						testSuite.getTestCaseList().add(currentTestCase);
+					} else {
+						if (TEST_CASE_FAILURE_TAG.equals(qName)) {
+							if (testSuite == null) {
+								throw new SAXException("Failed reading junit xml report. Test suite is not defined.");
+							}
+							if (currentTestCase == null) {
+								throw new SAXException("Failed reading junit xml report. Test case is not defined.");
+							}
+							if (inFailureBlock) {
+								throw new SAXException("Failed reading junit xml report. Test case failure is already defined.");
+							}
+
+							currentTestCase.failed = true;
+							inFailureBlock = true;
+						}
 					}
 				}
 			}

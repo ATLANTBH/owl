@@ -42,7 +42,7 @@ public interface TestRunRepository extends PagingAndSortingRepository<TestRun, L
 			"tr.duration = COALESCE(tr.duration, 0) + :duration " +
 			"WHERE tr.id = :id")
 	void updateCounts(@Param("id")  Long id, @Param("totalCases") int totalCases, @Param("failedCases") int failedCases,
-					  @Param("duration ") float duration);
+					  @Param("duration") double duration);
 
 	/**
 	 * Returns list of distinct builds from test runs.

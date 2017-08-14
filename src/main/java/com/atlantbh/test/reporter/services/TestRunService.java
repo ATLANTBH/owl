@@ -90,7 +90,7 @@ public class TestRunService {
 	 * @param duration Duration.
 	 */
 	public void updateCounts(Long id, int totalCases, int failedCases, float duration) {
-		testRunRepository.updateCounts(id, totalCases, failedCases, duration);
+		testRunRepository.updateCounts(id, totalCases, failedCases, (double) duration);
 	}
 
 	/**

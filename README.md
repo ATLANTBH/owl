@@ -116,6 +116,13 @@ This API updates test suite.
 
 This API returns statistics for given test suite id. Statistics is composed of `build` identifier with appropriate counts such as `totalCasesCount`, `failedCasesCount` etc.
 
+### JUnit Report
+
+`POST /api/v1/test-runs/{TEST_RUN_ID}/test-cases/junit-xml-report`
+
+This API allows for parsing and persisting junit format test results. The API accepts Junit Report XML file as body. 
+
+
 ## Development
 
 - Install node (>= v6.0.0)
