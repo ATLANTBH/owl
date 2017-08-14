@@ -1,8 +1,12 @@
-# Owl
+# owl
+
+## About
+
+Owl is a tool used for test results reporting and presentation.
 
 ## Prerequisites
 
-Owl is used for reporting and representation of automated test runs. In order to use Owl, a database with formatted test results should exist. For assistance on how to create such a database and write test results to it see the [rspec2db](https://github.com/ATLANTBH/rspec) gem, which is used to write RSpec tests to a database. Owl currently supports PostgreSQL databases.
+In order to use owl, a database with formatted test results should exist. For assistance on how to create such a database and write test results to it see the [rspec2db](https://github.com/ATLANTBH/rspec) gem, which is used to write RSpec tests to a database. Owl currently supports PostgreSQL databases.
 
 To run the application, Java (JRE) should be installed.
 
