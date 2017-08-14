@@ -46,9 +46,9 @@ class TestRunsTable extends React.Component {
           </FeatureToggle>
           <TableHeader sortKey="testSuite.suite">Test Suite</TableHeader>
           <TableHeader sortKey="updatedAt">Execution Finished</TableHeader>
-          <TableHeader sortKey="exampleCount">Total Cases</TableHeader>
-          <TableHeader sortKey="failureCount">Failed Cases</TableHeader>
-          <TableHeader sortKey="pendingCount">Pending Cases</TableHeader>
+          <TableHeader sortKey="exampleCount">Total Steps</TableHeader>
+          <TableHeader sortKey="failureCount">Failed Steps</TableHeader>
+          <TableHeader sortKey="pendingCount">Pending Steps</TableHeader>
           <TableHeader>Success Rate</TableHeader>
           <TableHeader sortKey="duration">Duration</TableHeader>
         </tr>
