@@ -9,5 +9,5 @@
  */
 
 module.exports = {
-  title: 'Test Reporter'                   // Your website title
+  title: 'Owl'                   // Your website title
 };
