@@ -77,13 +77,14 @@ To build and run owl (along with Postgres) using Docker Compose:
 ```
 docker-compose up
 ```  
-It will be available on the default `8090` port
+It will be available on the default `8090` port.
 
 Owl can also be started from a docker image. To build the image run:  
 ```
 docker build -t atlantbh/owl .
 ```  
-By default (docker/database/application.properties)[docker/database/application.properties] will be added to the image.
+
+By default [docker/database/application.properties](docker/database/application.properties) will be added to the image.
 
 Start the container:  
 ```
