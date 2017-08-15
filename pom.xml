@@ -11,6 +11,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <finalName>${project.artifactId}-${project.version}</finalName>
     <java.version>1.8</java.version>
   </properties>
 
@@ -88,6 +89,8 @@
         <targetPath>./public</targetPath>
       </resource>
     </resources>
+
+    <finalName>${finalName}</finalName>
 
     <plugins>
       <plugin>
