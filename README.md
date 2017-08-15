@@ -70,7 +70,25 @@ java -jar target/owl-VERSION.jar --spring.config.location=<application.propertie
 If there is already a database with data, flyway baseline migration should be run with the flyway properties specified in the properties file:
 ```
 mvn flyway:baseline -Dflyway.configFile=<application.properties>
+```  
+
+### Docker
+To build and run owl (along with Postgres) using Docker Compose:  
 ```
+docker-compose up
+```  
+It will be available on the default `8090` port
+
+Owl can also be started from a docker image. To build the image run:  
+```
+docker build -t atlantbh/owl .
+```  
+By default (docker/database/application.properties)[docker/database/application.properties] will be added to the image.
+
+Start the container:  
+```
+docker run --name owl -d -p 8090:8090 atlantbh/owl
+```  
 
 ## API
 
