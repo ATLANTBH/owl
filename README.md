@@ -13,7 +13,7 @@ To run the application, Java (JRE) should be installed.
 
 ## Building
 
-Maven (>= v3) is required for building Owl. Run following command to build:
+Maven (>= v3) is required for building owl. Run following command to build:
 
 ```
 mvn clean package
@@ -97,7 +97,7 @@ docker run --name owl -d -p 8090:8090 atlantbh/owl
 
 `GET /api/v1/test-runs`
 
-This API returns all test runs in Test-reporter. 
+This API returns all test runs in owl. 
 
 Test runs are suite of tests cases that are run on specific `build` with specific `test-suite`
 
