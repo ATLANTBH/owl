@@ -26,9 +26,9 @@ class TestCasesTable extends React.Component {
           <tr>
             <TableHeader sortKey="test_group">Description</TableHeader>
             <TableHeader sortKey="test_step_count">Test Steps</TableHeader>
-            <TableHeader sortKey="steps_passed">Steps Passed</TableHeader>
-            <TableHeader sortKey="steps_failed">Steps Failed</TableHeader>
-            <TableHeader sortKey="steps_pending">Steps Pending</TableHeader>
+            <TableHeader sortKey="steps_passed">Passed Steps</TableHeader>
+            <TableHeader sortKey="steps_failed">Failed Steps</TableHeader>
+            <TableHeader sortKey="steps_pending">Pending Steps</TableHeader>
             <TableHeader sortKey="success_rate">Success Rate</TableHeader>
             <TableHeader sortKey="duration">Duration</TableHeader>
           </tr>
