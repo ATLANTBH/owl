@@ -1,6 +1,15 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
 .footer {
   height: 60px;
   background-color: #f5f5f5;
+  position: absolute;
+  bottom: 0;
+  height: 0px;
+  width: 100%;
 }
 
 .footerContainer {
