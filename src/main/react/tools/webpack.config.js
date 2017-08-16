@@ -14,6 +14,7 @@ const path = require('path');
 const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
 const pkg = require('../package.json');
 
 const isDebug = global.DEBUG === false ? false : !process.argv.includes('--release');
@@ -28,6 +29,7 @@ const babelConfig = Object.assign({}, pkg.babel, {
 // Webpack configuration (main.js => public/dist/main.{hash}.js)
 // http://webpack.github.io/docs/configuration.html
 const config = {
+
 
   // The base directory for resolving the entry option
   context: path.resolve(__dirname, '../src'),
@@ -100,6 +102,9 @@ const config = {
     new webpack.LoaderOptionsPlugin({
       debug: isDebug,
       minimize: !isDebug,
+    }),
+    new HtmlWebPackPlugin({
+      favicon: path.join(__dirname, '../public/icons/favicon.ico')
     }),
     new CompressionPlugin({
       asset: "[path].gz[query]",
