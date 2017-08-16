@@ -29,38 +29,7 @@ To start the application with the default configuration ([application.properties
 java -jar target/owl-VERSION.jar
 ```
 
-An external configuration can be provided when starting the app to configure the project name, database properties, change the port the app is running on or toggle specific features.
-
-```
-# Sets the project name to be visible on frontend
-project.name=<your_project_name>
-
-# Comma separated list of suite names that will be shown on dashboard (can be left empty)
-suite.statistics=smoke test,regression test
-
-# Feature toogles
-# Show git information on dashboard - branch and commit hash of the tested code
-project.features.git.info=false
-
-# Github repo link used to generate links to specific commits
-git.github.repo=
-
-# Database Properties
-spring.datasource.url=jdbc:postgresql://<database_host>:5432/<database_name>
-spring.datasource.username=<database_username>
-spring.datasource.password=<database_password>
-
-# Logging Properties
-logging.level.org.hibernate.SQL=debug
-
-# Set port - 0 means the default port will be used
-server.port=0
-
-# Properties for flyway baseline migrations
-flyway.url=jdbc:postgresql://<database_host>:5432/<database_name>
-flyway.user=<database_username>
-flyway.password=<database_password>
-```
+An external configuration ([application.properties](src/main/resources/application.properties)) can be provided when starting the app to configure the project name, database properties, change the port the app is running on or toggle specific features.
 
 The configuration can be saved to a file and passed when starting the app with:
 ```
