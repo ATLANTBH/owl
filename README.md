@@ -125,7 +125,7 @@ Test steps are lowest level tests, that contain asserts and execution results.
 
 `GET /api/v1/test-suites`
 
-This API returns all test suits in Test-reporter.
+This API returns all test suits in owl.
 
 `POST /api/v1/test-suites`
 
