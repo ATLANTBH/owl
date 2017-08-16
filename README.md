@@ -158,7 +158,7 @@ This API allows for parsing and persisting junit format test results. The API ac
 	yarn --version
 	```
 
-- Database named `test-repoter` with user `testreporter` and pw `testreporter` should be created and populated with initial data.
+- Database named `owl-db` with user `owlusername` and pw `owlpassword` should be created and populated with initial data.
  
 - Baseline migrations should be applied by running
 
