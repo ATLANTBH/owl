@@ -53,7 +53,7 @@ Owl can also be started from a docker image. To build the image run:
 docker build -t atlantbh/owl .
 ```  
 
-By default [docker/database/application.properties](docker/database/application.properties) will be added to the image.
+By default [docker/application.properties](docker/application.properties) will be added to the image.
 
 Start the container:  
 ```
