@@ -58,6 +58,7 @@ public class JunitXmlReportParser {
 		private static final String TEST_SUITE_TAG = "testsuite";
 		private static final String TEST_CASE_TAG = "testcase";
 		private static final String TEST_CASE_FAILURE_TAG = "failure";
+		private static final String TEST_CASE_ERROR_TAG = "error";
 		private static final String SKIPPED_TAG = "skipped";
 
 		private static final String NAME_ATTRIBUTE = "name";
@@ -110,7 +111,7 @@ public class JunitXmlReportParser {
 								getFloat(attributes, TIME_ATTRIBUTE, 0f));
 						testSuite.getTestCaseList().add(currentTestCase);
 					} else {
-						if (TEST_CASE_FAILURE_TAG.equals(qName)) {
+						if (TEST_CASE_FAILURE_TAG.equals(qName) || TEST_CASE_ERROR_TAG.equals(qName)) {
 							if (testSuite == null) {
 								throw new SAXException("Failed reading junit xml report. Test suite is not defined.");
 							}
@@ -134,7 +135,7 @@ public class JunitXmlReportParser {
 			if (TEST_CASE_TAG.equals(qName)) {
 				currentTestCase = null;
 			} else {
-				if (TEST_CASE_FAILURE_TAG.equals(qName)) {
+				if (TEST_CASE_FAILURE_TAG.equals(qName) || TEST_CASE_ERROR_TAG.equals(qName)) {
 					inFailureBlock = false;
 				}
 			}
