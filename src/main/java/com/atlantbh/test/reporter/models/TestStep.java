@@ -82,6 +82,11 @@ public class TestStep {
 	@Column(name = "bug_title")
 	private String bugTitle;
 
+  @Column(name = "screenshot_path")
+  private String screenshotPath;
+
+  @Column(name = "screenshot_url")
+  private String screenshotUrl;
 	/**
 	 * Instantiates a new Test case.
 	 */
@@ -196,6 +201,41 @@ public class TestStep {
 	public void setException(String exception) {
 		this.exception = exception;
 	}
+
+
+	/**
+	 * Gets screenshot url.
+	 *
+	 * @return the screenshot url
+	 */
+	public String getScreenshotUrl() { return this.screenshotUrl; }
+
+	/**
+	 * Sets screenshot url.
+	 *
+	 * @param screenshotUrl the screenshot url
+	 */
+	public void setScreenshotUrl(String screenshotUrl) {
+    this.screenshotUrl = screenshotUrl;
+  }
+
+	/**
+	 * Gets screenshot path.
+	 *
+	 * @return the screenshot path
+	 */
+	public String getScreenshotPath() {
+    return this.screenshotPath;
+  }
+
+	/**
+	 * Sets screenshot path.
+	 *
+	 * @param screenshotPath the screenshot path
+	 */
+	public void setScreenshotPath(String screenshotPath) {
+    this.screenshotPath = screenshotPath;
+  }
 
 	/**
 	 * Gets pending message.

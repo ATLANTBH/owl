@@ -1,14 +1,20 @@
 import React, {PropTypes} from 'react';
 import Modal from '../../components/Modal';
+import { Link } from 'react-router'
 
 class ExecutionResultModalContainer extends React.Component {
   static propTypes = {
     isExecutionResultShown: PropTypes.bool.isRequired,
     onExecutionResultModalClose: PropTypes.func.isRequired,
-    currentExecutionResult: PropTypes.any
+    currentExecutionResult: PropTypes.any,
+    currentExecutionResultImage: PropTypes.any
   };
 
   render() {
+    let screenshotButton = null;
+    if (this.props.currentExecutionResultImage) {
+      screenshotButton = <a type="button" className="btn btn-primary pull-left" href={this.props.currentExecutionResultImage}>Screenshot</a>;
+    }
     return (
       <Modal isShown={this.props.isExecutionResultShown} onClose={this.props.onExecutionResultModalClose}>
         <div className="modal-header">
@@ -19,6 +25,7 @@ class ExecutionResultModalContainer extends React.Component {
           <p>{this.props.currentExecutionResult}</p>
         </div>
         <div className="modal-footer">
+          {screenshotButton}
           <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </Modal>
