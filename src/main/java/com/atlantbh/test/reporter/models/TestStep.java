@@ -3,15 +3,7 @@ package com.atlantbh.test.reporter.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -82,11 +74,12 @@ public class TestStep {
 	@Column(name = "bug_title")
 	private String bugTitle;
 
-  @Column(name = "screenshot_path")
-  private String screenshotPath;
+	@Column(name = "screenshot_path")
+	private String screenshotPath;
 
-  @Column(name = "screenshot_url")
-  private String screenshotUrl;
+	@Column(name = "screenshot_url")
+	private String screenshotUrl;
+
 	/**
 	 * Instantiates a new Test case.
 	 */
@@ -208,7 +201,9 @@ public class TestStep {
 	 *
 	 * @return the screenshot url
 	 */
-	public String getScreenshotUrl() { return this.screenshotUrl; }
+	public String getScreenshotUrl() {
+		return this.screenshotUrl;
+	}
 
 	/**
 	 * Sets screenshot url.
@@ -216,8 +211,8 @@ public class TestStep {
 	 * @param screenshotUrl the screenshot url
 	 */
 	public void setScreenshotUrl(String screenshotUrl) {
-    this.screenshotUrl = screenshotUrl;
-  }
+		this.screenshotUrl = screenshotUrl;
+	}
 
 	/**
 	 * Gets screenshot path.
@@ -225,8 +220,8 @@ public class TestStep {
 	 * @return the screenshot path
 	 */
 	public String getScreenshotPath() {
-    return this.screenshotPath;
-  }
+		return this.screenshotPath;
+	}
 
 	/**
 	 * Sets screenshot path.
@@ -234,8 +229,8 @@ public class TestStep {
 	 * @param screenshotPath the screenshot path
 	 */
 	public void setScreenshotPath(String screenshotPath) {
-    this.screenshotPath = screenshotPath;
-  }
+		this.screenshotPath = screenshotPath;
+	}
 
 	/**
 	 * Gets pending message.

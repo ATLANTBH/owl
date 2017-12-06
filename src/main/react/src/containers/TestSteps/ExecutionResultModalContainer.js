@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import Modal from '../../components/Modal';
 import { Link } from 'react-router'
+import FeatureToggle, {whenFeatureToggled} from '../../components/ui/FeatureToggle';
 
 class ExecutionResultModalContainer extends React.Component {
   static propTypes = {
@@ -25,7 +26,9 @@ class ExecutionResultModalContainer extends React.Component {
           <p>{this.props.currentExecutionResult}</p>
         </div>
         <div className="modal-footer">
-          {screenshotButton}
+          <FeatureToggle  toggleKey="screenshotUrlFeatureToggle">
+            {screenshotButton}
+          </FeatureToggle>
           <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </Modal>
