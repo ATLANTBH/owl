@@ -1,13 +1,14 @@
-web:
-  build: .
-  ports:
-    - "8090:8090"
-  links:
-    - postgres:postgres
-
-postgres:
-  build: ./docker/database
-  volumes:
-    - postgres-data:/var/lib/postgresql/data
-  ports:
-    - "5432:5432"
+version: "3"
+services:
+  web:
+    build: .
+    ports:
+      - "8090:8090"
+    links:
+      - postgres:postgres
+  postgres:
+    build: ./docker/database
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
