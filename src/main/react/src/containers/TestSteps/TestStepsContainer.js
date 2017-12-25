@@ -44,6 +44,7 @@ class TestStepsContainer extends React.Component {
       currentTestStep: null,
       isExecutionResultShown: false,
       currentExecutionResult: null,
+      currentExecutionResultImage: null,
       isInitialDataLoading: true,
       isDataLoading: true,
       errorResponse: null,
@@ -70,7 +71,8 @@ class TestStepsContainer extends React.Component {
   onShowExecutionResultModal(testStep) {
     this.setState({
       isExecutionResultShown: true,
-      currentExecutionResult: testStep.exception
+      currentExecutionResult: testStep.exception,
+      currentExecutionResultImage: testStep.screenshotUrl
     });
   }
 
@@ -189,7 +191,8 @@ class TestStepsContainer extends React.Component {
           <ExecutionResultModalContainer
             isExecutionResultShown={this.state.isExecutionResultShown}
             onExecutionResultModalClose={this.onExecutionResultModalClose}
-            currentExecutionResult={this.state.currentExecutionResult}/>
+            currentExecutionResult={this.state.currentExecutionResult}
+            currentExecutionResultImage={this.state.currentExecutionResultImage}/>
 
           <EditNotesModalContainer
             isEditNotesModalShown={this.state.isEditNotesModalShown}

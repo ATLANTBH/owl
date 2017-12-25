@@ -97,6 +97,9 @@ public class BootstrapController {
 		@Value("${project.features.bug.tracking}")
 		private boolean bugTrackingFeatureToggle;
 
+		@Value("${project.features.screenshot.url}")
+		private boolean screenshotUrlFeatureToggle;
+
 		@Value("${git.github.repo}")
 		private String githubRepoLink;
 
@@ -205,6 +208,14 @@ public class BootstrapController {
 		public boolean isBugTrackingFeatureToggle() {
 			return bugTrackingFeatureToggle;
 		}
+
+		/**
+		 * Is screenshot url feature toggle boolean.
+		 *
+		 * @return the boolean
+		 */
+		public boolean isScreenshotUrlFeatureToggle() {
+			return screenshotUrlFeatureToggle; }
 
 		/**
 		 * Create test suite test suite.
