@@ -14,6 +14,9 @@ import java.sql.SQLException;
  * @author Kenan Klisura
  */
 public class RetriableDataSource extends AbstractDataSource {
+	private static final int RETRY_ATTEMPTS = 12;
+	private static final long RETRY_DELAY = 5000;
+
 	private DataSource delegate;
 
 	public RetriableDataSource(DataSource delegate) {
@@ -21,13 +24,13 @@ public class RetriableDataSource extends AbstractDataSource {
 	}
 
 	@Override
-	@Retryable(maxAttempts = 10, backoff = @Backoff(multiplier = 2.3, maxDelay = 30000))
+	@Retryable(maxAttempts = RETRY_ATTEMPTS, backoff = @Backoff(value = RETRY_DELAY))
 	public Connection getConnection() throws SQLException {
 		return delegate.getConnection();
 	}
 
 	@Override
-	@Retryable(maxAttempts = 10, backoff = @Backoff(multiplier = 2.3, maxDelay = 30000))
+	@Retryable(maxAttempts = RETRY_ATTEMPTS, backoff = @Backoff(value = RETRY_DELAY))
 	public Connection getConnection(String username, String password)
 			throws SQLException {
 		return delegate.getConnection(username, password);
