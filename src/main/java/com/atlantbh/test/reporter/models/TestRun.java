@@ -53,6 +53,9 @@ public class TestRun {
 	@Column(name = "computer_name")
 	private String computerName;
 
+	@Column(name = "environment")
+	private String environment;
+
 	@Column(name = "created_at")
 	private Date createdAt;
 
@@ -230,6 +233,24 @@ public class TestRun {
 	 */
 	public void setComputerName(String computerName) {
 		this.computerName = computerName;
+	}
+
+	/**
+	 * Gets environment.
+	 *
+	 * @return the environment
+	 */
+	public String getEnvironment() {
+		return environment;
+	}
+
+	/**
+	 * Sets environment.
+	 *
+	 * @param environment the environment
+	 */
+	public void setEnvironment(String environment) {
+		this.environment = environment;
 	}
 
 	/**

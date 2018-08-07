@@ -44,6 +44,7 @@ class TestRunsTable extends React.Component {
           <FeatureToggle toggleKey="gitInfoFeatureToggle">
             <TableHeader sortKey="gitBranch">Git Branch</TableHeader>
           </FeatureToggle>
+          <TableHeader>Env.</TableHeader>
           <TableHeader sortKey="testSuite.suite">Test Suite</TableHeader>
           <TableHeader sortKey="updatedAt">Execution Finished</TableHeader>
           <TableHeader sortKey="exampleCount">Total Steps</TableHeader>
@@ -63,6 +64,7 @@ class TestRunsTable extends React.Component {
                   <GithubInfo hash={testRun.gitHash} branch={testRun.gitBranch} />
                 </td>
               </FeatureToggle>
+              <td>{testRun.environment}</td>
               <td>{testSuiteLink(testRun)}</td>
               <td><TimeFormat time={testRun.updatedAt} format='dd/mm/yyyy HH:MM' /></td>
               <td>{testRun.exampleCount}</td>
