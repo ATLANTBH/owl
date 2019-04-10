@@ -39,7 +39,49 @@ java -jar target/owl-VERSION.jar --spring.config.location=<application.propertie
 If there is already a database with data, flyway baseline migration should be run with the flyway properties specified in the properties file:
 ```
 mvn flyway:baseline -Dflyway.configFile=<application.properties>
-```  
+```
+
+### Running as daemon service by using system.d
+To run owl as a daemon service on the host machine (which is preferred way of running owl on CI environments if you don't use dockerized version), you need to do following:
+
+Create file called owl in /etc/default/ that looks like this:
+```
+APP_ROOT=<OWL_GIT_REPO>/owl/target
+BINARY=owl-<VERSION>.jar
+CONFIG=<SPRING_CONFIG_LOCATION>
+```
+This file contains default variables that will be used in owl.service 
+
+Create file called owl.service in /etc/system.d/system that looks like this:
+```
+[Unit]
+Description=OWL test reporter application
+After=syslog.target
+
+[Service]
+EnvironmentFile=/etc/default/owl
+User=<LINUX_USER>
+WorkingDirectory=<DIRECTORY_FROM_WHICH_COMMAND_WILL_BE_EXECUTED>
+ExecStart=/usr/bin/java -jar ${BINARY} --spring.config.location=${CONFIG}
+StandardOutput=journal
+StandardError=journal
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Execute following commands to register and start owl daemon service:
+```
+sudo systemctl daemon-reload
+sudo systemctl enable owl
+sudo systemctl status owl
+```
+
+To check realtime stdout logs of owl daemon service use:
+```
+journalctl -u owl -n 100 -f
+```
 
 ### Docker
 To build and run owl (along with Postgres) using Docker Compose:  
