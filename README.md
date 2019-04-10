@@ -41,7 +41,7 @@ If there is already a database with data, flyway baseline migration should be ru
 mvn flyway:baseline -Dflyway.configFile=<application.properties>
 ```
 
-### Running as daemon service by using system.d
+### Running as daemon service by using systemd
 To run owl as a daemon service on the host machine (which is preferred way of running owl on CI environments if you don't use dockerized version), you need to do following:
 
 Create file called owl in /etc/default/ that looks like this:
@@ -52,7 +52,7 @@ CONFIG=<SPRING_CONFIG_LOCATION>
 ```
 This file contains default variables that will be used in owl.service 
 
-Create file called owl.service in /etc/system.d/system that looks like this:
+Create file called owl.service in /etc/systemd/system that looks like this:
 ```
 [Unit]
 Description=OWL test reporter application
