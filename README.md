@@ -46,8 +46,8 @@ To run owl as a daemon service on the host machine (which is preferred way of ru
 
 Create file called owl in /etc/default/ that looks like this:
 ```
-APP_ROOT=<OWL_GIT_REPO>/owl/target
-BINARY=owl-<VERSION>.jar
+APP_ROOT=<HOME>/owl/target
+BINARY=<HOME>/owl/target/owl-<VERSION>.jar
 CONFIG=<SPRING_CONFIG_LOCATION>
 ```
 This file contains default variables that will be used in owl.service 
