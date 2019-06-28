@@ -16,6 +16,7 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const pkg = require('../package.json');
+const postcssConfig = require('./postcss.config');
 
 const isDebug = global.DEBUG === false ? false : !process.argv.includes('--release');
 const isVerbose = process.argv.includes('--verbose') || process.argv.includes('-v');
@@ -107,7 +108,7 @@ const config = {
       favicon: path.join(__dirname, '../public/icons/favicon.ico')
     }),
     new CompressionPlugin({
-      asset: "[path].gz[query]",
+      filename: "[path].gz[query]",
       algorithm: "gzip",
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
@@ -123,6 +124,7 @@ const config = {
         include: [
           path.resolve(__dirname, '../src'),
         ],
+        exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         options: babelConfig,
       },
@@ -138,17 +140,12 @@ const config = {
               sourceMap: isDebug,
               importLoaders: true,
               // CSS Modules https://github.com/css-modules/css-modules
-              modules: true,
-              localIdentName: isDebug ? '[name]_[local]_[hash:base64:3]' : '[hash:base64:4]',
-              // CSS Nano http://cssnano.co/options/
-              minimize: !isDebug,
+              modules: true
             },
           },
           {
             loader: 'postcss-loader',
-            options: {
-              config: './tools/postcss.config.js',
-            },
+            options: postcssConfig,
           }
         ],
       },
