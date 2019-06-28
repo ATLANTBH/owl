@@ -15,6 +15,7 @@ const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const pkg = require('../package.json');
 const postcssConfig = require('./postcss.config');
 
@@ -181,12 +182,15 @@ const config = {
 
 // Optimize the bundle in release (production) mode
 if (!isDebug) {
-  config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    sourceMap: true,
-    compress: {
-      warnings: isVerbose,
-    },
-  }));
+  config.optimization = {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true,
+      })
+    ]
+  };
   config.plugins.push(new webpack.optimize.AggressiveMergingPlugin());
 }
 
