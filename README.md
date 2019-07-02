@@ -159,9 +159,9 @@ This API allows for parsing and persisting junit format test results. The API ac
 
 ## Development
 
-- Install node (>= v6.0.0)
+- Install node (>= v12.5.0)
 
-- Install yarn (>= v0.21.3)
+- Install yarn (>= v0.24.6)
 
 	```bash
 	brew update
