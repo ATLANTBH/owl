@@ -130,6 +130,8 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
+postgres-data/
+
 # Yarn Integrity file
 .yarn-integrity
 

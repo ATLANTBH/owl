@@ -10,8 +10,9 @@
 
 /* eslint-disable global-require */
 
-module.exports = () => ({
-  plugins: [
+module.exports = {
+  ident: 'postcss',
+  plugins: () => [
     // Transfer @import rule by inlining content, e.g. @import 'normalize.css'
     // https://github.com/postcss/postcss-import
     require('postcss-import')(),
@@ -55,4 +56,4 @@ module.exports = () => ({
     // https://github.com/postcss/autoprefixer
     require('autoprefixer')(),
   ],
-});
+};
