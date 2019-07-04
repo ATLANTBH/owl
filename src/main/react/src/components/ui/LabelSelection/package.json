@@ -1,0 +1,6 @@
+{
+  "name": "LabelSelection",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./LabelSelection.js"
+}
