@@ -91,26 +91,28 @@ public class TestCaseService {
 	public void createTestCaseFromJunitXmlReport(Long testRunId, InputStream inputStream) throws ServiceException {
 		TestRun testRun = testRunService.get(testRunId);
 		try {
-			JunitXmlReportParser.TestSuite junitTestSuite = JunitXmlReportParser.parse(inputStream);
-			if (junitTestSuite != null) {
-				junitTestSuite.getTestCaseList()
-						.forEach(junitTestCase -> {
-							TestStep testStep = createTestStep(junitTestSuite, junitTestCase);
-							testStepService.create(testRun, testStep);
-						});
+			JunitXmlReportParser.TestSuites junitTestSuites = JunitXmlReportParser.parse(inputStream);
+			for (JunitXmlReportParser.TestSuite junitTestSuite :junitTestSuites.getTestSuiteList()) {
+				if (junitTestSuite != null) {
+					junitTestSuite.getTestCaseList()
+							.forEach(junitTestCase -> {
+								TestStep testStep = createTestStep(junitTestSuite, junitTestCase);
+								testStepService.create(testRun, testStep);
+							});
 
-				int totalCases = junitTestSuite.getTestCaseList().size();
-				int failedCases = (int) junitTestSuite.getTestCaseList()
-						.stream()
-						.filter(JunitXmlReportParser.TestSuite.TestCase::isFailed)
-						.count();
+					int totalCases = junitTestSuite.getTestCaseList().size();
+					int failedCases = (int) junitTestSuite.getTestCaseList()
+							.stream()
+							.filter(JunitXmlReportParser.TestSuite.TestCase::isFailed)
+							.count();
 
-				float duration = junitTestSuite.getTestCaseList()
+					float duration = junitTestSuite.getTestCaseList()
 							.stream()
 							.map(JunitXmlReportParser.TestSuite.TestCase::getTime)
 							.reduce(0f, (previous, time) -> previous + time);
 
-				testRunService.updateCounts(testRun.getId(), totalCases, failedCases, duration);
+					testRunService.updateCounts(testRun.getId(), totalCases, failedCases, duration);
+				}
 			}
 		} catch (ParseException e) {
 			throw new ServiceException(e.getMessage(), e);

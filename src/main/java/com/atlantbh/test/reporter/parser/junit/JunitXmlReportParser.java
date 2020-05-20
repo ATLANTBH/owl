@@ -34,7 +34,7 @@ public class JunitXmlReportParser {
 	 * @throws ParseException the parse exception
 	 */
 	@Nullable
-	public static TestSuite parse(InputStream inputStream) throws ParseException {
+	public static TestSuites parse(InputStream inputStream) throws ParseException {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser saxParser = null;
 		try {
@@ -46,7 +46,7 @@ public class JunitXmlReportParser {
 		try {
 			JunitXmlReportHandler handler = new JunitXmlReportHandler();
 			saxParser.parse(inputStream, handler);
-			return handler.getTestSuite();
+			return handler.getTestSuites();
 		} catch (SAXException e) {
 			throw new ParseException(e.getMessage(), e);
 		} catch (IOException e) {
@@ -55,6 +55,7 @@ public class JunitXmlReportParser {
 	}
 
 	private static class JunitXmlReportHandler extends DefaultHandler {
+		private static final String TEST_SUITES_TAG = "testsuites";
 		private static final String TEST_SUITE_TAG = "testsuite";
 		private static final String TEST_CASE_TAG = "testcase";
 		private static final String TEST_CASE_FAILURE_TAG = "failure";
@@ -68,14 +69,25 @@ public class JunitXmlReportParser {
 
 		private static final String CLASS_NAME_ATTRIBUTE = "classname";
 
-		private TestSuite testSuite;
+
+		private TestSuites testSuites;
+
+
+
+		private TestSuites currentTestSuites;
+		private TestSuite currentTestSuite;
 		private TestSuite.TestCase currentTestCase;
+
 		private boolean inFailureBlock = false;
 
 		@Override
 		public void characters(char[] ch, int start, int length) throws SAXException {
 			if (inFailureBlock) {
-				currentTestCase.failureReason = new String(ch, start, length);
+				if(currentTestCase.failureReason==null) {
+					currentTestCase.failureReason = new String(ch, start, length);
+				}else{
+					currentTestCase.failureReason=currentTestCase.failureReason.concat("\n" + new String(ch, start, length));
+				}
 			}
 		}
 
@@ -83,22 +95,29 @@ public class JunitXmlReportParser {
 		public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
 			if (SKIPPED_TAG.equals(qName)) {
 				if (currentTestCase != null) {
-					testSuite.getTestCaseList().remove(currentTestCase);
+					currentTestSuite.getTestCaseList().remove(currentTestCase);
 					currentTestCase = null;
 				}
 			} else {
+				if(TEST_SUITES_TAG.equals(qName)){
+
+					currentTestSuites = new TestSuites(
+							attributes.getValue(NAME_ATTRIBUTE),
+							getInt(attributes, TESTS_ATTRIBUTE, 0),
+							getInt(attributes, FAILURES_ATTRIBUTE, 0),
+							getFloat(attributes, TIME_ATTRIBUTE, 0f));
+				}
+
 				if (TEST_SUITE_TAG.equals(qName)) {
-					if (testSuite != null) {
-						throw new SAXException("Failed reading junit xml report. Test suite is already defined.");
-					}
-					testSuite = new TestSuite(attributes.getValue(NAME_ATTRIBUTE),
+					currentTestSuite = new TestSuite(attributes.getValue(NAME_ATTRIBUTE),
 							getInt(attributes, TESTS_ATTRIBUTE, 0),
 							getInt(attributes, ERRORS_ATTRIBUTE, 0),
 							getInt(attributes, FAILURES_ATTRIBUTE, 0),
 							getFloat(attributes, TIME_ATTRIBUTE, 0f));
+
 				} else {
 					if (TEST_CASE_TAG.equals(qName)) {
-						if (testSuite == null) {
+						if (currentTestSuite == null) {
 							throw new SAXException("Failed reading junit xml report. Test suite is not defined.");
 						}
 						if (currentTestCase != null) {
@@ -108,10 +127,12 @@ public class JunitXmlReportParser {
 						currentTestCase = new TestSuite.TestCase(attributes.getValue(CLASS_NAME_ATTRIBUTE),
 								attributes.getValue(NAME_ATTRIBUTE),
 								getFloat(attributes, TIME_ATTRIBUTE, 0f));
-						testSuite.getTestCaseList().add(currentTestCase);
+
+						currentTestSuite.getTestCaseList().add(currentTestCase);
+
 					} else {
 						if (TEST_CASE_FAILURE_TAG.equals(qName)) {
-							if (testSuite == null) {
+							if (currentTestSuite == null) {
 								throw new SAXException("Failed reading junit xml report. Test suite is not defined.");
 							}
 							if (currentTestCase == null) {
@@ -131,6 +152,11 @@ public class JunitXmlReportParser {
 
 		@Override
 		public void endElement(String uri, String localName, String qName) throws SAXException {
+			if (TEST_SUITE_TAG.equals(qName)) {
+				testSuites=currentTestSuites;
+				testSuites.addTestSuiteToList(currentTestSuite);
+				currentTestSuite=null;
+			}
 			if (TEST_CASE_TAG.equals(qName)) {
 				currentTestCase = null;
 			} else {
@@ -145,8 +171,8 @@ public class JunitXmlReportParser {
 		 *
 		 * @return the test suite
 		 */
-		public TestSuite getTestSuite() {
-			return testSuite;
+		public TestSuites getTestSuites() {
+			return testSuites;
 		}
 	}
 
@@ -177,10 +203,71 @@ public class JunitXmlReportParser {
 	}
 
 	/**
-	 * Test suite junit xml report definition.
+	 * Test suites junit xml report object definition.
 	 *
-	 * @author Kenan Klisura
+	 * @author Gorjan Kalauzovic
 	 */
+	public static class TestSuites {
+		private String name;
+        private int tests = 0;
+		private int failures = 0;
+		private float time = 0;
+		private List<TestSuite> testSuiteList;
+
+		TestSuites(String name, int tests, int failures, float time) {
+			this.name = name;
+			this.tests = tests;
+			this.failures = failures;
+			this.time = time;
+		}
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public int getTests() {
+			return tests;
+		}
+
+		public void setTests(int tests) {
+			this.tests = tests;
+		}
+
+		public int getFailures() {
+			return failures;
+		}
+
+		public void setFailures(int failures) {
+			this.failures = failures;
+		}
+
+		public float getTime() {
+			return time;
+		}
+
+		public void setTime(float time) {
+			this.time = time;
+		}
+
+		public List<TestSuite> getTestSuiteList() {
+			if (testSuiteList == null) {
+				testSuiteList = new ArrayList<>();
+			}
+			return  testSuiteList;
+		}
+
+		public void addTestSuiteToList(TestSuite testSuite) {
+			if (testSuiteList == null) {
+				testSuiteList = new ArrayList<>();
+			}
+			testSuiteList.add(testSuite);
+		}
+
+	}
+
 	public static class TestSuite {
 		private String name;
 
