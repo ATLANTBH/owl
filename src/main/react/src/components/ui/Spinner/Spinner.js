@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import style from './style.css';
 
@@ -8,7 +8,6 @@ class Spinner extends React.Component {
     text: PropTypes.string,
     errorResponse: PropTypes.object
   };
-
   render() {
     if (this.props.isShown) {
       return (
@@ -24,6 +23,7 @@ class Spinner extends React.Component {
     }
 
     if (this.props.errorResponse) {
+      console.log(this.props.errorResponse.status);
       return (
         <div className="text-center">
           <div className={style.error}>

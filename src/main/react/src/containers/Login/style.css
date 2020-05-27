@@ -1,0 +1,50 @@
+.content {
+  padding-top: 10%;
+  font-size: large;
+  letter-spacing: 1.8px;
+}
+.header {
+  border-bottom: 1px solid darkslategray; 
+}
+
+.form {
+  margin-top: 50px;
+  margin-bottom: 15px;
+}
+
+.input {
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+  border-radius: 1px;
+  padding: 8px;
+  height: 50px;
+}
+
+.input::placeholder {
+  font-weight: lighter;
+  letter-spacing: 2.6px;
+  opacity: 0.5;
+}
+
+.submit {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1.8px;
+  padding: 11px;
+  width: 100%;
+  border-radius: 1px;
+  margin-top: 35px;
+}
+
+.center {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin: auto;
+  max-width: 600px;
+}
+
+.logo{
+  float: left;
+  width:135px
+}

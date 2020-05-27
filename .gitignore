@@ -154,3 +154,6 @@ node_modules
 npm-debug.log
 
 .sonar/
+
+# Ignore Mac DS_Store files
+.DS_Store

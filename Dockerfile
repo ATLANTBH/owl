@@ -1,4 +1,4 @@
-FROM maven:3-jdk-8 
+FROM maven:3-jdk-8
 
 WORKDIR /code
 
@@ -14,4 +14,4 @@ RUN ["mvn", "-DfinalName=owl", "package"]
 ADD docker/application.properties /code/application.properties
 
 EXPOSE 8090
-CMD ["/usr/bin/java", "-jar", "target/owl.jar", "--spring.config.location=/code/application.properties"]
+CMD ["/usr/local/openjdk-8/bin/java", "-jar", "target/owl.jar", "--spring.config.location=/code/application.properties"]
