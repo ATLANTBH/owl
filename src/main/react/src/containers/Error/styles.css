@@ -22,10 +22,13 @@
   text-align: center;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .content {
+  padding-top: 80px;
   padding-bottom: 80px;
+  text-align: center;
 }
 
 .code {

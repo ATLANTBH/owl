@@ -1,14 +1,14 @@
-import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
+import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import Waypoint from 'react-waypoint';
 import TestStepsTable from '../../components/TestSteps/TestStepsTable';
 import Layout from '../../components/Layout';
-import {getTestRun, getTestSteps, saveNotes, addBugReportLink} from '../../api';
+import { getTestRun, getTestSteps, saveNotes, addBugReportLink } from '../../api';
 import Spinner from '../../components/ui/Spinner';
 import ExecutionResultModalContainer from './ExecutionResultModalContainer';
 import EditNotesModalContainer from './EditNotesModal/EditNotesModalContainer';
 import AddBugReportLinkModalContainer from './AddBugReportLinkModal/AddBugReportLinkModalContainer';
-import {mergePaginatedModels} from '../../utils/model';
+import { mergePaginatedModels } from '../../utils/model';
 
 const EMPTY_TEST_RUN = {
   build: null,
@@ -25,18 +25,18 @@ const EMPTY_TEST_STEPS = {
 };
 
 class TestStepsContainer extends React.Component {
-  constructor(){
+  constructor() {
     super();
 
-    this.onExecutionResultModalClose    = this.onExecutionResultModalClose.bind(this);
-    this.onRequestPageData              = this.onRequestPageData.bind(this);
-    this.onShowExecutionResultModal     = this.onShowExecutionResultModal.bind(this);
-    this.onEditNotesModalClose          = this.onEditNotesModalClose.bind(this);
-    this.onShowEditNotesModal           = this.onShowEditNotesModal.bind(this);
-    this.onSaveNote                     = this.onSaveNote.bind(this);
-    this.onShowAddBugReportLinkModal    = this.onShowAddBugReportLinkModal.bind(this);
-    this.onAddBugReportLinkModalClose   = this.onAddBugReportLinkModalClose.bind(this);
-    this.onAddBugReportLink             = this.onAddBugReportLink.bind(this);
+    this.onExecutionResultModalClose = this.onExecutionResultModalClose.bind(this);
+    this.onRequestPageData = this.onRequestPageData.bind(this);
+    this.onShowExecutionResultModal = this.onShowExecutionResultModal.bind(this);
+    this.onEditNotesModalClose = this.onEditNotesModalClose.bind(this);
+    this.onShowEditNotesModal = this.onShowEditNotesModal.bind(this);
+    this.onSaveNote = this.onSaveNote.bind(this);
+    this.onShowAddBugReportLinkModal = this.onShowAddBugReportLinkModal.bind(this);
+    this.onAddBugReportLinkModalClose = this.onAddBugReportLinkModalClose.bind(this);
+    this.onAddBugReportLink = this.onAddBugReportLink.bind(this);
 
     this.state = {
       isAddBugReportLinkModalShown: false,
@@ -127,7 +127,7 @@ class TestStepsContainer extends React.Component {
           })
         )
       )
-      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }) );
+      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }));
   }
 
   getTestRun(testRunId) {
@@ -182,29 +182,29 @@ class TestStepsContainer extends React.Component {
             testSteps={this.state.testSteps.content}
             onShowExecutionResultModal={this.onShowExecutionResultModal}
             onShowEditNotesModal={this.onShowEditNotesModal}
-            onShowAddBugReportLinkModal={this.onShowAddBugReportLinkModal}/>
+            onShowAddBugReportLinkModal={this.onShowAddBugReportLinkModal} />
 
           <Waypoint onEnter={this.onRequestPageData} />
 
-          <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test steps"/>
+          <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test steps" />
 
           <ExecutionResultModalContainer
             isExecutionResultShown={this.state.isExecutionResultShown}
             onExecutionResultModalClose={this.onExecutionResultModalClose}
             currentExecutionResult={this.state.currentExecutionResult}
-            currentExecutionResultImage={this.state.currentExecutionResultImage}/>
+            currentExecutionResultImage={this.state.currentExecutionResultImage} />
 
           <EditNotesModalContainer
             isEditNotesModalShown={this.state.isEditNotesModalShown}
             onEditNotesModalClose={this.onEditNotesModalClose}
             onSaveNote={this.onSaveNote}
-            testStep={this.state.currentTestStep}/>
+            testStep={this.state.currentTestStep} />
 
           <AddBugReportLinkModalContainer
             isAddBugReportLinkModalShown={this.state.isAddBugReportLinkModalShown}
             onAddBugReportLinkModalClose={this.onAddBugReportLinkModalClose}
             onAddBugReportLink={this.onAddBugReportLink}
-            testStep={this.state.currentTestStep}/>
+            testStep={this.state.currentTestStep} />
         </Spinner>
       </Layout>
     );

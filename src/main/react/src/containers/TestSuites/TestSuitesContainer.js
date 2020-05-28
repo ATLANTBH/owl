@@ -1,8 +1,8 @@
-import React, {PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import Layout from '../../components/Layout';
 import Pagination from '../../components/ui/Pagination';
 import Spinner from '../../components/ui/Spinner';
-import {getTestSuites} from '../../api';
+import { getTestSuites } from '../../api';
 import TestSuitesTable from '../../components/TestSuites/TestSuitesTable';
 
 const EMPTY_TEST_SUITES = {
@@ -10,7 +10,7 @@ const EMPTY_TEST_SUITES = {
 };
 
 class TestSuitesContainer extends React.Component {
-  constructor(){
+  constructor() {
     super();
 
     this.state = {
@@ -32,10 +32,10 @@ class TestSuitesContainer extends React.Component {
 
   getPageData(props) {
     getTestSuites(props.location.query.page,
-                  props.location.query.size,
-                  props.location.query.sort)
-      .then(testSuites     => this.setState({ isDataLoading: false, testSuites }) )
-      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }) );
+      props.location.query.size,
+      props.location.query.sort)
+      .then(testSuites => this.setState({ isDataLoading: false, testSuites }))
+      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }));
   }
 
   render() {

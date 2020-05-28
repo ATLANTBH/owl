@@ -1,6 +1,8 @@
 import React from 'react';
+import { browserHistory, Link } from 'react-router';
 import style from './styles.css';
-
+import { isUserLoggedIn } from '../../auth';
+import Layout from '../../components/Layout/Layout';
 class ErrorContainer extends React.Component {
   static propTypes = {
     error: React.PropTypes.object
@@ -13,7 +15,12 @@ class ErrorContainer extends React.Component {
 
   goBack = (event) => {
     event.preventDefault();
-    history.goBack();
+    browserHistory.goBack();
+  };
+
+  goBackToLogin = (event) => {
+    event.preventDefault();
+    browserHistory.push("/");
   };
 
   render() {
@@ -24,7 +31,7 @@ class ErrorContainer extends React.Component {
       ['Error', 'Oups, something went wrong'];
 
     return (
-      <div className={style.container}>
+      <Layout>
         <main className={style.content}>
           <h1 className={style.code}>{code}</h1>
           <p className={style.title}>{title}</p>
@@ -34,7 +41,14 @@ class ErrorContainer extends React.Component {
             </p>
           }
         </main>
-      </div>
+        <div className="text-center">
+          {isUserLoggedIn() ?
+            <Link className="btn btn-secondary" onClick={this.goBack}> BACK </Link>
+            :
+            <Link className="btn btn-secondary" onClick={this.goBackToLogin}> BACK TO LOGIN </Link>
+          }
+        </div>
+      </Layout>
     );
   }
 }

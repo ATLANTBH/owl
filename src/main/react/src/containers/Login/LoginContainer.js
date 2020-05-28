@@ -1,7 +1,6 @@
 import React from 'react';
 import Spinner from '../../components/ui/Spinner';
-import { Link } from 'react-router';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 import style from 'containers/Login/style.css';
 import { login } from '../../api';
 import { isUserLoggedIn } from '../../auth';
@@ -40,24 +39,31 @@ class LoginContainer extends React.Component {
     handleSubmit(event) {
         if (this.state.username.length > 0 && this.state.password.length > 7) {
             this.setState({
+                errorResponse: null,
                 showingAlert: false,
                 isDataLoading: true
             });
             login(this.state.username, this.state.password)
                 .then(user => {
-                    this.setState({ isDataLoading: false });
+                    this.setState({ isDataLoading: false, showingAlert: false });
 
                     if (user.token) {
                         sessionStorage.setItem('token', user.token);
                         sessionStorage.setItem('id', user.id);
                     }
-                    console.log(sessionStorage);
                     browserHistory.push('/test-runs');
                 })
-                .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }));
+                .catch(errorResponse => this.setState({
+                    isDataLoading: false,
+                    showingAlert: true,
+                    errorResponse
+                }));
         }
         else {
-            this.setState({ showingAlert: true });
+            this.setState({
+                errorResponse: null,
+                showingAlert: true
+            });
         }
         event.preventDefault();
     }
@@ -74,7 +80,7 @@ class LoginContainer extends React.Component {
     render() {
         return (
             <Layout>
-                <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Logging in...">
+                <Spinner isShown={this.state.isDataLoading} errorResponse={null} text="Logging in...">
                     <div className={style.center}>
                         <div className={"row " + style.header}>
                             <div className="col-md-12 form-group">
@@ -124,21 +130,17 @@ class LoginContainer extends React.Component {
                         <div className="row" style={{ display: this.state.showingAlert ? 'block' : 'none' }}>
                             <div className="col-md-12 form-group">
                                 <div className="alert alert-info" role="alert">
-                                    Username or password are not valid! Password should be at least 8 characters long.
+                                    {this.state.errorResponse ?
+                                        "Bad credentials! Use another username and password."
+                                        :
+                                        "Username or password are not valid! Password should be at least 8 characters long."
+                                    }
                                 </div>
                             </div>
                         </div>
                     </div>
                 </Spinner>
-                {
-                    this.state.errorResponse ?
-                        <div className="text-center">
-                            <Link className="btn btn-secondary" onClick={this.backToLogin}> BACK TO LOGIN </Link>
-                        </div>
-                        :
-                        ''
-                }
-            </Layout >
+            </Layout>
         );
     }
 }
