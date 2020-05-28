@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import { logout } from './auth';
+import { browserHistory } from 'react-router';
 
 export function login(username, password) {
   return fetch(`/api/v1/auth/login`, {
@@ -123,8 +124,11 @@ function fetchResponseHandler(response) {
   if (!response.ok) {
     return response.json()
       .then(response => {
-        if (response.status === 401) {
+        console.log(browserHistory.getCurrentLocation());
+        console.log(response);
+        if (response.status === 401 && browserHistory.getCurrentLocation().pathname != "/") {
           logout();
+          browserHistory.push("/");
         }
         throw response;
       });
