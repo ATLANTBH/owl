@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
  *
  * @author Kristina Kraljevic
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 public class AuthenticationController {
@@ -41,6 +40,7 @@ public class AuthenticationController {
     @Autowired
     JwtProvider jwtProvider;
 
+    @CrossOrigin
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody OwlUser owlUser) {
         if(!owlUser.getUsername().isEmpty() && owlUser.getPassword().length() > 7 ) {
@@ -58,6 +58,7 @@ public class AuthenticationController {
         return ResponseEntity.ok().body(userRepository.save(owlUser));
     }
 
+    @CrossOrigin( origins = "*")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody OwlUser owlUser) {
         Authentication authentication = authenticationManager.authenticate(
