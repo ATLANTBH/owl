@@ -99,7 +99,7 @@ class TestCasesContainer extends React.Component {
             <div className="col-md-12">
               <ol className="breadcrumb">
                 <li><Link to="/">Dashboard</Link></li>
-                <li title="Build">{this.props.params.testRunId}</li>
+                <li title="Build">Test Run {this.props.params.testRunId}</li>
                 <li className="active" title="Test Suite">{this.state.testRun.testSuite.suite}</li>
               </ol>
             </div>
