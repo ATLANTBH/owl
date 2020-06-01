@@ -13,9 +13,9 @@ class ErrorContainer extends React.Component {
       'Page Not Found' : 'Error';
   }
 
-  goBack = (event) => {
+  goBackToTestSuites = (event) => {
     event.preventDefault();
-    browserHistory.goBack();
+    browserHistory.push("/test-suites");
   };
 
   goBackToLogin = (event) => {
@@ -43,7 +43,7 @@ class ErrorContainer extends React.Component {
         </main>
         <div className="text-center">
           {isUserLoggedIn() ?
-            <Link className="btn btn-secondary" onClick={this.goBack}> BACK </Link>
+            <Link className="btn btn-secondary" onClick={this.goBackToTestSuites}> BACK TO TEST SUITES</Link>
             :
             <Link className="btn btn-secondary" onClick={this.goBackToLogin}> BACK TO LOGIN </Link>
           }

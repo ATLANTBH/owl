@@ -121,7 +121,6 @@ export function addBugReportLink(testRunId, testStepId, bugReportRequest) {
 }
 
 function fetchResponseHandler(response) {
-  console.log(response);
   if (!response.ok) {
     console.log(browserHistory.getCurrentLocation().pathname);
     if (response.status === 401) {
