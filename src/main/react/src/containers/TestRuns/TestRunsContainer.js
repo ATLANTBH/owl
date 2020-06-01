@@ -5,14 +5,14 @@ import TestRunsTable from '../../components/TestRuns/TestRunsTable';
 import TestRunsFilterContainer from './TestRunsFilterContainer';
 import TrendingSection from '../../components/TestRuns/TrendingSection';
 import Spinner from '../../components/ui/Spinner';
-import {getTestRuns} from '../../api';
+import { getTestRuns } from '../../api';
 
 const EMPTY_TEST_RUNS = {
   content: []
 };
 
 class TestRunsContainer extends React.Component {
-  constructor(){
+  constructor() {
     super();
 
     this.state = {
@@ -33,12 +33,12 @@ class TestRunsContainer extends React.Component {
 
   getTestRuns(props) {
     getTestRuns(props.location.query.git,
-                props.location.query.testSuite,
-                props.location.query.page,
-                props.location.query.size,
-                props.location.query.sort)
-      .then(testRuns       => this.setState({ isDataLoading: false, testRuns }) )
-      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }) );
+      props.location.query.testSuite,
+      props.location.query.page,
+      props.location.query.size,
+      props.location.query.sort)
+      .then(testRuns => this.setState({ isDataLoading: false, testRuns }))
+      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }));
   }
 
   render() {
@@ -54,7 +54,7 @@ class TestRunsContainer extends React.Component {
               </div>
             </div>
 
-            <TestRunsFilterContainer {...this.props}/>
+            <TestRunsFilterContainer {...this.props} />
           </div>
 
           <TestRunsTable testRuns={this.state.testRuns.content} />

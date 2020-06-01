@@ -3,18 +3,25 @@ package com.atlantbh.test.reporter;
 import com.atlantbh.test.reporter.config.spring.RetriableDataSource;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.resource.GzipResourceResolver;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolverChain;
+import org.springframework.web.servlet.view.InternalResourceView;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
@@ -38,12 +45,20 @@ public class TestReporterConfiguration extends WebMvcConfigurerAdapter {
 				.addResolver(new GzipResourceResolver());
 
 		// Serve index for all other routes
-		registry.addResourceHandler("/**")
+		registry.addResourceHandler("/**","/")
 				.setCachePeriod(CACHE_TIME)
 				.resourceChain(true)
 				.addResolver(new IndexResourceResolver());
+		super.addResourceHandlers(registry);
+
 	}
 
+	@Bean
+	public ViewResolver viewResolver() {
+		UrlBasedViewResolver viewResolver = new UrlBasedViewResolver();
+		viewResolver.setViewClass(InternalResourceView.class);
+		return viewResolver;
+	}
 	@Bean
 	public BeanPostProcessor dataSourceWrapper() {
 		return new RetriableDataSourceBeanPostProcessor();
@@ -72,5 +87,19 @@ public class TestReporterConfiguration extends WebMvcConfigurerAdapter {
 				throws BeansException {
 			return bean;
 		}
+	}
+
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/error").setViewName("forward:/index.html");
+	}
+
+
+	@Bean
+	public EmbeddedServletContainerCustomizer containerCustomizer() {
+		return container -> {
+			container.addErrorPages(new ErrorPage(HttpStatus.UNAUTHORIZED,
+					"/error"));
+		};
 	}
 }
