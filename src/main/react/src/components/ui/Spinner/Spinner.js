@@ -23,7 +23,6 @@ class Spinner extends React.Component {
     }
 
     if (this.props.errorResponse) {
-      console.log(this.props.errorResponse.status);
       return (
         <div className="text-center">
           <div className={style.error}>

@@ -1,11 +1,11 @@
-import React, {PropTypes} from 'react';
-import {Link} from 'react-router';
+import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import Waypoint from 'react-waypoint';
 import Layout from '../../components/Layout';
 import Spinner from '../../components/ui/Spinner';
 import TestCasesTable from '../../components/TestCases/TestCasesTable';
-import {getTestRun, getTestCases} from '../../api';
-import {mergePaginatedModels} from '../../utils/model';
+import { getTestRun, getTestCases } from '../../api';
+import { mergePaginatedModels } from '../../utils/model';
 
 const EMPTY_TEST_RUN = {
   build: null,
@@ -21,10 +21,10 @@ const EMPTY_TEST_CASES = {
 };
 
 class TestCasesContainer extends React.Component {
-  constructor(){
+  constructor() {
     super();
 
-    this.onRequestPageData  = this.onRequestPageData.bind(this);
+    this.onRequestPageData = this.onRequestPageData.bind(this);
 
     this.state = {
       isInitialDataLoading: true,
@@ -51,8 +51,8 @@ class TestCasesContainer extends React.Component {
     ];
 
     Promise.all(promises)
-      .then(([testRun, testCases]) => this.setState({ isInitialDataLoading: false, testRun, testCases }) )
-      .catch(errorResponse         => this.setState({ isInitialDataLoading: false, errorResponse }) )
+      .then(([testRun, testCases]) => this.setState({ isInitialDataLoading: false, testRun, testCases }))
+      .catch(errorResponse => this.setState({ isInitialDataLoading: false, errorResponse }))
   }
 
   getTestCases(props, resetPagination = false) {
@@ -61,9 +61,9 @@ class TestCasesContainer extends React.Component {
     const page = resetPagination ? 0 : (this.state.testCases.number + 1);
 
     return getTestCases(props.params.testRunId,
-                 page,
-                 props.location.query.size,
-                 props.location.query.sort)
+      page,
+      props.location.query.size,
+      props.location.query.sort)
       .then(testCases => {
         this.setState((prev) =>
           Object.assign({}, prev, {
@@ -73,7 +73,7 @@ class TestCasesContainer extends React.Component {
         );
         return testCases;
       })
-      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }) );
+      .catch(errorResponse => this.setState({ isDataLoading: false, errorResponse }));
   }
 
   getTestRun(testRunId) {
@@ -99,7 +99,7 @@ class TestCasesContainer extends React.Component {
             <div className="col-md-12">
               <ol className="breadcrumb">
                 <li><Link to="/">Dashboard</Link></li>
-                <li title="Build">{this.state.testRun.build}</li>
+                <li title="Build">Test Run {this.props.params.testRunId}</li>
                 <li className="active" title="Test Suite">{this.state.testRun.testSuite.suite}</li>
               </ol>
             </div>
@@ -109,7 +109,7 @@ class TestCasesContainer extends React.Component {
 
           <Waypoint onEnter={this.onRequestPageData} />
 
-          <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test cases..."/>
+          <Spinner isShown={this.state.isDataLoading} errorResponse={this.state.errorResponse} text="Fetching test cases..." />
         </Spinner>
       </Layout>
     );

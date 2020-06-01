@@ -68,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/api/v1/auth/**", "/api/v1/bootstrap","/dist/**","/icons/**","/favicon.ico").permitAll()
+                .antMatchers("/","/api/v1/auth/**", "/api/v1/bootstrap","/dist/**","**/icons/**","/icons/**","/favicon.ico").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
@@ -79,7 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/dist/**","/icons/**","/api/v1/auth/**"); // #3
+        web.ignoring().antMatchers("/dist/**","**/icons/**","/icons/**","/api/v1/auth/**"); // #3
     }
 
 }

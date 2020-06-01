@@ -15,12 +15,9 @@ public class JwtResponse implements Serializable {
 
     private List<String> roles;
 
-    private Long id;
-
     public JwtResponse(String jwttoken, OwlUserPrinciple owlUserPrinciple) {
 
         this.jwttoken = jwttoken;
-        this.id=owlUserPrinciple.getId();
         this.roles= owlUserPrinciple.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
@@ -28,10 +25,6 @@ public class JwtResponse implements Serializable {
 
     public String getToken() {
         return this.jwttoken;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public List<String> getRoles() {
