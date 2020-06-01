@@ -29,7 +29,6 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, expired);
         } else {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Not authorized!");
-
         }
     }
 }

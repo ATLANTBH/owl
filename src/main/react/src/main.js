@@ -11,7 +11,15 @@ import TestRunsContainer from 'containers/TestRuns/TestRunsContainer';
 import TestCasesContainer from 'containers/TestCases/TestCasesContainer';
 import TestStepsContainer from 'containers/TestSteps/TestStepsContainer';
 import { getBootstrap } from 'api';
+import { isUserLoggedIn } from 'auth';
 
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    isUserLoggedIn() === true
+      ? <Component {...props} />
+      : <Redirect to='/' />
+  )} />
+)
 getBootstrap()
   .then(bootstrap => {
     document.title = bootstrap.projectName;
@@ -20,11 +28,12 @@ getBootstrap()
     render(
       <Router history={browserHistory}>
         <Route path="/" component={LoginContainer} />
-        <Route path="/test-runs" component={TestRunsContainer} />
-        <Route path="/test-suites" component={TestSuitesContainer} />
-        <Route path="/test-runs/:testRunId/test-cases" component={TestCasesContainer} />
-        <Route path="/test-runs/:testRunId/test-steps/*" component={TestStepsContainer} />
-        <Route path="*" component={ErrorContainer} />
+        <PrivateRoute path="/test-runs" component={TestRunsContainer} />
+        <PrivateRoute path="/test-suites" component={TestSuitesContainer} />
+        <PrivateRoute path="/test-runs/:testRunId/test-cases" component={TestCasesContainer} />
+        <PrivateRoute path="/test-runs/:testRunId/test-steps/*" component={TestStepsContainer} />
+        <PrivateRoute path="/error" component={ErrorContainer} />
+        <PrivateRoute path="*" component={ErrorContainer} />
       </Router>,
       document.getElementById('container')
     );

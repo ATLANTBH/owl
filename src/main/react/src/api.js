@@ -121,17 +121,14 @@ export function addBugReportLink(testRunId, testStepId, bugReportRequest) {
 }
 
 function fetchResponseHandler(response) {
+  console.log(response);
   if (!response.ok) {
-    return response.json()
-      .then(response => {
-        console.log(browserHistory.getCurrentLocation());
-        console.log(response);
-        if (response.status === 401 && browserHistory.getCurrentLocation().pathname != "/") {
-          logout();
-          browserHistory.push("/");
-        }
-        throw response;
-      });
+    console.log(browserHistory.getCurrentLocation().pathname);
+    if (response.status === 401) {
+      logout();
+      browserHistory.push("/");
+    }
+    throw response;
   }
   return response.json();
 }
