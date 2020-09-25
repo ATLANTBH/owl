@@ -21,13 +21,11 @@ class GithubInfo extends React.Component {
 }
 
 function githubBranchLink(branch, title) {
-  const githubRepoLink = getProperty('githubRepoLink');
-  return (<a href={githubRepoLink + '/tree/' + branch} target="_blank">{title ? title : branch}</a>)
+  return (<span>{title ? title : branch}</span>)
 }
 
 function githubCommitLink(commit, title) {
-  const githubRepoLink = getProperty('githubRepoLink');
-  return (<a href={githubRepoLink + '/commit/' + commit} target="_blank">{title ? title : commit}</a>)
+  return (<span>{title ? title : commit}</span>)
 }
 
 export default GithubInfo;
