@@ -59,7 +59,7 @@
     "http-proxy-middleware": "^0.17.4",
     "imports-loader": "^0.8.0",
     "json-loader": "^0.5.7",
-    "markdown-it": "^8.2.2",
+    "markdown-it": "^12.3.2",
     "mocha": "^6.1.4",
     "node-sass": "^4.12.0",
     "path-to-regexp": "^1.7.0",
